@@ -1,2 +1,19 @@
 \section{Introduction} 
-Introduction goes here
+The Virtual Observatory provides a set of standards and protocols that enable interoperability among services and applications. Building interoperable applications like Iris poses several challenges to software developers:  in order to design effective applications, we want leverage such standards and protocols, but without exposing the complexity and technicality of their specifications to the users. Also, while application developers implement many desired functionalities, they must also keep the door open for plugging in user's code, and allow third party developers to extend the application functionality with new features without requiring such developers to be aware of the standards specifications themselves.
+
+As a matter of fact, designing such general purpose applications becomes an exercise in designing a framework that implements some basic, effective functionality for a wide set of use cases, while being very extensible.
+
+The Iris team also faced another challenge: our team was distributed in nature, with developers and managers working from different institutions and with different tools and practices. Moreover, willing to reuse existing software instead of reinventing the proverbial wheel, we had to integrate different existing software components in a seamless way.
+
+Finally, while general purpose, Iris was devoted to provide functionality in a specific scientific domain, namely the analysis of broad-band Spectral Energy Distributions (SEDs). This requirement clearly defines the semantic scope of the framework, and provides a clear abstraction layer to both users and developers, inside and outside of the team.
+
+To summarize, Iris provides:
+\begin{itemize}
+\item built-in capabilities for building, viewing, and analyzing broad-band spectro-photometric SEDs;
+\item seamless integration between existing and new code in Python and Java;
+\item a python framework for fitting user provided models and templates;
+\item interoperability with virtual observatory tools through the Simple Messaging Application Protocol (SAMP);
+\item a Java Software Development Kit (SDK) that allows developers to extend the Iris functionalities.
+\end{itemize}
+
+We will present a ten thousand foot overview of the general architecture of Iris (the "Iris stack") in section \ref{stack}. Then, in the following sections we will present a general overview of the basic Iris built-in functionality, and then go into the details of the design of the Iris extensible framework, which will also serve as a basis to introduce the more advanced Iris functionalities.
