@@ -1,11 +1,17 @@
 \section{Introduction} 
-The Virtual Observatory provides a set of standards and protocols that enable interoperability among services and applications. Building interoperable applications like Iris poses several challenges to software developers:  in order to design effective applications, we want leverage such standards and protocols, but without exposing the complexity and technicality of their specifications to the users. Also, while application developers implement many desired functionalities, they must also keep the door open for plugging in user's code, and allow third party developers to extend the application functionality with new features without requiring such developers to be aware of the standards specifications themselves.
+The Virtual Observatory provides a set of standards and protocols that enable interoperability among services and applications.
+
+Iris is a VO-enabled desktop application for building and analyzing Spectral Energy Distributions (SEDs).
+
+Building VO-enabled, interoperable applications like Iris poses several challenges to software developers:  in order to design effective applications, one wants to leverage VO standards and protocols, but without exposing the complexity and technicality of their specifications to the users.
+
+Also, while application developers implement many desired functionalities, they must also keep the door open for plugging in user's code, and allow third party developers to extend the application functionality with new features without requiring such developers to be aware of the standards specifications themselves.
 
 As a matter of fact, designing such general purpose applications becomes an exercise in designing a framework that implements some basic, effective functionality for a wide set of use cases, while being very extensible.
 
 The Iris team also faced another challenge: our team was distributed in nature, with developers and managers working from different institutions and with different tools and practices. Moreover, willing to reuse existing software instead of reinventing the proverbial wheel, we had to integrate different existing software components in a seamless way.
 
-Finally, while general purpose, Iris was devoted to provide functionality in a specific scientific domain, namely the analysis of broad-band Spectral Energy Distributions (SEDs). This requirement clearly defines the semantic scope of the framework, and provides a clear abstraction layer to both users and developers, inside and outside of the team.
+Finally, while general purpose, Iris was devoted to provide functionality in a specific scientific domain, namely the analysis of broad-band SEDs. This requirement clearly defines the semantic scope of the framework, and provides a clear abstraction layer to both users and developers, inside and outside of the team.
 
 To summarize, Iris provides:
 \begin{itemize}
