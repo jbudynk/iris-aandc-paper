@@ -9,9 +9,11 @@ This fact reflects the different entry points for the different audiences of the
 The color code in Figure \ref{fig:stack} adds a different dimension to this diagram and taps into a different characteristic of the Iris architecture: extensibility. In particular, blue boxes with purple letters denote extensible components of the architecture, i.e. component that offer hooks into the Iris architecture to users and developers. The orange labels, on the other hand, express components that were not even part of the Iris design, but that can be loaded in Iris as plug-ins, maybe providing an interface to access non-standard services. Some of these plug-ins, along with a description of the design of the Iris Software Development Kit, will be introduced in section \ref{sec:plugins}.
 
 We want to stress that the Iris framework, which we will describe more in detail in the following sections, was designed to address several different requirements:
-functional requirements gathered by the Iris team's lead scientists;
-functional requirements unknown at development-time;
-the distributed nature of the Iris development team;
-the willing to bring existing tools and services together in a single application.
+\begin{itemize}
+\item functional requirements gathered by the Iris team's lead scientists;
+\item functional requirements unknown at development-time;
+\item the distributed nature of the Iris development team;
+\item the willing to bring existing tools and services together in a single application.
+\end{itemize}
 
 The Iris stack offers a non-technical view of the Iris architecture and design. While it shows effectively how we tried to abstract end users and developers from the VO specifications and from the specifics of the Iris internals, it does not express the technical solutions that we employed to achieve such extensible architecture and to meet the aforementioned requirements. More details about the Iris built-in features and how they can be extended will be provided in the following sections.
