@@ -1,5 +1,6 @@
 abstract.tex
 introduction.tex
+Paragraph.tex
 Iris Stack.tex
 Built-in functionality.tex
 results_table.tex
