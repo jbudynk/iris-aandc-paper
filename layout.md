@@ -1,6 +1,5 @@
 abstract.tex
 introduction.tex
-Paragraph.tex
 Iris Stack.tex
 figures/IrisStack/IrisStack.png
 Built-in functionality.tex
