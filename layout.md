@@ -7,4 +7,5 @@ Built-in functionality.tex
 User Models and Templates.tex
 Architecture.tex
 Components.tex
+Plugins.tex
 results_table.tex
