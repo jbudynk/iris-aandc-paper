@@ -1,0 +1,17 @@
+The Iris stack (Figure \ref{fig:stack}) shows how one can put the cold and technical IVOA specifications to work for scientists through higher and higher layers of abstraction: the technical details of the Virtual Observatory standards and protocols lie in the bottommost layers, the internals of the Iris building blocks lie in the middle layers, while the topmost layers express high-level user-oriented functionalities.
+
+A reader without any knowledge of programming, let alone of the VO specifications, should understand the labels used in the topmost layers of the diagram and their components (e.g. the Fitting Tool, Redshift), as long as they know how to operate a desktop application and have some knowledge of astronomical SEDs.
+
+On the other hand, a developer would find words like framework, service, and manager quite familiar, while it takes a VO-savvy person to decode the acronyms at the bottom of the diagram.
+
+This fact reflects the different entry points for the different audiences of the application: core developers would work at all levels of the stack, but need to lay out the foundations on top of the standard specifications; third party developers would use the middle-level abstractions offered by the Iris framework, while end users can limit their interaction to familiar astronomical concepts through the application's user interface. End users can also plug in their modeling code and upload templates libraries to Iris.
+
+The color code in Figure \ref{fig:stack} adds a different dimension to this diagram and taps into a different characteristic of the Iris architecture: extensibility. In particular, blue boxes with purple letters denote extensible components of the architecture, i.e. component that offer hooks into the Iris architecture to users and developers. The orange labels, on the other hand, express components that were not even part of the Iris design, but that can be loaded in Iris as plug-ins, maybe providing an interface to access non-standard services. Some of these plug-ins, along with a description of the design of the Iris Software Development Kit, will be introduced in section \ref{sec:plugins}.
+
+We want to stress that the Iris framework, which we will describe more in detail in the following sections, was designed to address several different requirements:
+functional requirements gathered by the Iris team's lead scientists;
+functional requirements unknown at development-time;
+the distributed nature of the Iris development team;
+the willing to bring existing tools and services together in a single application.
+
+The Iris stack offers a non-technical view of the Iris architecture and design. While it shows effectively how we tried to abstract end users and developers from the VO specifications and from the specifics of the Iris internals, it does not express the technical solutions that we employed to achieve such extensible architecture and to meet the aforementioned requirements. More details about the Iris built-in features and how they can be extended will be provided in the following sections.
