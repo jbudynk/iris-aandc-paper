@@ -6,4 +6,5 @@ Stack.tex
 Built-in functionality.tex
 User Models and Templates.tex
 Architecture.tex
+Components.tex
 results_table.tex
