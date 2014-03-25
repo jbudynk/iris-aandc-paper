@@ -9,5 +9,4 @@ Architecture.tex
 Components.tex
 Plugins.tex
 Other.tex
-Code sample.tex
 results_table.tex
