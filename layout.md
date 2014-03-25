@@ -1,5 +1,6 @@
 abstract.tex
 introduction.tex
+everyday_seds.tex
 Iris Stack.tex
 figures/IrisStack/IrisStack.png
 Stack.tex
