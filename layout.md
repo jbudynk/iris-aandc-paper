@@ -6,7 +6,6 @@ Stack.tex
 Built in functionality.tex
 figures/iris_data_sources/iris_data_sources.png
 figures/iris_data_sources/data_sources.tex
-figures/iris_data_sources1/iris_data_sources1.png
 User Models and Templates.tex
 Architecture.tex
 Components.tex
