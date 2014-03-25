@@ -38,6 +38,10 @@ A hook is provided for Components willing to send their own SAMP messages to the
 \subsubsection{Custom Events}
 The Iris Events Framework is itself extensible: this way Plug-ins can, if needed, create their own nested loosely coupled architecture for their own Components.
 
+\subsubsection{SED attachments}
+Components can attach arbitrary objects to the SEDs managed by the SEDManager. This way they don't have to independently manage the additional information they might want to store about the individual SEDs. When SEDs are deleted, the manager takes care of releasing any references to the attachments, so to avoid memory leaks.
+
+
 
 \subsection{Plug-in examples}
 \subsubsection{ASDC - stable}
@@ -68,3 +72,16 @@ As for the ASDC plug-in, this component shows that one can use Iris and its fram
 
 \subsubsection{R - experimental}
 An highly experimental proof-of-concept plug-in was developed to explore the possibility of interfacing Iris with rich analysis environments like R. The plug-in shows how one can \emph{beam} data from Iris to R and trigger some analysis on the dataset in R.
+
+
+\subsection{Other Extensibility Points}
+
+\subsubsection{Custom File Readers}
+Iris supports a fair number of ﬁle formats natively: VOTable,
+FITS, CSV, TSV, ASCII, and IPAC tables. However, new ﬁle ﬁlters can be created and
+loaded at runtime. One can also create ﬁlters for the natively supported ﬁles: in this
+case, the custom ﬁlter would parse the ﬁle and map the metadata to the IVOA Data
+Model ﬁelds.
+
+\subsubsection{Persistence}
+Components can also get a handle to the configuration directory, usually a hidden folder in the user's home directory, if they need to persist information like user's preferences, local databases, or work sessions.
