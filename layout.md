@@ -10,5 +10,4 @@ User Models and Templates.tex
 Architecture.tex
 Components.tex
 Plugins.tex
-Other.tex
 conclusion.tex
