@@ -1,2 +1,39 @@
 \section{Plug-ins: the Software Development Kit}
 \label{sec:plugins}
+
+
+Iris offers a full Software Development Kit that can be used to extend the Iris capabilities through the use of dynamically pluggable add-ons, or plug-ins.
+The use cases for this are basically two:
+\begin{description}
+\item[New functionality] A developer may want to create SED-related capabilities in one or more Iris Components. This use case can be broken down in more detailed and concrete extensions, described later in this section.
+\item[Custom-to-Standard adapters] A developer may want to create adapters that query a non-standard service, or load a non-standard data set, and then turn the data to SEDLib objects, thus effectively standardizing them so that they can be used by other components in the Iris environment, or saved and then reused by other VO-compliant applications. In other terms, one can achieve interoperability using the Iris infrastructure starting from a non-interoperable service, file, or tool. Iris actually has some built-in Custom-to-Standard adapters, like the sherpa-samp layer described in section \ref{sec:components}, or the ASDC plug-in interface that queries a quasi-standard service, described in section \ref{sec:asdc}.
+\end{description}
+
+\subsection{Anatomy of a Plug-in}
+A single Jar file can archive several plug-ins, and each plug-in can bundle several Iris Components (see Section \ref{sec:architecture}).
+
+Each Component can provide several additions to Iris, as described in some detail below:
+
+\subsubsection{Menus and Buttons}
+Usually, although not always, an Iris Component is visible to the user as either a set of buttons on the Iris Desktop, or as a set of menu items in the Iris menu bar, or both.
+
+Menu items can be added to either the File menu or to the Tools menu, in a specific plugin-related folder.
+
+While the implementation of such buttons and menu items could be built from scratch by implementing some Java Interfaces, a set of abstract classes implements a lot of the boiler plate code and makes some convenient assumptions about resource naming conventions. This way buttons and menu items can be created with very few lines of code, especially if one uses Maven [Introduce and reference Maven or remove this text], as Iris does.
+
+Menu items and buttons can be customized by providing the button name, a description that will be rendered as a mouse-hover tooltip, and icons.
+
+\subsubsection{Command Line}
+Iris offers a framework for providing simple command line interfaces to its tools. For example, Iris ships a command line interface to the SED Builder (see Section \ref{sec:components}) that allows users to import non-standard files in bulk through scripts, possibly starting from templates saved interactively in the SED Builder.
+
+This framework is extensible through a simple dispatching message. Each component has a name that is used to dispatch the command line argument to the right CLI engine. For instance, the line \verb|./Iris builder config.txt| instructs Iris to dispatch the \verb|config.txt| argument to the SED Builder's CLI engine.
+
+Components bundled with plug-ins can provide such an engine by implementing the ICommandLineInterface Java Interface.
+
+\subsubsection{SAMP Handlers}
+A possible extension that plug-ins can offer to the users is SAMP Handlers: when Iris receives a SAMP message that matches the Handler's \verb|mtype|, the message is directly dispatched to the Handler itself by the Iris framework. As a matter of fact, Iris just offers a convenient shortcut to the excellent STIL implementation of SAMP, leveraging one of the best SAMP library available, and making it available to the users with just the bare minimum amount of work required. The setup of the SAMP infrastructure through STIL is all done by Iris.
+
+A hook is provided for Components willing to send their own SAMP messages to the SAMP Hub, again as a convenient shortcut to STIL.
+
+\subsubsection{Custom Events}
+The Iris Events Framework is itself extensible: this way Plug-ins can, if needed, create their own nested loosely coupled architecture for their own Components.
