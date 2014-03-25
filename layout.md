@@ -11,5 +11,5 @@ Architecture.tex
 Components.tex
 Plugins.tex
 Other.tex
-conclusion.tex
 results_table.tex
+conclusion.tex
