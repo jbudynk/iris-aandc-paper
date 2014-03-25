@@ -13,4 +13,3 @@ Plugins.tex
 Other.tex
 results_table.tex
 conclusion.tex
-conlcusion.tex
