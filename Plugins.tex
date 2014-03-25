@@ -37,3 +37,34 @@ A hook is provided for Components willing to send their own SAMP messages to the
 
 \subsubsection{Custom Events}
 The Iris Events Framework is itself extensible: this way Plug-ins can, if needed, create their own nested loosely coupled architecture for their own Components.
+
+
+\subsection{Plug-in examples}
+\subsubsection{ASDC - stable}
+The Italian Space Agency Science Data Center (ASDC) hosts a database with tens of catalogs in a very wide range of wavelengths and providing time domain information.
+
+A plug-in for providing Iris with a rich GUI to query their database was developed by the ASDC in a collaboration between the ASDC and the Iris teams. The plug-in became part of the main Iris release in v2.0 and provided a valuable test bench to review, validate, and improve the Iris Software Development Kit.
+
+While the ASDC data query tool is now part of the Iris distribution, it still provides a very good example of how a plug-in can be integrated seamlessly in the Iris framework to add specific value to it. Integration can be so seamless, actually, that including the plug-in into the main Iris distribution is almost exclusively a matter of configuration than of coding.
+
+The ASDC data query tool extends the capabilities of the SED Builder by providing a rich graphical user interface that allows users to check what archives to query, and since the ASDC query is a positional cone search, the client provides different adjustable search radii for each catalog which default to reasonable values consistent with the resolutive power of the individual instruments.
+
+Moreover, the tool allows to query for specific observation time ranges, thus allowing basic time domain analysis of the SEDs.
+
+This component proves several points about the Iris framework and SDK:
+\begin{description}
+\item[Custom-to-Standard adapters] The ASDC web service backing up the implementation of the query tool does not comply with any VO data access protocols (at least not yet), as it was designed as a private interface to their database to be consumed by a dedicated client. The client on the Iris desktop assumes that the service implements the private interface, and can query it. The data files coming from the service are actually compliant with the IVOA specifications, so they can be directly read by SEDLib and passed to the SEDManager.
+\item[Agents loosely coupled interoperability] Although the ASDC plugin was not designed as part of Iris, it integrates seamlessly with the Iris built-in components. When the ASDC query tool instantiates an SED from the service, this gets listed in the SED Builder and visualized in the SED Viewer, even though it does not interact directly with any of them: they all interact only with the SED Manager and they get notified of changes by the events that this Controller fires when Views request operations on Models.
+\item[The Iris SDK] As it will be explored in some detail in section \ref{sec:writeplugin}, a plug-in developer can pretty much focus on the implementation of her components' business logic, without worrying too much about how the boiler plate code required to the components themselves. By using the abstract classes that the Iris framework
+provides, one can leverage the existing components with just a few lines of code and add value to entire application.
+\end{description}
+
+\subsubsection{Vizier - experimental}
+Experimental plug-ins are shipped with Iris but they can only be activated by turning on switched on the Iris command line. For instance, if one starts Iris with the command \verb|./Iris --vizier| an experimental plugin for the CDS Vizier photometric service gets loaded in the usual Iris desktop.
+
+While this component is, at the time of this writing, still experimental, it shows some properties of the Iris framework and SDK.
+
+As for the ASDC plug-in, this component shows that one can use Iris and its framework to rapidly build an adapter from a custom service interface, and in this case also from a custom serialization, to make datasets interoperable with the other Iris tools, third party plug-ins, and possibly other VO tools.
+
+\subsubsection{R - experimental}
+An highly experimental proof-of-concept plug-in was developed to explore the possibility of interfacing Iris with rich analysis environments like R. The plug-in shows how one can \emph{beam} data from Iris to R and trigger some analysis on the dataset in R.
