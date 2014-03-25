@@ -1,12 +1,15 @@
 \section{Introduction} 
 The Virtual Observatory (VO) provides a set of standards and protocols that enable interoperability among astronomy-centered services and applications. Building VO-enabled, interoperable applications poses several challenges to software developers. In order to design effective applications, one wants to leverage VO standards and protocols without exposing the complexity and technicality of their specifications to the users. Also, while application developers implement many desired functionalities, they must keep the door open for plugging in user's code, and allow third party developers to extend the application's functionality without being aware of the standards themselves. Designing such general purpose applications thus becomes an exercise in designing a framework that implements some basic, effective functionality for a wide set of use cases, while being highly extensible.
 
-Iris, the Virtual Astronomical Observatory spectral energy distribution (SED) analysis tool, is such a VO-enabled desktop application. However, the Iris development specifically faced extra challenges. For one, our team was distributed in nature, with developers and managers working from different institutions with different tools and practices. Moreover, willing to reuse existing software instead of reinventing the proverbial wheel, we had to integrate different existing software components in a seamless way.
+Iris, the Virtual Astronomical Observatory spectral energy distribution (SED) analysis tool, is such a VO-enabled application. Iris was developed to provide the science community a desktop application for building, viewing and analyzing broadband spectro-photometric SEDs, while implementing VO standards and protocols and taking advantage of existing astronomy software. Users may populate SEDs with data from file, built-in portals to data archives, and other opened VO applications; Iris is lenient on the data format, so while it automatically reads VO-compliant files, Iris can ingest ASCII, CSV, and other table-like formats. Iris also provides interactive data visualization and editting tools, and a SED fitting tool for fine-tuned modeling. Users may choose from a suite of provided astrophysical models, or load their own Python functions and template libraries. Following VO principles, all front-end features of Iris completely hide the underlying technical VO standards and protocols from the user.
+
+Iris was devoted to provide functionality in a specific scientific domain, namely the analysis of broad-band SEDs. This requirement clearly defines the semantic scope of the framework, and provides a clear abstraction layer to both users and developers, inside and outside of the development team. However, the Iris development team faced extra challenges. For one, our team was distributed in nature, with developers and managers working from different institutions with different tools and practices. Moreover, willing to reuse existing software instead of reinventing the proverbial wheel, we had to integrate different existing software components in a seamless way.
+
+We present the Iris framework, an implementation of VO standards and protocols for SED analysis. An overview of the general architecture of Iris (the "Iris stack") is illustrated in section \ref{stack}. Then, in the following sections we present a general overview of the basic Iris built-in functionality (section \ref{builtin}), and then describe the details of the Iris extensible framework design, and (section \ref{}) introduce the more advanced Iris functionalities.
 
 
-Finally, while general purpose, Iris was devoted to provide functionality in a specific scientific domain, namely the analysis of broad-band SEDs. This requirement clearly defines the semantic scope of the framework, and provides a clear abstraction layer to both users and developers, inside and outside of the team.
 
-To summarize, Iris provides:
+[This looks like more of an ending note, in the conclusion section]. To summarize, Iris provides:
 \begin{itemize}
 \item built-in capabilities for building, viewing, and analyzing broad-band spectro-photometric SEDs;
 \item seamless integration between existing and new code in Python and Java;
@@ -14,5 +17,3 @@ To summarize, Iris provides:
 \item interoperability with virtual observatory tools through the Simple Messaging Application Protocol (SAMP);
 \item a Java Software Development Kit (SDK) that allows developers to extend the Iris functionalities.
 \end{itemize}
-
-We will present a ten thousand foot overview of the general architecture of Iris (the "Iris stack") in section \ref{stack}. Then, in the following sections we will present a general overview of the basic Iris built-in functionality (section \ref{builtin}), and then go into the details of the design of the Iris extensible framework, which will also serve as a basis to introduce the more advanced Iris functionalities.
