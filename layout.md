@@ -10,4 +10,3 @@ Components.tex
 Plugins.tex
 Other.tex
 results_table.tex
-Conlusion.tex
