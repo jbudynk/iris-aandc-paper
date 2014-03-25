@@ -6,12 +6,12 @@ In order to minimize the risk deriving from such requirements, we backed Iris wi
 But it's not just a matter of risk management: this design pattern also supports the implementation of "liquid requirements", i.e. a finite set of predetermined requirements plus an undefinite set of custom requirements to be implemented by users in some simple cases or by third party developers plug-ins for more advanced functionality.
 
 The architecture supporting the implementation of such requirements has different components that can be classified in terms of the Model-View-Controller (MVC) design pattern:
-\begin{itemize}
+\begin{description}
 \item[SEDLib] a basic I/O library provides the most basic abstraction of the Model component of MVC. Unsurprisingly, SEDLib can do so by implementing a Data Model specification defined by the IVOA. Such specification defines both the logical breakdown of spectral datasets, and the serialization in some standard file formats. So, on one end, SEDlib can perform the basic read/write operations on spectrophotometric files, while on the other it provides the data structures that client components can use and exchange.
 \item[SEDManager] The MVC Controller role is played in Iris by the SEDManager, which is itself defined as an Interface. The manager works as a data storage for SEDLib instances that the different Iris components can share.
 \item[Components] The actual Iris functionality is implemented by the Iris Components. They can be seen as the Views in the MVC pattern (or, more generally, they can provide any number of Views), since they present to the user the data stored in the Controller, query the Controller itself, and act upon the Models, i.e. the SED objects provided by SEDLib.
 \item[Events] Views can be notified of changes in the Models (possibly triggered by other Views via the Controller) by Events, if they implement the relative Listener interface and by registering to the Events Queue. Such Queue effectively decouples all of the Components. Events usually have a payload with more information about their content, and a pointer to the Model (or Models) involved. For convenience, Events are usually fired by the SEDManager itself, but in principle any class in Iris can trigger them.
-\end{itemize}
+\end{description}
 
 In summary, Components (Views) can be completely disentangled from each other and interact indirectly through the sole common interface represented by the SEDManager (Controller), which in turn stores the SED objects (Model). Dynamic changes in the system are notified to all interested agents (Listeners) via specific Events.
 
