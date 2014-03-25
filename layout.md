@@ -4,6 +4,7 @@ Iris Stack.tex
 figures/IrisStack/IrisStack.png
 Stack.tex
 Built in functionality.tex
+figures/iris_data_sources/iris_data_sources.png
 User Models and Templates.tex
 Architecture.tex
 Components.tex
