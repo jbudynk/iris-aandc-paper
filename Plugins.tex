@@ -85,3 +85,33 @@ Model ﬁelds.
 
 \subsubsection{Persistence}
 Components can also get a handle to the configuration directory, usually a hidden folder in the user's home directory, if they need to persist information like user's preferences, local databases, or work sessions.
+
+
+
+\subsection{How to write an Iris plugin}
+\label{sec:writeplugin}
+Iris uses Maven Archetypes to streamline the process of building and distributing Iris plug-ins, so you need Maven installed in order to create plug-ins this way.
+
+You might also write plug-ins without using Maven, but you would need to take care of many steps that the Maven archetype already takes care of, like the inclusion of your dependencies in your plug-in's jar file.
+
+In order to have a test plugin up and running you just need to create a new project from the Maven archetype and package it.
+
+\begin{verbatim}
+$ mvn archetype:generate\
+        -DarchetypeRepository=http://vaotest2.tuc.noao.edu:8080/artifactory/ \
+        -DarchetypeArtifactId=iris-plugin-archetype \
+        -DarchetypeGroupId=cfa.vo \
+        -DarchetypeVersion=1.1
+\end{verbatim}
+
+The above command will ask you some questions about the metadata for your plug-in project, like the group id, the project id (called artifact id in Maven), and the version. At the end of the process you should have a directory named after your project-id. This directory contains all the files needed to build and package a test plugin.
+
+You can type \verb|mvn package| and Maven will package the test plug-in for you in the \verb|target| directory as a jar file.
+
+You can use the Iris Plugin Manager component to install this jar file into Iris. As soon as you do it, a new button should appear on the Iris desktop. If you click on it, a rather impressive dialog box with the universal salutation "Hello World!" should appear on your screen.
+
+You can inspect the source code of this project and notice that most of it is made of metadata strings and basic class definitions and instantiations. By inheriting from the abstract classes that are provided with the Iris SDK, the actual code that one needs to implement starts from the implementation of the \verb|onClick| callback of the AbstractPluginMenuItem class. From that call on, a plug-in developer can focus on the implementation of their components and start using the hooks provided by the Iris Framework in order to interoperate with the other Iris components.
+
+One can start from this dummy project, inspect the source code, make changes to the package and class names and to the metadata strings, and then start implementing their component's business logic and user interface.
+
+The Iris website has a somewhat extensive documentation on how to write plug-ins, and you can contact the authors of this paper for further information.
