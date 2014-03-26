@@ -11,7 +11,7 @@ The astronomer may also want to inspect the SED, for example plotting it against
 
 This inconvenience -- building SEDs from multiple sources -- drove a part of Iris' SED analysis design. Following VO efforts to seamlessly combine data services and applications, Iris offers a standard means of building large broadband SEDs from different sources in various data formats, while providing robust fitting methods and interactive visualization capabilities. Users can input SED data from file (with high leniency on the data format), a URL, another VO-enabled application, or directly from VO-enabled data archive services. If the data follows the IVOA Spectrum Data Model v1.03 [REFERENCE] (i.e. a VO-compliant VOTable or FITS file), the data is read-in without any input by the user; otherwise, the user just needs to supply the units and  mapping to the spectral-flux coordinates in the file. How this method works is described in Section \ref{sec:components}. 
 
-If Iris is missing a certain functionality, the user may develop a plugin for that functionality and add it to Iris. Thus, a user can employ Iris' SED building capabilites while using their own fitting procedure. We explore this possibility in detail in Section \ref{pluggins}
+If Iris is missing a certain functionality, the user may develop a plugin for that functionality and add it to Iris. Thus, a user can employ Iris' SED building capabilites while using their own fitting procedure. We explore this possibility in detail in Section \ref{plugins}
 
 \begin{comment}
 Following the VO effort for seamless interoperability between data services and applications,  
