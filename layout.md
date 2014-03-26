@@ -12,3 +12,4 @@ Architecture.tex
 Components.tex
 Plugins.tex
 conclusion.tex
+Code snippets.tex
