@@ -1,37 +1,36 @@
 \section{Plug-ins: the Software Development Kit}
 \label{sec:plugins}
 
-
-Iris offers a full Software Development Kit that can be used to extend the Iris capabilities through the use of dynamically pluggable add-ons, or plug-ins.
+Iris offers a Software Development Kit (SDK) that can be used to extend the Iris capabilities through the use of dynamically pluggable add-ons, or plug-ins.
 The use cases for this are basically two:
 \begin{description}
-\item[New functionality] A developer may want to create SED-related capabilities in one or more Iris Components. This use case can be broken down in more detailed and concrete extensions, described later in this section.
-\item[Custom-to-Standard adapters] A developer may want to create adapters that query a non-standard service, or load a non-standard data set, and then turn the data to SEDLib objects, thus effectively standardizing them so that they can be used by other components in the Iris environment, or saved and then reused by other VO-compliant applications. In other terms, one can achieve interoperability using the Iris infrastructure starting from a non-interoperable service, file, or tool. Iris actually has some built-in Custom-to-Standard adapters, like the sherpa-samp layer described in section \ref{sec:components}, or the ASDC plug-in interface that queries a quasi-standard service, described in section \ref{sec:asdc}.
+\item[New functionality] A developer may want to create SED-related capabilities in one or more new Components. This use case can be broken down in more detailed and concrete extensions, described later in this section.
+\item[Custom-to-Standard adapters] A developer may want to create adapters that query a non-standard service, or load a non-standard data set, and then turn the data to SEDLib objects, thus effectively standardizing them so that they can be used by other components in the Iris environment, or reused by other VO-compliant applications. In other terms, one can achieve interoperability using the Iris infrastructure starting from a non-interoperable service, file, or tool. Iris actually has some built-in Custom-to-Standard adapters, like the sherpa-samp layer described in section \ref{sec:components}, or the ASDC plug-in interface that queries a quasi-standard service, described in section \ref{sec:asdc}.
 \end{description}
 
 \subsection{Anatomy of a Plug-in}
-A single Jar file can archive several plug-ins, and each plug-in can bundle several Iris Components (see Section \ref{sec:architecture}).
+A single Jar file can archive several plug-ins, and each plug-in can bundle several Iris Components.
 
 Each Component can provide several additions to Iris, as described in some detail below:
 
 \subsubsection{Menus and Buttons}
 Usually, although not always, an Iris Component is visible to the user as either a set of buttons on the Iris Desktop, or as a set of menu items in the Iris menu bar, or both.
 
-Menu items can be added to either the File menu or to the Tools menu, in a specific plugin-related folder.
+Menu items can be added to either the File menu or to the Tools menu in a specific plugin-related folder.
 
-While the implementation of such buttons and menu items could be built from scratch by implementing some Java Interfaces, a set of abstract classes implements a lot of the boiler plate code and makes some convenient assumptions about resource naming conventions. This way buttons and menu items can be created with very few lines of code, especially if one uses Maven [Introduce and reference Maven or remove this text], as Iris does.
+While the implementation of such buttons and menu items could be done from scratch by implementing some Java Interfaces, a set of abstract classes implements a lot of the boiler plate code and makes some convenient assumptions. This way buttons and menu items can be created with very few lines of code.
 
 Menu items and buttons can be customized by providing the button name, a description that will be rendered as a mouse-hover tooltip, and icons.
 
 \subsubsection{Command Line}
-Iris offers a framework for providing simple command line interfaces to its tools. For example, Iris ships a command line interface to the SED Builder (see Section \ref{sec:components}) that allows users to import non-standard files in bulk through scripts, possibly starting from templates saved interactively in the SED Builder.
+Iris offers a framework for providing simple command line interfaces to its tools. For example, Iris ships a command line interface to the SED Builder (see Section \ref{sec:components}) that allows users to import non-standard files in bulk through scripts, possibly starting from templates saved interactively from the SED Builder.
 
-This framework is extensible through a simple dispatching message. Each component has a name that is used to dispatch the command line argument to the right CLI engine. For instance, the line \verb|./Iris builder config.txt| instructs Iris to dispatch the \verb|config.txt| argument to the SED Builder's CLI engine.
+This framework is extensible through a simple dispatching mechanism. Each component has a name that is used to dispatch the command line argument to the right CLI engine. For instance, the line \verb|./Iris builder config.txt| instructs Iris to dispatch the \verb|config.txt| argument to the SED Builder's CLI engine.
 
-Components bundled with plug-ins can provide such an engine by implementing the ICommandLineInterface Java Interface.
+Components bundled with plug-ins can provide such an engine by implementing the ICommandLineInterface Java Interface (see Listing \ref{lst:cli}).
 
 \subsubsection{SAMP Handlers}
-A possible extension that plug-ins can offer to the users is SAMP Handlers: when Iris receives a SAMP message that matches the Handler's \verb|mtype|, the message is directly dispatched to the Handler itself by the Iris framework. As a matter of fact, Iris just offers a convenient shortcut to the excellent STIL implementation of SAMP, leveraging one of the best SAMP library available, and making it available to the users with just the bare minimum amount of work required. The setup of the SAMP infrastructure through STIL is all done by Iris.
+A possible extension that plug-ins can offer to the users is SAMP Handlers: when Iris receives a SAMP message that matches the Handler's \verb|mtype|, the message is directly dispatched to the Handler itself by the Iris framework. As a matter of fact, Iris just offers a convenient shortcut to the excellent STIL implementation of SAMP, leveraging one of the best SAMP library available, and making it available to the users with just the bare minimum amount of work required: the setup of the SAMP infrastructure through STIL is all done by Iris, including a keep-alive mechanism that brings a SAMP Hub up if one is shutdown.
 
 A hook is provided for Components willing to send their own SAMP messages to the SAMP Hub, again as a convenient shortcut to STIL.
 
@@ -39,15 +38,15 @@ A hook is provided for Components willing to send their own SAMP messages to the
 The Iris Events Framework is itself extensible: this way Plug-ins can, if needed, create their own nested loosely coupled architecture for their own Components.
 
 \subsubsection{SED attachments}
-Components can attach arbitrary objects to the SEDs managed by the SEDManager. This way they don't have to independently manage the additional information they might want to store about the individual SEDs. When SEDs are deleted, the manager takes care of releasing any references to the attachments, so to avoid memory leaks.
+Components can attach arbitrary objects to the SEDs managed by the SEDManager. This way they do not have to independently manage the additional information they might want to store about the individual SEDs. When SEDs are deleted, the manager takes care of releasing any references to the attachments, so to avoid memory leaks.
 
 
 
 \subsection{Plug-in examples}
 \subsubsection{ASDC - stable}
-The Italian Space Agency Science Data Center (ASDC) hosts a database with tens of catalogs in a very wide range of wavelengths and providing time domain information.
+The Italian Space Agency Science Data Center (ASDC) hosts a database with tens of catalogs in a very wide range of wavelengths, also providing time domain information.
 
-A plug-in for providing Iris with a rich GUI to query their database was developed by the ASDC in a collaboration between the ASDC and the Iris teams. The plug-in became part of the main Iris release in v2.0 and provided a valuable test bench to review, validate, and improve the Iris Software Development Kit.
+A plug-in for providing Iris with a rich graphical user interface to query their database was developed by the ASDC in a collaboration between the ASDC and the Iris teams. The plug-in became part of the main Iris distribution in v2.0 and provided a valuable test bench to review, validate, and improve the Iris Software Development Kit.
 
 While the ASDC data query tool is now part of the Iris distribution, it still provides a very good example of how a plug-in can be integrated seamlessly in the Iris framework to add specific value to it. Integration can be so seamless, actually, that including the plug-in into the main Iris distribution is almost exclusively a matter of configuration than of coding.
 
@@ -57,14 +56,15 @@ Moreover, the tool allows to query for specific observation time ranges, thus al
 
 This component proves several points about the Iris framework and SDK:
 \begin{description}
-\item[Custom-to-Standard adapters] The ASDC web service backing up the implementation of the query tool does not comply with any VO data access protocols (at least not yet), as it was designed as a private interface to their database to be consumed by a dedicated client. The client on the Iris desktop assumes that the service implements the private interface, and can query it. The data files coming from the service are actually compliant with the IVOA specifications, so they can be directly read by SEDLib and passed to the SEDManager.
-\item[Agents loosely coupled interoperability] Although the ASDC plugin was not designed as part of Iris, it integrates seamlessly with the Iris built-in components. When the ASDC query tool instantiates an SED from the service, this gets listed in the SED Builder and visualized in the SED Viewer, even though it does not interact directly with any of them: they all interact only with the SED Manager and they get notified of changes by the events that this Controller fires when Views request operations on Models.
-\item[The Iris SDK] As it will be explored in some detail in section \ref{sec:writeplugin}, a plug-in developer can pretty much focus on the implementation of her components' business logic, without worrying too much about how the boiler plate code required to the components themselves. By using the abstract classes that the Iris framework
-provides, one can leverage the existing components with just a few lines of code and add value to entire application.
+\item[Custom-to-Standard adapters] The ASDC web service backing up the implementation of the query tool does not comply with any VO data access protocols (at least not yet), as it was designed as a private interface to their database to be consumed by a dedicated client. The client on the Iris desktop assumes that the service implements the private interface, and can query it. The data files coming from the service, on the other hand, are actually compliant with the IVOA specifications, so they can be directly read by SEDLib and passed to the SEDManager.
+\item[Agents loosely coupled interoperability] Although the ASDC plugin was not designed as part of Iris, it integrates seamlessly with the Iris built-in components. When the ASDC query tool instantiates an SED from the service, this gets listed in the SED Builder and visualized in the SED Viewer, even though it does not interact directly with any of them: they all interact only with the SED Manager and they get notified of changes by the events that are fired when Models are changed.
+\item[The Iris SDK] As it will be explored in some detail in section \ref{sec:writeplugin}, a plug-in developer can pretty much focus on the implementation of her components' business logic, without worrying too much about the boiler plate code required to configure such components. By using the abstract classes that the Iris framework
+provides, one can leverage the existing components with just a few lines of code and then start adding value to the entire application.
 \end{description}
 
 \subsubsection{Vizier - experimental}
-Experimental plug-ins are shipped with Iris but they can only be activated by turning on switched on the Iris command line. For instance, if one starts Iris with the command \verb|./Iris --vizier| an experimental plugin for the CDS Vizier photometric service gets loaded in the usual Iris desktop.
+\label{sec:asdc}
+Experimental plug-ins are shipped with Iris but they can only be activated by turning on switches on the Iris command line. For instance, if one starts Iris with the command \verb|./Iris --vizier| an experimental plugin for the CDS Vizier photometric service gets loaded in the usual Iris desktop.
 
 While this component is, at the time of this writing, still experimental, it shows some properties of the Iris framework and SDK.
 
@@ -90,12 +90,11 @@ Components can also get a handle to the configuration directory, usually a hidde
 
 \subsection{How to write an Iris plugin}
 \label{sec:writeplugin}
-Iris uses Maven Archetypes to streamline the process of building and distributing Iris plug-ins, so you need Maven installed in order to create plug-ins this way.
+Iris uses Maven Archetypes to streamline the process of building and distributing Iris plug-ins.
 
-You might also write plug-ins without using Maven, but you would need to take care of many steps that the Maven archetype already takes care of, like the inclusion of your dependencies in your plug-in's jar file.
+You might also write plug-ins without using Maven, but you would need to take care of many steps that the Maven-generated project automatically takes care of, like the inclusion of your dependencies in your plug-in's jar file.
 
-In order to have a test plugin up and running you just need to create a new project from the Maven archetype and package it.
-
+In order to have a test plugin up and running you just need to create a new project from the Maven archetype and package it:
 \begin{verbatim}
 $ mvn archetype:generate\
         -DarchetypeRepository=http://vaotest2.tuc.noao.edu:8080/artifactory/ \
@@ -104,13 +103,13 @@ $ mvn archetype:generate\
         -DarchetypeVersion=1.1
 \end{verbatim}
 
-The above command will ask you some questions about the metadata for your plug-in project, like the group id, the project id (called artifact id in Maven), and the version. At the end of the process you should have a directory named after your project-id. This directory contains all the files needed to build and package a test plugin.
+The above command will ask you some questions about the metadata for your plug-in project, like the group id, the project id (called artifact-id in Maven), and the version. At the end of the process you should have a directory named after your project-id. This directory contains all the files needed to build and package a test plugin.
 
-You can type \verb|mvn package| and Maven will package the test plug-in for you in the \verb|target| directory as a jar file.
+You can type \verb|mvn package| from the newly created directory and Maven will package the test plug-in for you in the \verb|target| directory as a jar file.
 
-You can use the Iris Plugin Manager component to install this jar file into Iris. As soon as you do it, a new button should appear on the Iris desktop. If you click on it, a rather impressive dialog box with the universal salutation "Hello World!" should appear on your screen.
+You can use the Iris Plugin Manager component to install this jar file into Iris. As soon as you do it, a new button should appear on the Iris desktop. If you click on it, a rather impressive dialog box with the universal salutation ``Hello World!'' should appear on your screen.
 
-You can inspect the source code of this project and notice that most of it is made of metadata strings and basic class definitions and instantiations. By inheriting from the abstract classes that are provided with the Iris SDK, the actual code that one needs to implement starts from the implementation of the \verb|onClick| callback of the AbstractPluginMenuItem class. From that call on, a plug-in developer can focus on the implementation of their components and start using the hooks provided by the Iris Framework in order to interoperate with the other Iris components.
+You can inspect the source code of this project and notice that most of it is made of metadata strings and basic class definitions and instantiations. By inheriting from the abstract classes that are provided with the Iris SDK, the actual code that one needs to implement starts from the implementation of the \verb|onClick| callback of the AbstractPluginMenuItem class. From that call on, a plug-in developer can focus on the implementation of their components and start using the hooks provided by the Iris Framework in order to interoperate with the other Iris components, and possibly with other VO applications.
 
 One can start from this dummy project, inspect the source code, make changes to the package and class names and to the metadata strings, and then start implementing their component's business logic and user interface.
 
