@@ -3,7 +3,7 @@
 
 Keeping with our requirements of developing an extensible SED analysis tool, we provide a user-end interface for adding custom models, templates, and template libraries for the fitting engine to use in a Custom Fit Models Manager. Other widely-used SED fitting programs (EXAMPLES) offer these features as well.
 
-Sherpa, Iris' fitting engine, provides \textbf{command line functions} for users to add their own models and templates to a Sherpa session. We wrap a GUI around Sherpa's \texttt{sherpa.astro.ui.utils} functions \texttt{load_user_model}, \texttt{load_table_model}, \texttt{load_template_model}, and \texttt{add_user_pars} for streamlined integration and user-friendliness. The user provides the full path to the directory where the models and templates exist, as well as information about the parameters. Installing a model saves a copy of the model files in the user's home directory (in ~/.vao/iris/components), allowing the user to apply the models in future sessions.
+Sherpa, Iris' fitting engine, provides \textbf{command line functions} for users to add their own models and templates to a Sherpa session. We wrap a GUI around Sherpa's \texttt{sherpa.astro.ui.utils} functions \texttt{load_user_model}, \texttt{load_table_model}, \texttt{load_template_model}, and \texttt{add_user_pars} for streamlined integration and user-friendliness. The user provides the full path to the directory where the models and templates exist, as well as information about the parameters. Installing a model saves a copy of the model files in the user's home directory (in \~{}/.vao/iris/components), allowing the user to apply the models in future sessions.
 
 %; in this way, both users familiar or unacquainted with Sherpa will 
 
