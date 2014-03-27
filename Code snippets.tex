@@ -135,3 +135,41 @@ public interface ICommandLineInterface {
     void call(String[] args);
 }
 \end{verbatim}
+
+\subsection{User Model Example}
+\label{user_model_example}
+\begin{verbatim}
+import numpy as np
+
+def modified_blackbody(p, x):
+    """
+    Modified blackbody of the form:
+    A * B_lambda(T) * (c / (lambda / lambda_0))**beta
+
+    Parameters
+    ----------
+    p : [lambda_0, A, temp, beta]
+
+        p[0] 'lambda_0' : refernce wavelength
+        p[1] 'A' : amplitude of model at reference wavelength
+        p[2] 'temp' : temperature of blackbody
+        p[3] 'beta' : dust emissivity index
+
+    x : array
+        spectral values, in Angstroms
+    """
+    
+    # blackbody function, in terms of wavelength (in Angstroms)
+    c1 = 1.438786e8  # in AA K
+    efactor = c1 / p[2]
+    numerator = p[1] * np.power(p[0], 5.0) * (np.exp(efactor / p[0]) - 1.0)
+    denominator = np.power(x, 5.0) * (np.exp(efactor / x) - 1.0)
+    B_lambda = numerator / denominator
+
+    # speed of light in Angstroms/second
+    c = 2.998e18
+
+    powerlaw = (c / (x/p[0]))**p[3]
+
+    return B_lambda * powerlaw
+\end{verbatim}
