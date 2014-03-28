@@ -18,3 +18,11 @@ The SED Builder also has a hook for adding custom file filters. A user can devel
 Users can save entire SEDs or sets of Segments to IVOA-compliant VOTable or FITS files. By default, Iris will save the data and all of its associated metadata in VOTable format. This means if the SED is composed of more than one Segment, the individual Segments will remain when we re-read the data back into Iris. However, these files may be difficult to read into other tools. Therefore, we provide a simpler output format that saves the most important information: the spectral, flux and flux uncertainties, along with data point reference IDs and a column of the original flux (useful if an aperture correction was applied to any point). All Segment distinctions dissappear, along with the metadata, making the data more compliable for use in external applications. The user supplies the desired X and Y units for the new SED from the drop-down menus, converting all data to the same units.
 
 \subsection{Science Tools}
+We provide built-in science tools that perform calculations commonly used in SED analysis: redshifting, interpolation, and integration. The data is setup on the Java-side of Iris, but the actual calculations are done in Sherpa. For this, we implement the \textbf{sherpa-samp interface}, which links the Java implementation of SED Builder to the Python implementation of the SED science tools in Sherpa through SAMP interfaces (for more details on sherpa-samp, see Section \ref{sec:}).
+
+The open SEDs are listed in the Science Tools frame. The user selects the SED they wish to analyze, and inputs the required information for a calculation.
+
+\subsubsection{Redshifting}
+Redshifting an SED in Iris refers to cosmological redshift. Because the apparent magnitude of a source is dimmer at high redshifts than low redshift, we correct the flux so that the area under the shifted SED equals that of the un-shifted SED [REFERENCES, astLib]. For the Sherpa implementation, we extend astLib's astSED.redshift function [REFERENCE]. 
+
+From the user's perspective, he/she supplies the initial and final redshift of the SED and clicks "Create New SED." The returned SED has the same name of the unshifted SED, appended with _redshift. For example, if the final redshift is \textit{z}\(=0.0\) the shifted SED is named "Sed_0.0."
