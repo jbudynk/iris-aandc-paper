@@ -25,7 +25,7 @@ The open SEDs are listed in the Science Tools frame. The user selects the SED th
 \subsubsection{Redshifting}
 Redshifting an SED in Iris refers to cosmological redshift. Because the apparent magnitude of a source is dimmer at high redshifts than low redshift, we correct the flux so that the area under the shifted SED equals that of the un-shifted SED [REFERENCES, astLib]:
 
-\[f_{z_{final}}(\lambda) = f_{z_{initial}}(\lambda) \frac{\sum_{k=1}^N \(\lambda_{k+1}-\lambda_{k}\)\(f_{z_{initial}}(\lambda_{k+1}+f_{z_{initial}}(\lambda_{k})\)}{\sum_{k=1}^N \(\lambda_{k+1}-\lambda_{k}\)f_{z_{final}}(\lambda_{k+1}+f_{z_{final}}(\lambda_{k})\)}\]
+\[f_{z_{final}}(\lambda) = f_{z_{initial}}(\lambda) \frac{\sum_{k=1}^N f_{z_{initial}}(\lambda_{k+1}+f_{z_{initial}}(\lambda_{k})}{\sum_{k=1}^N f_{z_{final}}(\lambda_{k+1}+f_{z_{final}}(\lambda_{k})}\]
 
 In sherpa-samp, we extend astLib's astSED class for its implementation of redshifting SEDs [REFERENCE]. 
 
