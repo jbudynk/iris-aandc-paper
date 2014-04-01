@@ -29,7 +29,7 @@ Redshifting an SED in Iris refers to cosmological redshift. Because the apparent
 
 In sherpa-samp, we extend astLib's astSED class for its implementation of redshifting SEDs [REFERENCE]. 
 
-From the user's perspective, he/she supplies the initial and final redshift of the SED and clicks "Create New SED." The returned SED has the same name of the unshifted SED, appended with _redshift. For example, if the final redshift is \textit{z}\(=0.0\) the shifted SED is named "Sed_0.0."
+From the user's perspective, he/she supplies the initial and final redshift of the SED and clicks "Create New SED." The returned SED has the same name of the unshifted SED, appended with _redshift. For example, if the final redshift is \textit{z}\(=0.0\) the shifted SED is named "Sed\_0.0."
 
 \subsubsection{Interpolation}
 Iris provides 1D interpolation along the spectral axis. There are three interpolation options: linear, linear spline, and nearest neighbor. Interpolation may be carried out on a linear or logarithmic scale. Users may choose the number of bins, the spectral range overwhich to interpolate, and may choose to smooth the resultant SED via a boxcar method.
