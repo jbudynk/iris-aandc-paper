@@ -3,33 +3,35 @@
 
 \subsection{SED Builder: SED I/O and Management}
 \subsubsection{Data management: SEDs and Segments}
-Users manage SEDs through the SED Builder (Figure \ref{fig:sed_builder}). From the Builder, users can add, edit, remove, and save SEDs. Users can also beam data to other VO-enabled applications through SAMP messages from the Builder. Any number of SEDs can be analyzed in an Iris session. Each SED must have a unique identifier; by default, the first SED is named "Sed;" the second SED would be "Sed.1," the third "Sed.2," and so on. The user switches between SEDs by clicking on a SED name in the Open SEDs field; the visualizer will automatically update to the selected SED. 
+Users manage SEDs through the SED Builder (Figure~\ref{fig:sed_builder}). From the Builder, users can add, edit, remove, and save SEDs. Users can also beam data to other VO-enabled applications through SAMP messages from the Builder. Any number of SEDs can be analyzed in an Iris session. Each SED must have a unique identifier; by default, the first SED is named "Sed;" the second SED would be "Sed.1," the third "Sed.2," and so on. The user switches between SEDs by clicking on a SED name in the Open SEDs field; the visualizer will automatically update to the selected SED. 
 
 SEDs are built and managed in Segments, which are groups of (spectral, flux) coordinates. For example, a spectrum is considered a Segment. The results of a NED SED Service query are also handled as Segment. Photometric points loaded from file, SAMP or from ASDC are managed as individual Segments (i.e. each photometric point is its own Segment). Clicking on a SED in the Open SEDs field will show all the Segments that populate that particular SED. SED Builder shows where the Segment data came from, the recorded RA and Dec of the Segment, and the number of points in the Segment. Segments can be handled separately from other Segments in the SED; users can add, edit, remove, and save selected Segments separately from the SED in which it lives. 
 
 \subsubsection{Importing data}
-The SED Builder handles SED I/O. As described in Section \ref{sec:overview}, Iris accepts data from a variety of sources, and is lenient on the data format. Figure \ref{fig:data_sources} illustrates that Iris imports data from built-in data archive portals as well as from outside resources like local files, URLs, other VO-enabled applications, and from plugins.
+The SED Builder handles SED I/O. As described in Section~\ref{sec:overview}, Iris accepts data from a variety of sources, and is lenient on the data format. Figure~\ref{fig:data_sources} illustrates that Iris imports data from built-in data archive portals as well as from outside resources like local files, URLs, other VO-enabled applications, and from plugins.
 
 Iris natively supports IVOA-compliant FITS and VOTable formats (described in \cite{2012arXiv1204.3055M}). Files in these formats will automatically be added to SED Builder and the visualizer. The Builder can convert ASCII Tables, CSV, Tab-Seprated-Tables, IPAC tables [REFERENCE], SAMP messages, and non-IVOA-compliant VOTable and FITS files into the native format with user input. We provide two file converted forms: (1) the Import Setup Frame, which handles spectrum-style files (i.e. those with columns for the spectral, flux and flux uncertainties), and (2) the Photometry Catalog Importer, which handles photometry catalogs (i.e. files where each column represents a passband and the values represent the fluxes). Users can save their setup options from the Import Setup Frame to a configuration file and automatically read-in files of the same format to Iris via the command line.
 
 % 
 
-The SED Builder also has a hook for adding custom file filters. A user can develop a custom file reader that would convert a non-standard file, e.g. a SExtractor-type file, to an IVOA-compliant format. This kind of plugin would allow the user to automatically read-in non-standard files to Iris, without needing to use the importer tools (See Section \ref{sec:plugins} for details on developing Iris plugins).
+The SED Builder also has a hook for adding custom file filters. A user can develop a custom file reader that would convert a non-standard file, e.g. a SExtractor-type file, to an IVOA-compliant format. This kind of plugin would allow the user to automatically read-in non-standard files to Iris, without needing to use the importer tools (See Section~\ref{sec:plugins} for details on developing Iris plugins).
 
 \subsubsection{Saving data}
 Users can save entire SEDs or sets of Segments to IVOA-compliant VOTable or FITS files. By default, Iris will save the data and all of its associated metadata in VOTable format. This means if the SED is composed of more than one Segment, the individual Segments will remain when we re-read the data back into Iris. However, these files may be difficult to read into other tools. Therefore, we provide a simpler output format that saves the most important information: the spectral, flux and flux uncertainties, along with data point reference IDs and a column of the original flux (useful if an aperture correction was applied to any point). All Segment distinctions dissappear, along with the metadata, making the data more compliable for use in external applications. The user supplies the desired X and Y units for the new SED from the drop-down menus, converting all data to the same units.
 
 \subsection{Science Tools}
-We provide built-in science tools that perform calculations commonly used in SED analysis: redshifting, interpolation, and integration. The data is setup on the Java-side of Iris, but the actual calculations are done in Sherpa. For this, we implement the \textbf{sherpa-samp interface}, which links the Java implementation of SED Builder to the Python implementation of the SED science tools in Sherpa through SAMP interfaces (for more details on sherpa-samp, see Section \ref{subsec:sherpa}).
+We provide built-in science tools that perform calculations commonly used in SED analysis: redshifting, interpolation, and integration. The data is setup on the Java-side of Iris, but the actual calculations are done in Sherpa. For this, we implement the \textbf{sherpa-samp interface}, which links the Java implementation of SED Builder to the Python implementation of the SED science tools in Sherpa through SAMP interfaces (for more details on sherpa-samp, see Section~\ref{subsec:sherpa}).
 
 The open SEDs are listed in the Science Tools frame. The user selects the SED they wish to analyze, and inputs the required information for a calculation.
 
 \subsubsection{Redshifting}
-Redshifting an SED in Iris refers to cosmological redshift. Because the apparent magnitude of a source is dimmer at high redshifts than low redshift, we correct the flux so that the area under the shifted SED equals that of the un-shifted SED [REFERENCES, astLib]:
+Redshifting an SED in Iris refers to cosmological redshift. Because the apparent magnitude of a source is dimmer at high redshifts than low redshift, we correct the flux so that the area under the shifted SED equals that of the un-shifted SED:
 
+\begin{equation} \label{eq:redshift}
 \[f_{z_{final}}(\lambda) = f_{z_{initial}}(\lambda) \frac{\sum_{k=1}^N (f_{z_{initial}}(\lambda_{k+1})+f_{z_{initial}}(\lambda_{k}))}{\sum_{k=1}^N (f_{z_{final}}(\lambda_{k+1})+f_{z_{final}}(\lambda_{k}))}\]
+\end{equation}
 
-In sherpa-samp, we extend astLib's astSED class for its implementation of redshifting SEDs [REFERENCE]. 
+In sherpa-samp, we extend astLib's\footnote{http://astlib.sourceforge.net/} \textit{astSED} class which implements Equation~\ref{eq:redshift}. 
 
 From the user's perspective, he/she supplies the initial and final redshift of the SED and clicks "Create New SED." The returned SED has the same name of the unshifted SED, appended with _redshift. For example, if the final redshift is \(z=0.0\) the shifted SED is named "Sed\_0.0."
 
