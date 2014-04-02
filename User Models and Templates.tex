@@ -10,7 +10,7 @@ Sherpa, Iris' fitting engine, provides \textbf{command line functions} for users
 \subsection{Custom Python Functions}
 Iris accepts custom models written as Python functions saved in *.py files. Any number of functions can be written in the file. The function must take two parameters: the first is an iterable of the model parameters, the second is a placeholder for the spectral axis, $x$. One caveat is that the spectral data $x$ must be in terms of Angstroms. For example, a model file for a modified black body
 \(B_{\nu}(T) \left(\frac{\nu}{\nu_{0}}\right)^{\beta}\)
-could be defined as in \textbf{code snipet} \ref{sec:user_model_example}. User models can be arbitrarily combined with other custom or preset model functions.
+could be defined as in \textbf{code snipet} \ref{lst:user_model_example}. User models can be arbitrarily combined with other custom or preset model functions.
 
 \subsection{Table Models}
 A table model is a single template, having just the $x$ and $y$ coordiantes. Iris accepts two-columned ASCII files as table models, following the convention where the first column is the spectral values (in Angstroms) and the second contains the fluxes (in $\mathrm{photons}/\mathrm{s}/\mathrm{cm}^{2}/\AA$). The fit returns the normalization constant (or amplitude) of the model.
