@@ -10,6 +10,7 @@ figures/Screen Shot 2014-03-25 at 1.35.28 PM1/Screen Shot 2014-03-25 at 1.35.28 
 User Models and Templates.tex
 Architecture.tex
 Components.tex
+figures/iris_data_sources4/iris_data_sources4.png
 figures/iris_data_sources2/iris_data_sources2.png
 figures/sed_builder/sed_builder.png
 Plugins.tex
