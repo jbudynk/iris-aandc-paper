@@ -13,7 +13,7 @@ Iris accepts custom models written as Python functions saved in *.py files. Any 
 could be defined as in \textbf{code snipet} \ref{sec:user_model_example}. User models can be arbitrarily combined with other custom or preset model functions.
 
 \subsection{Table Models}
-A table model is a single template, having just the x and y coordiantes. Iris accepts two-columned ASCII files as table models, following the convention where the first column is the spectral values (in Angstroms) and the second contains the fluxes (in $\mathrm{photons}/\mathrm{s}/\mathrm{cm}^{2}/\AA$). The fit returns the normalization constant (or amplitude) of the model.
+A table model is a single template, having just the x and y coordiantes. Iris accepts two-columned ASCII files as table models, following the convention where the first column is the spectral values (in Angstroms) and the second contains the fluxes (in $\mathrm{photons}/\mathrm{s}/\mathrm{cm}^{2}/\AA $). The fit returns the normalization constant (or amplitude) of the model.
 
 \subsection{Template Libraries}
 The template model is essentially a list of table models with parameters other than the amplitude. Like the \texttt{load\_template\_model} function in Sherpa, the user must create an index file which lists the parameter values of the templates and the full path to the template those parameter values describe (see Figure \ref{fig:user_models} for an example). Sherpa uses a grid-search method to find the best-fit template.
