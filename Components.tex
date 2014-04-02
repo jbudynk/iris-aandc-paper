@@ -5,6 +5,10 @@
 \subsubsection{Data management: SEDs and Segments}
 Users manage SEDs through the SED Builder (Figure~\ref{fig:sed_builder}). From the Builder, users can add, edit, remove, and save SEDs. Users can also beam data to other VO-enabled applications through SAMP messages from the Builder. Any number of SEDs can be analyzed in an Iris session. Each SED must have a unique identifier; by default, the first SED is named "Sed;" the second SED would be "Sed.1," the third "Sed.2," and so on. The user switches between SEDs by clicking on a SED name in the Open SEDs field; the visualizer will automatically update to the selected SED. 
 
+\begin{figure}[t] \label{fig:data_sources}
+\textit{\textbf{ Available Data Sources}} Users may import data from the built-in data archive services: NED SED Service and the Italian Space Agency Science Data Center (ASDC). Data may also be uploaded from a local file, a URL, a SAMP message from a VO-enabled program (like TOPCAT, CDS Photometry Viewer, or the Data Discovery Tool), or through a custom file filter plugin at run time.
+\end{figure}
+
 SEDs are built and managed in Segments, which are groups of (spectral, flux) coordinates. For example, a spectrum is considered a Segment. The results of a NED SED Service query are also handled as Segment. Photometric points loaded from file, SAMP or from ASDC are managed as individual Segments (i.e. each photometric point is its own Segment). Clicking on a SED in the Open SEDs field will show all the Segments that populate that particular SED. SED Builder shows where the Segment data came from, the recorded RA and Dec of the Segment, and the number of points in the Segment. Segments can be handled separately from other Segments in the SED; users can add, edit, remove, and save selected Segments separately from the SED in which it lives. 
 
 \subsubsection{Importing data}
