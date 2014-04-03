@@ -6,7 +6,6 @@ figures/IrisStack/IrisStack.png
 Stack.tex
 Built in functionality.tex
 figures/load_data1/load_data1.png
-figures/all-models-plot-only/all-models-plot-only.png
 User Models and Templates.tex
 Architecture.tex
 Components.tex
