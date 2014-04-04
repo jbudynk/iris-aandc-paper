@@ -29,7 +29,7 @@ Redshifting an SED in Iris refers to cosmological redshift. Because the apparent
 f_{z_{final}}(\lambda) = f_{z_{initial}}(\lambda) \frac{\sum_{k=1}^N (f_{z_{initial}}(\lambda_{k+1})+f_{z_{initial}}(\lambda_{k}))}{\sum_{k=1}^N (f_{z_{final}}(\lambda_{k+1})+f_{z_{final}}(\lambda_{k}))}
 \end{equation}
 
-In sherpa-samp, we extend astLib's\footnote{http://astlib.sourceforge.net/} \textit{astSED} class which implements Equation~\ref{eq:redshift}. 
+In sherpa-samp, we extend the astLib\footnote{http://astlib.sourceforge.net/} \textit{astSED} class which implements Equation~\ref{eq:redshift}. 
 
 From the user's perspective, he/she supplies the initial and final redshift of the SED and clicks "Create New SED." The returned SED has the same name of the unshifted SED, appended with _redshift. For example, if the final redshift is \(z=0.0\) the shifted SED is named "Sed\_0.0."
 
