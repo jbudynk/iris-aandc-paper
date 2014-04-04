@@ -5,8 +5,8 @@ Iris Stack.tex
 figures/IrisStack/IrisStack.png
 Stack.tex
 Built in functionality.tex
-figures/fitting-2/fitting-2.png
 figures/built-in-visuals-loading1/built-in-visuals-loading1.png
+figures/fitting-2/fitting-2.png
 figures/all-models-plot-only2/all-models-plot-only2.png
 User Models and Templates.tex
 Architecture.tex
