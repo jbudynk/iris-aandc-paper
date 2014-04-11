@@ -14,6 +14,7 @@ Architecture.tex
 Components.tex
 figures/iris_data_sources2/iris_data_sources2.png
 figures/sed_builder/sed_builder.png
+figures/IrisDiagrams.1/IrisDiagrams.1.png
 Plugins.tex
 conclusion.tex
 Code snippets.tex
