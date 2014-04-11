@@ -9,6 +9,7 @@ figures/built-in-visuals-loading1/built-in-visuals-loading1.png
 figures/fitting-1/fitting-1.png
 figures/all-models-plot-only2/all-models-plot-only2.png
 User Models and Templates.tex
+figures/IrisDiagrams.002/IrisDiagrams.002.png
 Architecture.tex
 Components.tex
 figures/iris_data_sources2/iris_data_sources2.png
