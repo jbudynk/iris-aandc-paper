@@ -31,7 +31,7 @@ f_{z_{final}}(\lambda) = f_{z_{initial}}(\lambda) \frac{\sum_{k=1}^N (f_{z_{init
 
 In sherpa-samp, we extend the astLib\footnote{http://astlib.sourceforge.net/} \textit{astSED} class which implements Equation~\ref{eq:redshift}. 
 
-From the user's perspective, he/she supplies the initial and final redshift of the SED and clicks "Create New SED." The returned SED has the same name of the unshifted SED, appended with _redshift. For example, if the final redshift is \(z=0.0\) the shifted SED is named "Sed\_0.0."
+From the user's perspective, he/she supplies the initial and final redshift of the SED and clicks "Create New SED." The returned SED has the same name of the unshifted SED, appended with ``\_redshift.'' For example, if the final redshift is \(z=0.0\) the shifted SED is named "Sed\_0.0."
 
 \subsubsection{Interpolation}
 Iris provides 1D interpolation along the spectral axis. There are three interpolation options: linear, linear spline, and nearest neighbor. Interpolation may be carried out on a linear or logarithmic scale. Users may choose the number of bins, the spectral range overwhich to interpolate, and may choose to smooth the resultant SED via a boxcar method.
