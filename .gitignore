@@ -1,0 +1,12 @@
+*~
+*.log
+*.aux
+*.bbl
+*.blg
+*.dvi
+*.out
+*.spl
+aciris.pdf
+aciris.ps
+aciris.synctex.gz
+
