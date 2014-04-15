@@ -211,18 +211,19 @@ Iris is meant to be an open box SED analysis tool. If Iris is missing certain fu
 \section{The Iris Stack}
 \label{sec:stack}
 
-\begin{figure}[h!]
-\begin{center}
-\includegraphics[width=0.7\columnwidth]{figures/IrisStack/IrisStack.png}
-\caption{\textbf{\label{fig:stack} The Iris Stack} Iris employs an extensible, loosely coupled architecture that allows developers to create components using a common set of abstraction layers on top of web services, desktop applications using SAMP, and Virtual Observatory standards and protocols.}
-\end{center}
-\end{figure}
-
 The Iris stack (Figure \ref{fig:stack}) shows how one can put the cold and technical IVOA specifications to work for scientists through higher and higher layers of abstraction: the technical details of the Virtual Observatory standards and protocols lie in the bottommost layers, the internals of the Iris building blocks lie in the middle layers, while the topmost layers express high-level user-oriented functionalities.
 
 A reader without any knowledge of programming, let alone of the VO specifications, should understand the labels used in the topmost layers of the diagram and their components (e.g. the Fitting Tool, Redshift), as long as they have some knowledge of astronomical SEDs.
 
 On the other hand, a developer would find words like framework, service, and manager quite familiar, while it takes a VO-savvy person to decode the acronyms at the bottom of the diagram.
+
+\begin{figure}
+\label{fig:stack}
+\begin{center}
+\includegraphics[width=0.7\columnwidth]{figures/IrisStack.png}
+\caption{\textbf{The Iris Stack} Iris employs an extensible, loosely coupled architecture that allows developers to create components using a common set of abstraction layers on top of web services, desktop applications using SAMP, and Virtual Observatory standards and protocols.}
+\end{center}
+\end{figure}
 
 This fact reflects the different entry points for the different audiences of the application: core developers work at all levels of the stack, but need to lay out the foundations on top of the standard specifications; third party developers use the middle-level abstractions offered by the Iris framework, while end users can limit their interaction to familiar astronomical concepts through the application's user interface. End users can also plug in their modeling code and upload templates libraries to Iris.
 
@@ -251,6 +252,13 @@ As stated in Section \ref{sec:overview}, Iris can read data from a variety of so
 
 Wanting to analyze the entire SED of the blazer, the user queries the NED database for photometric data through the NED SED Service\footnote{http://vo.ned.ipac.caltech.edu/SED\_Service/} portal in Iris. The data is automatically added to the SED Builder and the display. The user then opens the ASDC\footnote{http://www.asdc.asi.it/} query tool, which provides more control over the data being added to the plot; she types the target name, chooses observation date ranges, selects optical/UV data from SWIFT and GALEX (see Figure~\ref{fig:load_data}), and imports the data to the SED.
 
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.7\columnwidth]{figures/built-in-visuals-loading1.png}
+\caption{\textbf{\textit{\label{fig:load_data}} } Building the SED of blazar PKS 1127-14 in Iris. \textit{Top-left:} Data from the NED SED Service, a local file and from a SAMP message are managed in the SED Builder. \textit{Bottom-left:} The various data Segments plotted in $\mathrm{\nu F \left( \nu \right)}$ in the SED Viewier. Squares show data with flux uncertainties, whereas the pink diamonds denote points without associated uncertainties. Each Segment in the SED Bduilder is plotted in a different color. Black squares are the data taken from NED; the pink sqaures in the radio are the data from PLANCK; and the red, yellow, blue, and green sqaures in the near-IR are the for WISE bands. \textit{Right:} An ASDC Catalog Query form for PKS 1127-14. The user searches for data between specified dates and available instruments (Swift and GALEX in this case). The data may be added the open SED \texttt{PKS1127-14}.}
+\end{center}
+\end{figure}
+
 \subsection{Inspecting the SED}
 
 With all of the data uploaded, the user may switch the spectral and flux units; Iris takes care of all unit conversions once the data is read in. Before starting a fitting session, the she wants to remove from the SED data without flux uncertainty measurements. The user opens the Metadata Browser from the plotting display (SED Viewer), switches to the Data tab, and types a Python-expression into the Boolean filter to highlight the points whose error measuments are above 0 (i.e. points that have uncertainty measurements). With the desired data points hilgihted in the window, the user clicks ``Create new SED;'' this adds another SED to the SED Builder, which is managed separately from our original dataset.
@@ -270,23 +278,16 @@ In the Model Expression field, the components are combined in arbitrary ways. Ea
 
 The user saves the fit results to a text file, showing the fit statistics, model used, and the best-fit parameter values. She can also save an XML-style file of the model that can be re-read into Iris and fit to other SED data.
 
-\begin{figure}[h!]
+\begin{figure}
 \begin{center}
-\includegraphics[width=0.7\columnwidth]{figures/built-in-visuals-loading1/built-in-visuals-loading1.png}
-\caption{\textbf{\textit{\label{fig:load_data}} } Building the SED of blazar PKS 1127-14 in Iris. \textit{Top-left:} Data from the NED SED Service, a local file and from a SAMP message are managed in the SED Builder. \textit{Bottom-left:} The various data Segments plotted in $\mathrm{\nu F \left( \nu \right)}$ in the SED Viewier. Squares show data with flux uncertainties, whereas the pink diamonds denote points without associated uncertainties. Each Segment in the SED Bduilder is plotted in a different color. Black squares are the data taken from NED; the pink sqaures in the radio are the data from PLANCK; and the red, yellow, blue, and green sqaures in the near-IR are the for WISE bands. \textit{Right:} An ASDC Catalog Query form for PKS 1127-14. The user searches for data between specified dates and available instruments (Swift and GALEX in this case). The data may be added the open SED \texttt{PKS1127-14}.}
-\end{center}
-\end{figure}
-
-\begin{figure}[h!]
-\begin{center}
-\includegraphics[width=0.7\columnwidth]{figures/fitting-1/fitting-1.png}
+\includegraphics[width=0.7\columnwidth]{figures/fitting-1.png}
 \caption{\textbf{\label{fig:fitting1} Fitting Visualization} Visualization of a linear combination of log-parabolas and blackbody distributions for FRSQ blazar PKS 1127-145, fit with Neldermead optimization and least-square statistics. \textit{Left:} The best fit linear combination overlaid on the SED data as a red curve. The blue line shows the spectral range over which the data was fit. Below the main plot are residuals of the fitted curve, in dex units. \textit{Top-right:} The fitting options and results. Here, the user chooses between Neldermead, Levenberg-Markwardt, and Monte-Carlo optimization and various least square and $\mathrm{\chi}^{2}$ statisitcs. The fit statistics are reported here after the fit has been performed. \textit{Bottom-right:} The Fitting Tool window. The model components used in the fit and their fitted parameter values are listed in the Components field. Below that is the Model Expression, in which the components are linearly combined. Note that components are referenced by the \textit{c\#} suffix of the component name.}
 \end{center}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}
 \begin{center}
-\includegraphics[width=0.7\columnwidth]{figures/all-models-plot-only2/all-models-plot-only2.png}
+\includegraphics[width=0.7\columnwidth]{figures/all-models-plot-only2.png}
 \caption{\textbf{\label{fig:fitting} Fitting Visualization} Visualization of a linear combination of log-parabolas and blackbody distributions for FRSQ blazar PKS 1127-145, fit with Neldermead optimization and least-square statistics. \textit{Top:} The best fit linear combination is overlaid on the SED data as a red curve. The blue line shows the spectral range over which the data was fit. \textit{Bottom:} The residuals of the fitted curve, in dex units.}
 \end{center}
 \end{figure}
@@ -311,15 +312,15 @@ A table model is a single template, having just the $x$ and $y$ coordiantes. Iri
 \subsection{Template Libraries}
 The template model is essentially a list of table models with parameters other than the amplitude. Like the \texttt{load\_template\_model} function in Sherpa, the user must create an index file which lists the parameter values of the templates and the full path to the template those parameter values describe (see Listing \ref{lst:templateconfig} for an example). Sherpa uses a grid-search method to find the best-fit template.
 
-\begin{figure}[h!]
-\begin{center}
-\includegraphics[width=0.7\columnwidth]{figures/IrisDiagrams.002/IrisDiagrams.002.png}
-\caption{Inversion of Control}
-\end{center}
-\end{figure}
-
 \section{A loosely coupled, event-driven, extensible architecture}
 \label{sec:architecture}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.7\columnwidth]{figures/IrisDiagrams.1.png}
+\caption{Replace this text with your caption}
+\end{center}
+\end{figure}
 
 As mentioned before, Iris was designed to put together existing and newly developed software components in a rich, extensible application. Also, Iris was developed by a distributed team.
 
@@ -340,6 +341,14 @@ In summary, Components (Views) can be completely disentangled from each other an
 Components are thus agents that cohoperate by attaching themselves to a common \emph{bus} where the SEDManager provides the memory, and Events guarantee the flow of information.
 
 \subsection{Inversion of Control}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.7\columnwidth]{figures/IrisDiagrams.002.png}
+\caption{Inversion of Control}
+\end{center}
+\end{figure}
+
 We achieve loose coupling by an extensive use of Java Interfaces: components, events, and event listeners, for example, are all defined by interfaces whose implementation can, to some extent, be freely interchangeable.
 
 Moreover, Inversion of Control is employed to decouple the implementation of components from the run time context: methods in the Interface are callbacks, and some of these callbacks get Interface-typed arguments which provide them context instances during the application execution. For this reason, this pattern is also sometimes referred to as \emph{Dependency Injection}.
@@ -354,12 +363,28 @@ The advantages of this architecture are both functional and non functional: it h
 \label{sec:components}
 
 \subsection{SED Builder: SED I/O and Management}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.7\columnwidth]{figures/sed_builder.png}
+\caption{\textit{\textbf{\label{fig:sed_builder} SED Builder}} An example view of the SED Builder. On the right side of the window is a list of SEDs open for analysis; in this case, \textit{FilterSed} is selected. The Segments or components that constitute \textit{FilterSed} are shown in the Segments section. Segments may be managed separately. Highlighed SEDs or Segments may be edited, removed, saved or broadcast to an external SAMP-enabled application. New Segments and SEDs are added to the Iris session through the SED Builder. }
+\end{center}
+\end{figure}
+
 \subsubsection{Data management: SEDs and Segments}
 Users manage SEDs through the SED Builder (Figure~\ref{fig:sed_builder}). From the Builder, users can add, edit, remove, and save SEDs. Users can also beam data to other VO-enabled applications through SAMP messages from the Builder. Any number of SEDs can be analyzed in an Iris session. Each SED must have a unique identifier; by default, the first SED is named "Sed;" the second SED would be "Sed.1," the third "Sed.2," and so on. The user switches between SEDs by clicking on a SED name in the Open SEDs field; the visualizer will automatically update to the selected SED. 
 
 SEDs are built and managed in Segments, which are groups of (spectral, flux) coordinates. For example, a spectrum is considered a Segment. The results of a NED SED Service query are also handled as Segment. Photometric points loaded from file, SAMP or from ASDC are managed as individual Segments (i.e. each photometric point is its own Segment). Clicking on a SED in the Open SEDs field will show all the Segments that populate that particular SED. SED Builder shows where the Segment data came from, the recorded RA and Dec of the Segment, and the number of points in the Segment. Segments can be handled separately from other Segments in the SED; users can add, edit, remove, and save selected Segments separately from the SED in which it lives. 
 
 \subsubsection{Importing data}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.7\columnwidth]{figures/iris_data_sources2.png}
+\caption{\textit{\textbf{\label{fig:data_sources} Available Data Sources}}\textit{}\textbf{}\textit{} Users may import data from the built-in data archive services: NED SED Service and the Italian Space Agency Science Data Center (ASDC). Data may also be uploaded from a local file, a URL, a SAMP message from a VO-enabled program (like TOPCAT, CDS Photometry Viewer, or the Data Discovery Tool), or through a custom file filter plugin at run time.}
+\end{center}
+\end{figure}
+
 The SED Builder handles SED I/O. As described in Section~\ref{sec:overview}, Iris accepts data from a variety of sources, and is lenient on the data format. Figure~\ref{fig:data_sources} illustrates that Iris imports data from built-in data archive portals as well as from outside resources like local files, URLs, other VO-enabled applications, and from plugins.
 
 Iris natively supports IVOA-compliant FITS and VOTable formats (described in \cite{2012arXiv1204.3055M}). Files in these formats will automatically be added to SED Builder and the visualizer. The Builder can convert ASCII Tables, CSV, Tab-Seprated-Tables, IPAC tables\footnote{http://irsa.ipac.caltech.edu/applications/DDGEN/Doc/ipac\_tbl.html}, SAMP messages, and non-IVOA-compliant VOTable and FITS files into the native format with user input. We provide two file converted forms: (1) the Import Setup Frame, which handles spectrum-style files (i.e. those with columns for the spectral, flux and flux uncertainties), and (2) the Photometry Catalog Importer, which handles photometry catalogs (i.e. files where each column represents a passband and the values represent the fluxes). Users can save their setup options from the Import Setup Frame to a configuration file and automatically read-in files of the same format to Iris via the command line.
@@ -395,31 +420,6 @@ Both methods return the effective wavelength of the passband in Angstroms and th
 
 \subsection{Sherpa}
 \label{subsec:sherpa}
-
-
-
-
-
-\begin{figure}[h!]
-\begin{center}
-\includegraphics[width=0.7\columnwidth]{figures/iris_data_sources2/iris_data_sources2.png}
-\caption{\textit{\textbf{\label{fig:data_sources} Available Data Sources}}\textit{}\textbf{}\textit{} Users may import data from the built-in data archive services: NED SED Service and the Italian Space Agency Science Data Center (ASDC). Data may also be uploaded from a local file, a URL, a SAMP message from a VO-enabled program (like TOPCAT, CDS Photometry Viewer, or the Data Discovery Tool), or through a custom file filter plugin at run time.}
-\end{center}
-\end{figure}
-
-\begin{figure}[h!]
-\begin{center}
-\includegraphics[width=0.7\columnwidth]{figures/sed_builder/sed_builder.png}
-\caption{\textit{\textbf{\label{fig:sed_builder} SED Builder}} An example view of the SED Builder. On the right side of the window is a list of SEDs open for analysis; in this case, \textit{FilterSed} is selected. The Segments or components that constitute \textit{FilterSed} are shown in the Segments section. Segments may be managed separately. Highlighed SEDs or Segments may be edited, removed, saved or broadcast to an external SAMP-enabled application. New Segments and SEDs are added to the Iris session through the SED Builder. }
-\end{center}
-\end{figure}
-
-\begin{figure}[h!]
-\begin{center}
-\includegraphics[width=0.7\columnwidth]{figures/IrisDiagrams.1/IrisDiagrams.1.png}
-\caption{Replace this text with your caption}
-\end{center}
-\end{figure}
 
 \section{Plug-ins: the Software Development Kit}
 \label{sec:plugins}
