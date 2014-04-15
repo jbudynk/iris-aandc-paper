@@ -304,6 +304,7 @@ Wanting to analyze the entire SED of the blazer, the user queries the NED databa
 \end{figure}
 
 \subsection{Inspecting the SED}
+\label{subsec:inspect-sed}
 
 With all of the data uploaded, the user may switch the spectral and flux units; Iris takes care of all unit conversions once the data is read in. Before starting a fitting session, the she wants to remove from the SED data without flux uncertainty measurements. The user opens the Metadata Browser from the plotting display (SED Viewer), switches to the Data tab, and types a Python-expression into the Boolean filter to highlight the points whose error measuments are above 0 (i.e. points that have uncertainty measurements). With the desired data points hilgihted in the window, the user clicks ``Create new SED;'' this adds another SED to the SED Builder, which is managed separately from our original dataset.
 
@@ -439,7 +440,7 @@ The SED Builder also has a hook for adding custom file filters. A user can devel
 Users can save entire SEDs or sets of Segments to IVOA-compliant VOTable or FITS files. By default, Iris will save the data and all of its associated metadata in VOTable format. This means if the SED is composed of more than one Segment, the individual Segments will remain when we re-read the data back into Iris. These files may be difficult to read into other tools; we provide a simpler output format that saves the most important information: the spectral, flux and flux uncertainties, along with data point reference IDs and a column of the original flux (useful if an aperture correction was applied to any point). The spectral and flux values are converted to the same units as specified by the user (e.g. $\mathrm{Hz}$ and $\mathrm{Jy-Hz}$); all Segment distinctions dissappear, along with the metadata, making the data more compliable for use in external applications.
 
 \subsection{NED SED Service}
-\label{ned}
+\label{subsec:ned}
 
 As discussed in previous sections, Iris is packaged with a portal to the NED SED Service which, given a target name, retrieves all photometric data in NED associated to that target name and stores it as a Segment in the SED Builder.
 
@@ -458,8 +459,21 @@ All queries are HTTP GET requests and all responses are HTTP RESPONSEs, and conf
 Additional information about NED is at ned.ipac.caltech.edu, and the VO-SED service at
 vo.ned.ipac.caltech.edu\footnote{This work has made use of the NASA/IPAC Extragalactic Database (NED) which is operated by the Jet Propulsion Laboratory, California Institute of Technology, under contract with the National Aeronautics and Space Administration.}. 
 
+\subsection{SED Viewer}
+\label{subsec:specview}
+% insert picture of Viewer with metadata browser open.
+The Iris Viewer component is responsible for creating, managing, and providing user interactive feedback to spectral plots in Iris. 
+
+The Viewer also provides most of the low-level graphics user interface (GUI) components used by the Fitting Tool component. The reason for this is that most, if not all of the GUI code used by both the Viewer and the Fitting Tool, were developed on top of the Specview code base. 
+
+Specview was developed in the late 90's, initially as an experiment to evaluate Java graphics capabilities in the context of interactive spectral plotting. Over the years Specview grew from a simple visualizer dedicated mostly to plot spectral data from Hubble Space Telescope (HST) instruments, to a more capable tool with not only sophisticated visualization, but also data analysis capabilities~\citep{2002ASPC..281..120B}. The ability to ingest spectral data from a variety of sources was also gradually incorporated into the tool, culminating with a Virtual Observatory interface capable of accessing services that comply to the SSAP (Simple Spectrum Access Protocol) standard.
+
+Specview however kept its emphasis on spectral data that is very different from the broad-band SED concept to which Iris is dedicated. Being initially conceived as a tool to support HST data, its design, and subsequent code implementation, were driven by the needs and requirements imposed by high-dispersion, relatively narrow-band spectra in the near-IR / optical / near-UV range. Thus some re-work was necessary to make its internal data structures and algorithms comply with the data types associated with SEDs. Even so, a significant part of the code could be kept as is, thus realizing the savings associated with code re-use. This is particularly true in the case of the low-level graphics engine~\citep{2000ASPC..216...79B}. Most of the work in adapting Specview's code base to Iris happened on two fronts: (i) adding code that implements the Iris Component interface, and (ii) augmenting the capabilities of the Data Browser to allow interactive access to SED metadata. Some work was also done in fine-tuning plotting capabilities to the particular needs of SED data.
+
+The initial view the Viewer creates of a just-ingested SED is via a scatter plot depicting wavelengths (frequency and energy units are also supported) and flux density (or flux) for each data point that comprises the SED. The plot can be configured in a variety of ways, by changing the scaling and units. The data initially plotted can then be further examined in more detail, using tabular and tree depictions. In particular, the metadata associated with each data point, as well as the global metadata associated with the entire SED, can be examined in detail (i.e. the Metadata Browser). Data points can be selectively removed from the SED using filters sensitive to both data and metadata values, as was shown in~\ref{subsec:inspect-sed}. These filters are built by a user-defined Boolean expression that can be created and interacted with in the GUI itself. The expression uses Python-like syntax, and Python operators are available throughout. That way, SEDs can be modified after being read by the SED Builder, and before being further processed or measured.
+
 \subsection{Science Tools}
-We provide built-in science tools that perform calculations commonly used in SED analysis: redshifting, interpolation, and integration. The data is setup on the Java-side of Iris, but the actual calculations are done in Sherpa. For this, we implement the \textbf{sherpa-samp interface}, which links the Java implementation of SED Builder to the Python implementation of the SED science tools in Sherpa through SAMP interfaces (for more details on sherpa-samp, see Section~\ref{subsec:sherpa}).
+We provide built-in science tools that perform calculations commonly used in SED analysis: redshifting, interpolation, and integration. The data is setup on the Java-side of Iris, but the actual calculations are done in Sherpa. For this, we implement the sherpa-samp interface (described in~\ref{subsec:sherpa}), which links the Java implementation of SED Builder to the Python implementation of the SED science tools in Sherpa through SAMP interfaces (for more details on sherpa-samp, see Section~\ref{subsec:sherpa}).
 
 The open SEDs are listed in the Science Tools frame. The user selects the SED they wish to analyze, and inputs the required information for a calculation.
 
@@ -467,10 +481,10 @@ The open SEDs are listed in the Science Tools frame. The user selects the SED th
 Redshifting an SED in Iris refers to cosmological redshift. Because the apparent magnitude of a source is dimmer at high redshifts than low redshift, we correct the flux so that the area under the shifted SED equals that of the un-shifted SED:
 
 \begin{equation} \label{eq:redshift}
-f_{z_{final}}(\lambda) = f_{z_{initial}}(\lambda) \frac{\sum_{k=1}^N (f_{z_{initial}}(\lambda_{k+1})+f_{z_{initial}}(\lambda_{k}))}{\sum_{k=1}^N (f_{z_{final}}(\lambda_{k+1})+f_{z_{final}}(\lambda_{k}))}
+f_{z_{f}}(\lambda) = f_{z_{i}}(\lambda) \frac{\sum_{k=1}^N (f_{z_{i}}(\lambda_{k+1})+f_{z_{i}}(\lambda_{k}))}{\sum_{k=1}^N (f_{z_{f}}(\lambda_{k+1})+f_{z_{f}}(\lambda_{k}))},
 \end{equation}
 
-In sherpa-samp, we extend the astLib\footnote{http://astlib.sourceforge.net/} \textit{astSED} class which implements Equation~\ref{eq:redshift}. 
+where $f_i$ is the observed flux at the initial (observed) redshift $z_i$, and $f_f$ is the flux at the final (target) redshift $z_f$. In sherpa-samp, we extend the astLib\footnote{http://astlib.sourceforge.net/} \textit{astSED} class which implements Equation~\ref{eq:redshift}. 
 
 From the user's perspective, he/she supplies the initial and final redshift of the SED and clicks "Create New SED." The returned SED has the same name of the unshifted SED, appended with ``\_redshift.'' For example, if the final redshift is \(z=0.0\) the shifted SED is named "Sed\_0.0."
 
@@ -479,7 +493,7 @@ Iris provides 1D interpolation along the spectral axis. There are three interpol
 
 \subsubsection{Integration}
 The Integration tool was developed to make estimating integrated fluxes of a SED quick and painless. Iris provides two methods of integration: (1) through a user-defined passband, and (2) through a photometric filter. The first option lets the user specify the spectral range in wavelength, frequency, or energy units (Angstroms, Hz, and keV, respectively) to integrate under. The second estimates the integrated flux measured through any of the photometric filters provided by the Spanish Virtual Observatory's (SVO's) Filter Profile Service\footnote{http://svo2.cab.inta-csic.es/theory/fps/index.php} \citep{2013arXiv1312.3249S}. We chose the SVO's Filter Profile Service because of its extensive collection (over 1000 filters at IR, optical and UV instruments) and of its VO-compliancy. The user chooses from a list of filters which can be searched by double-clicking on an instrument name, or by searching for a string in the browser. The user sees the min, max and effective wavelengths of the filters before applying the filter to the SED.
-How does it work in the background??
+%How does it work in the background??
 Both methods return the effective wavelength of the passband in Angstroms and the calculated flux in Janskys. The user can export the data to a new SED or save the results to a FITS or VOTable file.
 
 \subsection{Sherpa}
