@@ -48,3 +48,25 @@
 
 \usepackage{relsize}
 \newcommand\Cpp{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\relsize{-3}{\textbf{++}}}}
+
+
+\definecolor{midgray}{gray}{0.85}%
+
+\usepackage{listings}
+
+\lstdefinestyle{code}{%     basicstyle=\footnotesize\ttfamily,            frame=single,                    framesep=1pt,                    framerule=0.8pt,                 rulecolor=\color{midgray},       breaklines=true,                breakindent=0pt,
+     backgroundcolor=\color{midgray},
+     prebreak=\mbox{\textbackslash{}}             }
+
+\lstdefinestyle{python}{
+  style=code,  belowcaptionskip=1\baselineskip,  breaklines=true,  frame=single,
+  framesep=2pt,  xleftmargin=\parindent,  language=Python,  showstringspaces=false,  basicstyle=\footnotesize\ttfamily,  keywordstyle=\bfseries\color{green!40!black},  commentstyle=\itshape\color{gray},  identifierstyle=\color{black},  stringstyle=\color{gray},
+  rulecolor=\color{midgray}, }
+
+\lstdefinestyle{java}{
+  style=python,
+  language=Java
+}
+
+
+

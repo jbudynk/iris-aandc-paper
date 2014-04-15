@@ -24,7 +24,7 @@
 %% $Id: elsarticle-template-num.tex 4 2009-10-24 08:22:58Z rishi $
 %%
 %%
-\documentclass[2p]{elsarticle}
+\documentclass[5p]{elsarticle}
 
 %% Use the option review to obtain double line spacing
 %% \documentclass[preprint,review,12pt]{elsarticle}
@@ -89,9 +89,10 @@
 
 \newcommand{\truncateit}[1]{\truncate{0.8\textwidth}{#1}}
 \newcommand{\scititle}[1]{\title[\truncateit{#1}]{#1}}
-\usepackage{listings}
 \usepackage{comment}
 \newcommand{\unit}[1]{\ensuremath{\, \mathrm{#1}}}
+
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 
 \input{commands.tex}
 
@@ -264,7 +265,7 @@ On the other hand, a developer would find words like framework, service, and man
 \begin{figure}
 \label{fig:stack}
 \begin{center}
-\includegraphics[width=0.7\columnwidth]{figures/IrisStack.png}
+\includegraphics[width=\columnwidth]{figures/IrisStack.png}
 \caption{\textbf{The Iris Stack} Iris employs an extensible, loosely coupled architecture that allows developers to create components using a common set of abstraction layers on top of web services, desktop applications using SAMP, and Virtual Observatory standards and protocols.}
 \end{center}
 \end{figure}
@@ -298,7 +299,7 @@ Wanting to analyze the entire SED of the blazer, the user queries the NED databa
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.7\columnwidth]{figures/built-in-visuals-loading1.png}
+\includegraphics[width=\columnwidth]{figures/built-in-visuals-loading1.png}
 \caption{\textbf{\textit{\label{fig:load_data}} } Building the SED of blazar PKS 1127-14 in Iris. \textit{Top-left:} Data from the NED SED Service, a local file and from a SAMP message are managed in the SED Builder. \textit{Bottom-left:} The various data Segments plotted in $\mathrm{\nu F \left( \nu \right)}$ in the SED Viewier. Squares show data with flux uncertainties, whereas the pink diamonds denote points without associated uncertainties. Each Segment in the SED Bduilder is plotted in a different color. Black squares are the data taken from NED; the pink sqaures in the radio are the data from PLANCK; and the red, yellow, blue, and green sqaures in the near-IR are the for WISE bands. \textit{Right:} An ASDC Catalog Query form for PKS 1127-14. The user searches for data between specified dates and available instruments (Swift and GALEX in this case). The data may be added the open SED \texttt{PKS1127-14}.}
 \end{center}
 \end{figure}
@@ -324,14 +325,14 @@ The user saves the fit results to a text file, showing the fit statistics, model
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.7\columnwidth]{figures/fitting-1.png}
+\includegraphics[width=\columnwidth]{figures/fitting-1.png}
 \caption{\textbf{\label{fig:fitting1} Fitting Visualization} Visualization of a linear combination of log-parabolas and blackbody distributions for FRSQ blazar PKS 1127-145, fit with Neldermead optimization and least-square statistics. \textit{Left:} The best fit linear combination overlaid on the SED data as a red curve. The blue line shows the spectral range over which the data was fit. Below the main plot are residuals of the fitted curve, in dex units. \textit{Top-right:} The fitting options and results. Here, the user chooses between Neldermead, Levenberg-Markwardt, and Monte-Carlo optimization and various least square and $\mathrm{\chi}^{2}$ statisitcs. The fit statistics are reported here after the fit has been performed. \textit{Bottom-right:} The Fitting Tool window. The model components used in the fit and their fitted parameter values are listed in the Components field. Below that is the Model Expression, in which the components are linearly combined. Note that components are referenced by the \textit{c\#} suffix of the component name.}
 \end{center}
 \end{figure}
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.7\columnwidth]{figures/all-models-plot-only2.png}
+\includegraphics[width=\columnwidth]{figures/all-models-plot-only2.png}
 \caption{\textbf{\label{fig:fitting} Fitting Visualization} Visualization of a linear combination of log-parabolas and blackbody distributions for FRSQ blazar PKS 1127-145, fit with Neldermead optimization and least-square statistics. \textit{Top:} The best fit linear combination is overlaid on the SED data as a red curve. The blue line shows the spectral range over which the data was fit. \textit{Bottom:} The residuals of the fitted curve, in dex units.}
 \end{center}
 \end{figure}
@@ -350,18 +351,67 @@ Iris accepts custom models written as Python functions saved in *.py files. Any 
 \(B_{\nu}(T) \left(\nu/\nu_{0}\right)^{\beta}\)
 could be defined as in \textbf{Listing} \ref{lst:user_model_example}. User models can be arbitrarily combined with other custom or preset model functions.
 
+
+\begin{lstlisting}[style=python, caption=My Caption, label=lst:user_model_example]
+import numpy as np
+
+def modified_blackbody(p, x):
+    """
+    Modified blackbody of the form:
+    A * B_lambda(T) * (c / (lambda / lambda_0))**beta
+
+    Parameters
+    ----------
+    p : [lambda_0, A, temp, beta]
+
+        p[0] 'lambda_0' : refernce wavelength
+        p[1] 'A' : amplitude of model at reference wavelength
+        p[2] 'temp' : temperature of blackbody
+        p[3] 'beta' : dust emissivity index
+
+    x : array
+        spectral values, in Angstroms
+    """
+    
+    # blackbody function, in terms of wavelength (in Angstroms)
+    c1 = 1.438786e8  # in AA K
+    efactor = c1 / p[2]
+    numerator = p[1] * np.power(p[0], 5.0) * (np.exp(efactor / p[0]) - 1.0)
+    denominator = np.power(x, 5.0) * (np.exp(efactor / x) - 1.0)
+    B_lambda = numerator / denominator
+
+    # speed of light in Angstroms/second
+    c = 2.998e18
+
+    powerlaw = (c / (x/p[0]))**p[3]
+
+    return B_lambda * powerlaw
+\end{lstlisting}
+
+
 \subsection{Table Models}
 A table model is a single template, having just the $x$ and $y$ coordiantes. Iris accepts two-columned ASCII files as table models, following the convention where the first column is the spectral values (in Angstroms) and the second contains the fluxes (in $\mathrm{photons}/\mathrm{s}/\mathrm{cm}^{2}/{\AA}$). The fit returns the normalization constant (or amplitude) of the model.
 
 \subsection{Template Libraries}
 The template model is essentially a list of table models with parameters other than the amplitude. Like the \texttt{load\_template\_model} function in Sherpa, the user must create an index file which lists the parameter values of the templates and the full path to the template those parameter values describe (see Listing \ref{lst:templateconfig} for an example). Sherpa uses a grid-search method to find the best-fit template.
 
+
+\begin{lstlisting}[style=code, caption=Caption, label=lst:templateconfig]
+# INDEX REFER MODELFLAG FILENAME
+0.0     5000  1   /data/sed_temp_index-0.00.dat
+-0.10   5000  1   /data/sed_temp_index-0.10.dat
+-0.25   5000  1   /data/sed_temp_index-0.25.dat
+-0.35   5000  1   /data/sed_temp_index-0.35.dat
+-0.50   5000  1   /data/sed_temp_index-0.50.dat
+\end{lstlisting}
+
+
 \section{A loosely coupled, event-driven, extensible architecture}
 \label{sec:architecture}
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.7\columnwidth]{figures/IrisDiagrams.1.png}
+\includegraphics[width=\columnwidth]{figures/IrisDiagrams.1.png}
 \caption{Replace this text with your caption}
 \end{center}
 \end{figure}
@@ -388,7 +438,7 @@ Components are thus agents that cohoperate by attaching themselves to a common \
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.7\columnwidth]{figures/IrisDiagrams.002.png}
+\includegraphics[width=\columnwidth]{figures/IrisDiagrams.002.png}
 \caption{Inversion of Control}
 \end{center}
 \end{figure}
@@ -398,6 +448,66 @@ We achieve loose coupling by an extensive use of Java Interfaces: components, ev
 Moreover, Inversion of Control is employed to decouple the implementation of components from the run time context: methods in the Interface are callbacks, and some of these callbacks get Interface-typed arguments which provide them context instances during the application execution. For this reason, this pattern is also sometimes referred to as \emph{Dependency Injection}.
 
 Consider, for example, Iris Components: they are the main providers of Iris functionality, and they can correspond to buttons and menu items on the Iris desktop, loggers, data handlers, etc. They must implement the IrisComponent interface, which is listed in Listing \ref{lst:component}.
+
+
+\begin{lstlisting}[style=java, caption=My Caption, label=lst:component]
+package cfa.vo.iris;
+
+import java.util.List;
+import org.astrogrid.samp.client.MessageHandler;
+
+public interface IrisComponent {
+    /**
+     * This method is invoked to initialize the component. If the component has to launch windows, frames or
+     * background services, this is the right method to do so. Otherwise the component will be called only if a callback
+     * is invoked.
+     *
+     * @param app A reference to the running application
+     * @param workspace A reference to the application's workspace
+     */
+    void init(IrisApplication app, IWorkspace workspace);
+    /**
+     * Return the name of this component. This name might be listed in a widget along with the other registered components.
+     * @return The component's name as a String.
+     */
+    String getName();
+    /**
+     * Get e description for this component. The description might be listed in a widget along with the other
+     * registered components.
+     *
+     * @return The component's description as a String.
+     */
+    String getDescription();
+    /**
+     * Get a command line interface object for this component.
+     * @return A CLI object
+     */
+    ICommandLineInterface getCli();
+    /**
+     * Initialize the Command Line Application interface
+     * @param app Reference to the enclosing application
+     */
+    void initCli(IrisApplication app);
+    /**
+     * The component can contribute menu items and desktop buttons to the enclosing GUI applications
+     * by providing a list of MenuItems.
+     *
+     * @return A list of the menu items this component will contribute to the application.
+     */
+    List<IMenuItem> getMenus();
+    /**
+     * The component can register any number of SAMP message listeners by providing a list of them.
+     *
+     * @return A list of the SAMP message listeners that have to be registered to the SAMP hub.
+     */
+    List<MessageHandler> getSampHandlers();
+
+    /**
+     * Callback invoked when the component is shutdown
+     */
+    void shutdown();
+}
+\end{lstlisting}
 
 At startup the Iris application reads the list of Components to be initiated, and calls their \verb|init| call-back, which is in turn passed useful information like a reference to the SEDManager, or hooks to the application environment (more information is provided in the following sections).
 
@@ -410,7 +520,7 @@ The advantages of this architecture are both functional and non functional: it h
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.7\columnwidth]{figures/sed_builder.png}
+\includegraphics[width=\columnwidth]{figures/sed_builder.png}
 \caption{\textit{\textbf{\label{fig:sed_builder} SED Builder}} An example view of the SED Builder. On the right side of the window is a list of SEDs open for analysis; in this case, \textit{FilterSed} is selected. The Segments or components that constitute \textit{FilterSed} are shown in the Segments section. Segments may be managed separately. Highlighed SEDs or Segments may be edited, removed, saved or broadcast to an external SAMP-enabled application. New Segments and SEDs are added to the Iris session through the SED Builder. }
 \end{center}
 \end{figure}
@@ -424,7 +534,7 @@ SEDs are built and managed in Segments, which are groups of (spectral, flux) coo
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.7\columnwidth]{figures/iris_data_sources2.png}
+\includegraphics[width=\columnwidth]{figures/iris_data_sources2.png}
 \caption{\textit{\textbf{\label{fig:data_sources} Available Data Sources}}\textit{}\textbf{}\textit{} Users may import data from the built-in data archive services: NED SED Service and the Italian Space Agency Science Data Center (ASDC). Data may also be uploaded from a local file, a URL, a SAMP message from a VO-enabled program (like TOPCAT, CDS Photometry Viewer, or the Data Discovery Tool), or through a custom file filter plugin at run time.}
 \end{center}
 \end{figure}
@@ -475,7 +585,7 @@ SAMP is used as the interface protocol: this decision makes the design of the in
 \begin{figure}
 \label{fig:sherpasamp}
 \begin{center} 
-\includegraphics[width=0.7\columnwidth]{figures/sherpasamp.png}
+\includegraphics[width=\columnwidth]{figures/sherpasamp.png}
 \caption{\textbf{Design of the Specview/Sherpa interoperability layer} The interface between Sherpa (fitting engine), and Specview (graphical user interface) was designed by defining a common data model for representing the requests and responses of fitting operations: the serialization of the request is a SAMP message, whose \texttt{mtype} identifies the remote operation that the client is requesting.}
 \end{center}
 \end{figure}
@@ -516,6 +626,34 @@ Menu items and buttons can be customized by providing the button name, a descrip
 Iris offers a framework for providing simple command line interfaces to its tools. For example, Iris ships a command line interface to the SED Builder (see Section \ref{sec:components}) that allows users to import non-standard files in bulk through scripts, possibly starting from templates saved interactively from the SED Builder.
 
 This framework is extensible through a simple dispatching mechanism. Each component has a name that is used to dispatch the command line argument to the right CLI engine. For instance, the line \verb|./Iris builder config.txt| instructs Iris to dispatch the \verb|config.txt| argument to the SED Builder's CLI engine.
+
+
+\begin{lstlisting}[style=java, caption=My Caption, label=lst:cli]
+package cfa.vo.iris;
+
+/**
+ * A simple interface for providing CLI access in an extensible, pluggable way
+ * @author olaurino
+ */
+public interface ICommandLineInterface {
+    /**
+     * The name that has to be associated with the implementing component.
+     * When the calling application parses the command line, it will interpret the
+     * first argument as the component to which the command has to be relayed, using this string
+     * as a key.
+     *
+     * @return The compact name that identifies this CLI
+     */
+    String getName();
+    /**
+     * Callback that gets called when a command line is parsed and associated to the implementing component.
+     *
+     * @param args The command line arguments.
+     */
+    void call(String[] args);
+}
+\end{lstlisting}
+
 
 Components bundled with plug-ins can provide such an engine by implementing the ICommandLineInterface Java Interface (see Listing \ref{lst:cli}).
 
@@ -585,13 +723,18 @@ Iris uses Maven Archetypes to streamline the process of building and distributin
 You might also write plug-ins without using Maven, but you would need to take care of many steps that the Maven-generated project automatically takes care of, like the inclusion of your dependencies in your plug-in's jar file.
 
 In order to have a test plugin up and running you just need to create a new project from the Maven archetype and package it:
-\begin{verbatim}
+
+\begin{lstlisting}[style=code]
+$ export repo=http://vaotest2.tuc.noao.edu:8080/artifactory/ 
+
 $ mvn archetype:generate\
-        -DarchetypeRepository=http://vaotest2.tuc.noao.edu:8080/artifactory/ \
-        -DarchetypeArtifactId=iris-plugin-archetype \
-        -DarchetypeGroupId=cfa.vo \
-        -DarchetypeVersion=1.1
-\end{verbatim}
+   -DarchetypeRepository=$repo\
+   -DarchetypeArtifactId=iris-plugin-archetype \
+   -DarchetypeGroupId=cfa.vo \
+   -DarchetypeVersion=1.1
+
+$ mvn package
+\end{lstlisting}
 
 The above command will ask you some questions about the metadata for your plug-in project, like the group id, the project id (called artifact-id in Maven), and the version. At the end of the process you should have a directory named after your project-id. This directory contains all the files needed to build and package a test plugin.
 
@@ -617,190 +760,14 @@ To summarize, Iris provides:
 \item a Java Software Development Kit (SDK) that allows developers to extend the Iris functionalities.
 \end{itemize}
 
-\section{Code Snippets}
-\subsection{IrisComponent interface}
-\label{lst:component}
-\begin{verbatim}
-/**
- * Copyright (C) 2012 Smithsonian Astrophysical Observatory
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+%\section{Code Snippets}
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
-package cfa.vo.iris;
 
-import java.util.List;
-import org.astrogrid.samp.client.MessageHandler;
 
-/**
- *
- * Interface implemented by Iris components. By implementing this interface the components
- * allow the framework to retrieve the information needed to run and initialize them.
- *
- * @author olaurino
- */
-public interface IrisComponent {
-    /**
-     * This method is invoked to initialize the component. If the component has to launch windows, frames or
-     * background services, this is the right method to do so. Otherwise the component will be called only if a callback
-     * is invoked.
-     *
-     * @param app A reference to the running application
-     * @param workspace A reference to the application's workspace
-     */
-    void init(IrisApplication app, IWorkspace workspace);
-    /**
-     * Return the name of this component. This name might be listed in a widget along with the other registered components.
-     * @return The component's name as a String.
-     */
-    String getName();
-    /**
-     * Get e description for this component. The description might be listed in a widget along with the other
-     * registered components.
-     *
-     * @return The component's description as a String.
-     */
-    String getDescription();
-    /**
-     * Get a command line interface object for this component.
-     * @return A CLI object
-     */
-    ICommandLineInterface getCli();
-    /**
-     * Initialize the Command Line Application interface
-     * @param app Reference to the enclosing application
-     */
-    void initCli(IrisApplication app);
-    /**
-     * The component can contribute menu items and desktop buttons to the enclosing GUI applications
-     * by providing a list of MenuItems.
-     *
-     * @return A list of the menu items this component will contribute to the application.
-     */
-    List<IMenuItem> getMenus();
-    /**
-     * The component can register any number of SAMP message listeners by providing a list of them.
-     *
-     * @return A list of the SAMP message listeners that have to be registered to the SAMP hub.
-     */
-    List<MessageHandler> getSampHandlers();
 
-    /**
-     * Callback invoked when the component is shutdown
-     */
-    void shutdown();
-}
-\end{verbatim}
 
-\subsection{Command Line Interface} \label{lst:cli}
-\begin{verbatim}
-/**
- * Copyright (C) 2012 Smithsonian Astrophysical Observatory
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package cfa.vo.iris;
-
-/**
- * A simple interface for providing CLI access in an extensible, pluggable way
- * @author olaurino
- */
-public interface ICommandLineInterface {
-    /**
-     * The name that has to be associated with the implementing component.
-     * When the calling application parses the command line, it will interpret the
-     * first argument as the component to which the command has to be relayed, using this string
-     * as a key.
-     *
-     * @return The compact name that identifies this CLI
-     */
-    String getName();
-    /**
-     * Callback that gets called when a command line is parsed and associated to the implementing component.
-     *
-     * @param args The command line arguments.
-     */
-    void call(String[] args);
-}
-\end{verbatim}
-
-\subsection{User Model Example} \label{lst:user_model_example}
-\begin{verbatim}
-import numpy as np
-
-def modified_blackbody(p, x):
-    """
-    Modified blackbody of the form:
-    A * B_lambda(T) * (c / (lambda / lambda_0))**beta
-
-    Parameters
-    ----------
-    p : [lambda_0, A, temp, beta]
-
-        p[0] 'lambda_0' : refernce wavelength
-        p[1] 'A' : amplitude of model at reference wavelength
-        p[2] 'temp' : temperature of blackbody
-        p[3] 'beta' : dust emissivity index
-
-    x : array
-        spectral values, in Angstroms
-    """
-    
-    # blackbody function, in terms of wavelength (in Angstroms)
-    c1 = 1.438786e8  # in AA K
-    efactor = c1 / p[2]
-    numerator = p[1] * np.power(p[0], 5.0) * (np.exp(efactor / p[0]) - 1.0)
-    denominator = np.power(x, 5.0) * (np.exp(efactor / x) - 1.0)
-    B_lambda = numerator / denominator
-
-    # speed of light in Angstroms/second
-    c = 2.998e18
-
-    powerlaw = (c / (x/p[0]))**p[3]
-
-    return B_lambda * powerlaw
-\end{verbatim}
-
-\subsection{Template Configuration File} \label{lst:templateconfig}
-\begin{verbatim}
-# INDEX REFER MODELFLAG FILENAME
-0.0     5000  1   /home/user/iris-2.0.1-unix-x86_64/examples/sed_temp_index-0.00.dat
--0.10   5000  1   /home/user/iris-2.0.1-unix-x86_64/examples/sed_temp_index-0.10.dat
--0.25   5000  1   /home/user/iris-2.0.1-unix-x86_64/examples/sed_temp_index-0.25.dat
--0.35   5000  1   /home/user/iris-2.0.1-unix-x86_64/examples/sed_temp_index-0.35.dat
--0.50   5000  1   /home/user/iris-2.0.1-unix-x86_64/examples/sed_temp_index-0.50.dat
-\end{verbatim}
 
 \bibliography{aciris.bib}
 
