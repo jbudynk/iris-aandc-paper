@@ -420,6 +420,29 @@ Both methods return the effective wavelength of the passband in Angstroms and th
 
 \subsection{Sherpa}
 \label{subsec:sherpa}
+Sherpa is the CIAO modeling and fitting application. It enables the user to construct complex models from simple definitions and fit those models to 1D (spectra) and 2D (images) data, using a variety of statistics and optimization methods.
+
+Written in Python, with C/\Cpp/Fortran extensions, Sherpa was a robust choice for providing Iris with a curve fitting engine. 
+
+However, since the Iris front end was going to be a Java application\footnote{In the first version of Iris the front end was a modified version of Specview itself, while in later versions we integrated different components under a common framework graphically represented by the Iris Desktop. Even in this configuration, the fitting front end was provided by Specview under the hood.}, an interoperability layer had to be designed to interface the graphical user interface and Sherpa as a fitting engine backend.
+
+SAMP is used as the interface protocol: this decision makes the design of the interface very simple, so that the interoperability layer on top of Sherpa is rather thin and consists only of the code required to inspect the incoming SAMP messages and build a call to Sherpa.
+
+\begin{figure}
+\label{fig:sherpasamp}
+\begin{center} 
+\includegraphics[width=0.7\columnwidth]{figures/sherpasamp.png}
+\caption{\textbf{Design of the Specview/Sherpa interoperability layer} The interface between Sherpa (fitting engine), and Specview (graphical user interface) was designed by defining a common data model for representing the requests and responses of fitting operations: the serialization of the request is a SAMP message, whose \texttt{mtype} identifies the remote operation that the client is requesting.}
+\end{center}
+\end{figure}
+
+The design of this interface is represented schematically in figure \ref{fig:sherpasamp}.
+
+When Iris is launched the \verb|sherpa-samp| process is also started in the background: this process implements a SAMP client that waits for a SAMP hub to be available and attaches to it, registering to a number of custom \verb|mtypes|. The \verb|mtypes| work as remote procedures identifiers, and SAMP messages provide the remote methods with data that needs to be processed. Sherpa is used to crunch the data and the response from Sherpa is again packaged into a SAMP message response, so that it can be shown to the user.
+
+The thin layer between Java and Python code is implemented using two existing implementations of the SAMP protocol, namely \verb|jsamp| for Java and \verb|SAMPy| for Python.
+
+The \verb|sherpa-samp| layer grew to accommodate the new science requirements in the latest Iris releases, and it now includes some analysis code that is independent of Sherpa.
 
 \section{Plug-ins: the Software Development Kit}
 \label{sec:plugins}
