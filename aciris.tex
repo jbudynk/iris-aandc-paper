@@ -266,7 +266,7 @@ On the other hand, a developer would find words like framework, service, and man
 \label{fig:stack}
 \begin{center}
 \includegraphics[width=\columnwidth]{figures/IrisStack.png}
-\caption{\textbf{The Iris Stack} Iris employs an extensible, loosely coupled architecture that allows developers to create components using a common set of abstraction layers on top of web services, desktop applications using SAMP, and Virtual Observatory standards and protocols.}
+\caption{\textbf{The Iris Stack} With its architecture Iris allows developers to create components using higher and highet abstractions on top of web services, desktop applications, and Virtual Observatory standards and protocols. The technical specifications lie on the bottom, a middle layer provides abstractions useful to developers, and the user is only exposed to the science features. Users can also plug their code in as Python functions. The result is aimed to be both user- and developer- friendly.}
 \end{center}
 \end{figure}
 
@@ -292,7 +292,7 @@ The Iris stack offers a non-technical view of the Iris architecture and design. 
 \begin{figure*}
 \begin{center}
 \includegraphics[height=0.3\textheight]{figures/built-in-visuals-loading1.png}
-\caption{\textbf{\textit{\label{fig:load_data}} } Building the SED of blazar PKS 1127-14 in Iris. \textit{Top-left:} Data from the NED SED Service, a local file and from a SAMP message are managed in the SED Builder. \textit{Bottom-left:} The various data Segments plotted in $\mathrm{\nu F \left( \nu \right)}$ in the SED Viewer. Squares show data with flux uncertainties, whereas the pink diamonds denote points without associated uncertainties. Each Segment in the SED Bduilder is plotted in a different color. Black squares are the data taken from NED; the pink sqaures in the radio are the data from PLANCK; and the red, yellow, blue, and green sqaures in the near-IR are the for WISE bands. \textit{Right:} An ASDC Catalog Query form for PKS 1127-14. The user searches for data between specified dates and available instruments (Swift and GALEX in this case). The data may be added the open SED \texttt{PKS1127-14}.}
+\caption{\textbf{\textit{\label{fig:load_data}} } Building the SED of blazar PKS 1127-14 in Iris. \textit{Top-left:} Data from the NED SED Service, a local file and from a SAMP message are managed in the SED Builder. \textit{Bottom-left:} The various data Segments plotted in $\mathrm{\nu F \left( \nu \right)}$ in the SED Viewer. Squares show data with flux uncertainties, whereas the pink diamonds denote points without associated uncertainties. Each Segment in the SED Builder is plotted in a different color. Black squares are the data taken from NED; the pink sqaures in the radio are the data from PLANCK; and the red, yellow, blue, and green sqaures in the near-IR are the for WISE bands. \textit{Right:} An ASDC Catalog Query form for PKS 1127-14. The user searches for data between specified dates and available instruments (Swift and GALEX in this case). The data may be added the open SED \texttt{PKS1127-14}.}
 \end{center}
 \end{figure*}
 
@@ -355,7 +355,9 @@ Iris accepts custom models written as Python functions saved in *.py files. Any 
 could be defined as in \textbf{Listing} \ref{lst:user_model_example}. User models can be arbitrarily combined with other custom or preset model functions.
 
 
-\begin{lstlisting}[style=python, caption=My Caption, label=lst:user_model_example]
+\begin{lstlisting}[style=python,
+	caption={Example of a user-defined model that can be dynamically loaded into Iris. The code implements a modified blackbody and can be combined in Iris with other built-in and custom components.},
+	label=lst:user_model_example]
 import numpy as np
 
 def modified_blackbody(p, x):
@@ -399,7 +401,9 @@ A table model is a single template, having just the $x$ and $y$ coordiantes. Iri
 The template model is essentially a list of table models with parameters other than the amplitude. Like the \texttt{load\_template\_model} function in Sherpa, the user must create an index file which lists the parameter values of the templates and the full path to the template those parameter values describe (see Listing \ref{lst:templateconfig} for an example). Sherpa uses a grid-search method to find the best-fit template.
 
 
-\begin{lstlisting}[style=code, caption=Caption, label=lst:templateconfig]
+\begin{lstlisting}[style=code,
+	caption=Example of template library definition file,
+	label=lst:templateconfig]
 # INDEX REFER MODELFLAG FILENAME
 0.0     5000  1   /data/sed_temp_index-0.00.dat
 -0.10   5000  1   /data/sed_temp_index-0.10.dat
@@ -415,7 +419,7 @@ The template model is essentially a list of table models with parameters other t
 \begin{figure}
 \begin{center}
 \includegraphics[width=\columnwidth]{figures/IrisDiagrams.1.png}
-\caption{Replace this text with your caption}
+\caption{The Iris loosely coupled, extensible application, allows information to freely flow among built-in and third-party components provided as plug-ins. A SED Manager gives components access to the state of the SEDs in the user's workspace, while dynamic changes in such status are announced through events that are notified to the subscribed listeners. A plug-in manager allows users to install and uninstall plug-ins on the fly.}
 \end{center}
 \end{figure}
 
@@ -442,7 +446,7 @@ Components are thus agents that cohoperate by attaching themselves to a common \
 \begin{figure}
 \begin{center}
 \includegraphics[width=\columnwidth]{figures/IrisDiagrams.002.png}
-\caption{Inversion of Control}
+\caption{Inversion of Control is a design pattern that promotes decoupling of software components so that they can easily be replaced by a different implementation, with the actual binding of implementations often happening at runtime according to some configuration. This pattern, however, also allows new components to be added at any time during the application lifecycle: a common framework (Iris Common) can be shared as a middle layer among implementations, and a container (the Iris application) can bind components together on the fly. Components can subscribe to events and react to them.}
 \end{center}
 \end{figure}
 
@@ -453,7 +457,9 @@ Moreover, Inversion of Control is employed to decouple the implementation of com
 Consider, for example, Iris Components: they are the main providers of Iris functionality, and they can correspond to buttons and menu items on the Iris desktop, loggers, data handlers, etc. They must implement the IrisComponent interface, which is listed in Listing \ref{lst:component}.
 
 
-\begin{lstlisting}[style=java, caption=My Caption, label=lst:component]
+\begin{lstlisting}[style=java,
+	caption={This snippet of code represents the main interface that all components in Iris have to implement, and how dependencies get injected into the components at runtime.},
+	label=lst:component]
 package cfa.vo.iris;
 
 import java.util.List;
@@ -561,7 +567,7 @@ standards-in-development to deliver photometric data from the collection. The ob
 
 The NED SED Service returns data and information from the NED photometry collection \citep{2007ASPC..376..153M}. The NED SED Service provides three types of query:
 \begin{itemize}
- \item \textbf{Information Discovery:} List objects with available photometry (SED) given a sky position (RA/Dec) and angular size.  Also called a ``Data Discovery'' query.
+ \item \textbf{Information Discovery:} List objects with available photometry (SED) given a sky position (RA and Dec) and angular size.  Also called a ``Data Discovery'' query.
  \item \textbf{Information Availability:} For a given named object (`Target'), is there/how many SED photometric data points are available.
  \item \textbf{Data Retrieval:} For a given named object, return the photometric return the available data in an IVOA Spectral Data Model compatible form (VOTable).
 \end{itemize}
@@ -664,7 +670,9 @@ Iris offers a framework for providing simple command line interfaces to its tool
 This framework is extensible through a simple dispatching mechanism. Each component has a name that is used to dispatch the command line argument to the right CLI engine. For instance, the line \verb|./Iris builder config.txt| instructs Iris to dispatch the \verb|config.txt| argument to the SED Builder's CLI engine.
 
 
-\begin{lstlisting}[style=java, caption=My Caption, label=lst:cli]
+\begin{lstlisting}[style=java,
+	caption={Every Iris component can expose a command line interface. Iris dispatches the command line arguments for the relative component to process.},
+	label=lst:cli]
 package cfa.vo.iris;
 
 /**

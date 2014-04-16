@@ -50,18 +50,18 @@
 \newcommand\Cpp{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\relsize{-3}{\textbf{++}}}}
 
 
-\definecolor{midgray}{gray}{0.85}%
+\definecolor{midgray}{gray}{0.95}%
 
 \usepackage{listings}
 
-\lstdefinestyle{code}{%     basicstyle=\footnotesize\ttfamily,            frame=single,                    framesep=1pt,                    framerule=0.8pt,                 rulecolor=\color{midgray},       breaklines=true,                breakindent=0pt,
+\lstdefinestyle{code}{%     basicstyle=\footnotesize\ttfamily,            frame=single,                    framesep=2pt,                    framerule=0.8pt,                 rulecolor=\color{midgray},       breaklines=true,                breakindent=0pt,
      backgroundcolor=\color{midgray},
      prebreak=\mbox{\textbackslash{}},
-     captionpos=b             }
+     captionpos=b, 
+     abovecaptionskip=15pt          }
 
 \lstdefinestyle{python}{
-  style=code,  breaklines=true,  frame=single,
-  framesep=2pt,  xleftmargin=\parindent,  language=Python,  showstringspaces=false,  basicstyle=\footnotesize\ttfamily,  keywordstyle=\bfseries\color{green!40!black},  commentstyle=\itshape\color{gray},  identifierstyle=\color{black},  stringstyle=\color{gray},
+  style=code,%  xleftmargin=\parindent,  language=Python,  showstringspaces=false,  keywordstyle=\bfseries\color{green!40!black},  commentstyle=\itshape\color{gray},  identifierstyle=\color{black},  stringstyle=\color{gray},
   rulecolor=\color{midgray}, }
 
 \lstdefinestyle{java}{
