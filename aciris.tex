@@ -573,7 +573,7 @@ The NED SED Service returns data and information from the NED photometry collect
  \item \textbf{Data Retrieval:} For a given named object, return the photometric return the available data in an IVOA Spectral Data Model compatible form (VOTable).
 \end{itemize}
 
-All queries are HTTP GET requests and all responses are HTTP RESPONSEs, and conform to the IVOA Simple Spectral Access Protocol Version 1.04 (SSAP;~\citep{2012arXiv1203.5725T}).  The content of the responses are expressed in IVOA-compliant VOTable format. Spectral line-based values and upper- and lower- limit values are excluded from the response. In Iris, the responce from a NED SED Service query is stored as a Segment in the SED Builder.
+All queries are HTTP GET requests and all responses are HTTP RESPONSEs, and conform to the IVOA Simple Spectral Access Protocol Version 1.04 (SSAP;~\citep{2012arXiv1203.5725T}).  The content of the responses are expressed in IVOA-compliant VOTable format. Iris employs the Data Retrieval query type in its NED SED Service portal, and stores the response as a Segment in the SED Builder. Photometric points with spectral line-based values and upper- and lower- limit values are excluded from the response.
 
 Additional information about NED is at ned.ipac.caltech.edu, and the VO-SED service at
 vo.ned.ipac.caltech.edu\footnote{This work has made use of the NASA/IPAC Extragalactic Database (NED) which is operated by the Jet Propulsion Laboratory, California Institute of Technology, under contract with the National Aeronautics and Space Administration.}.
