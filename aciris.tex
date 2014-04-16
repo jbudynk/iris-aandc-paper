@@ -289,6 +289,13 @@ The Iris stack offers a non-technical view of the Iris architecture and design. 
 \section{Built-in functionality}
 \label{sec:builtin}
 
+\begin{figure*}
+\begin{center}
+\includegraphics[height=0.3\textheight]{figures/built-in-visuals-loading1.png}
+\caption{\textbf{\textit{\label{fig:load_data}} } Building the SED of blazar PKS 1127-14 in Iris. \textit{Top-left:} Data from the NED SED Service, a local file and from a SAMP message are managed in the SED Builder. \textit{Bottom-left:} The various data Segments plotted in $\mathrm{\nu F \left( \nu \right)}$ in the SED Viewer. Squares show data with flux uncertainties, whereas the pink diamonds denote points without associated uncertainties. Each Segment in the SED Bduilder is plotted in a different color. Black squares are the data taken from NED; the pink sqaures in the radio are the data from PLANCK; and the red, yellow, blue, and green sqaures in the near-IR are the for WISE bands. \textit{Right:} An ASDC Catalog Query form for PKS 1127-14. The user searches for data between specified dates and available instruments (Swift and GALEX in this case). The data may be added the open SED \texttt{PKS1127-14}.}
+\end{center}
+\end{figure*}
+
 In this section, we go through a specific use-case of Iris to showcase its main functionalities. We build, inspect, and fit a SED of the flat radio spectrum quasar (FRSQ) blazar PKS 1127-14, and save our results to file. In Section \ref{sec:components}, we describe how these functions work in terms of the Iris stack.
 
 \subsection{Building the SED}
@@ -297,12 +304,6 @@ As stated in Section \ref{sec:overview}, Iris can read data from a variety of so
 
 Wanting to analyze the entire SED of the blazer, the user queries the NED database for photometric data through the NED SED Service\footnote{http://vo.ned.ipac.caltech.edu/SED\_Service/} portal in Iris (see Section~\ref{subsec:ned} for details). The data is automatically added to the SED Builder and the display. The user then opens the ASDC\footnote{http://www.asdc.asi.it/} query tool, which provides more control over the data being added to the plot; she types the target name, chooses observation date ranges, selects optical/UV data from SWIFT and GALEX (see Figure~\ref{fig:load_data}), and imports the data to the SED.
 
-\begin{figure}
-\begin{center}
-\includegraphics[width=\columnwidth]{figures/built-in-visuals-loading1.png}
-\caption{\textbf{\textit{\label{fig:load_data}} } Building the SED of blazar PKS 1127-14 in Iris. \textit{Top-left:} Data from the NED SED Service, a local file and from a SAMP message are managed in the SED Builder. \textit{Bottom-left:} The various data Segments plotted in $\mathrm{\nu F \left( \nu \right)}$ in the SED Viewier. Squares show data with flux uncertainties, whereas the pink diamonds denote points without associated uncertainties. Each Segment in the SED Bduilder is plotted in a different color. Black squares are the data taken from NED; the pink sqaures in the radio are the data from PLANCK; and the red, yellow, blue, and green sqaures in the near-IR are the for WISE bands. \textit{Right:} An ASDC Catalog Query form for PKS 1127-14. The user searches for data between specified dates and available instruments (Swift and GALEX in this case). The data may be added the open SED \texttt{PKS1127-14}.}
-\end{center}
-\end{figure}
 
 \subsection{Inspecting the SED}
 \label{subsec:inspect-sed}
@@ -315,6 +316,14 @@ The user decides to save the SED they built to a file. SEDs are saved in VO-comp
 
 \subsection{Fitting the SED}
 
+
+\begin{figure*}
+\begin{center}
+\includegraphics[height=0.3\textheight]{figures/fitting-1.png}
+\caption{\textbf{\label{fig:fitting1} Fitting Visualization} Visualization of a linear combination of log-parabolas and blackbody distributions for FRSQ blazar PKS 1127-145, fit with Neldermead optimization and least-square statistics. \textit{Left:} The best fit linear combination overlaid on the SED data as a red curve. The blue line shows the spectral range over which the data was fit. Below the main plot are residuals of the fitted curve, in dex units. \textit{Top-right:} The fitting options and results. Here, the user chooses between Neldermead, Levenberg-Markwardt, and Monte-Carlo optimization and various least square and $\mathrm{\chi}^{2}$ statisitcs. The fit statistics are reported here after the fit has been performed. \textit{Bottom-right:} The Fitting Tool window. The model components used in the fit and their fitted parameter values are listed in the Components field. Below that is the Model Expression, in which the components are linearly combined. Note that components are referenced by the \textit{c\#} suffix of the component name.}
+\end{center}
+\end{figure*}
+
 %Blazar SEDs are dominated by two peaks. The lower energy features can be explained by radio synchrotron radiation from the relativistic electrons in a jet pointing at our line-of-sight and inverse Compton scattering off the synchrotron photons or photons from the originating environment. Massaro et al. (2006) and Tramacere et al. (2007) have shown that both emission processes can be modeled by log-parabolic distributions. In FRSQ blazars, the radio emission is weaker, and so other features, like the accretion disk surrounding the  
 Blazar SEDs are dominated by two peaks. It has been shown that the low-energy peak, due to radio synchrotron radiation, and the higher-energy bump, due to inverse Compton radiation, can be modeled by log-parabolic distributions \citep{2006A&A...448..861M,2009A&A...501..879T}. Also present in blazars are an accretion disk and a hot dusty torus surrounding the super-massive black hole, both of which can be modeled by blackbody distributions \citep{2002ApJ...575..667D}. The user will linearly combine these four models to fit the multi-wavelength SED of PKS 1127-14.  
 
@@ -323,13 +332,6 @@ The user starts a fitting session by opening the Fitting Tool component on the I
 In the Model Expression field, the components are combined in arbitrary ways. Each component is given an ID which is used to reference the component in the Model Expression field. The user can also set the data ranges to be fit. In this example, we linearly combine the models, adding and fitting them one-by-one, defining the data ranges for each component, then freezing the component afterwards. For each fit, we use Neldermead optimization and least squares as the statistic. We thaw all components and refit the entire SED; the result is shown in Figure \ref{fig:fitting1}. 
 
 The user saves the fit results to a text file, showing the fit statistics, model used, and the best-fit parameter values. She can also save an XML-style file of the model that can be re-read into Iris and fit to other SED data.
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=\columnwidth]{figures/fitting-1.png}
-\caption{\textbf{\label{fig:fitting1} Fitting Visualization} Visualization of a linear combination of log-parabolas and blackbody distributions for FRSQ blazar PKS 1127-145, fit with Neldermead optimization and least-square statistics. \textit{Left:} The best fit linear combination overlaid on the SED data as a red curve. The blue line shows the spectral range over which the data was fit. Below the main plot are residuals of the fitted curve, in dex units. \textit{Top-right:} The fitting options and results. Here, the user chooses between Neldermead, Levenberg-Markwardt, and Monte-Carlo optimization and various least square and $\mathrm{\chi}^{2}$ statisitcs. The fit statistics are reported here after the fit has been performed. \textit{Bottom-right:} The Fitting Tool window. The model components used in the fit and their fitted parameter values are listed in the Components field. Below that is the Model Expression, in which the components are linearly combined. Note that components are referenced by the \textit{c\#} suffix of the component name.}
-\end{center}
-\end{figure}
 
 \begin{figure}
 \begin{center}
