@@ -75,7 +75,7 @@
 %%
 %% \biboptions{comma,round}
 
-% \biboptions{}
+%\biboptions{comma,round}
 
 \usepackage{graphicx}
 \usepackage[space]{grffile}
@@ -123,7 +123,7 @@
 %% \address{Address\fnref{label3}}
 %% \fntext[label3]{}
 
-\title{Iris: Build and Analyze Broadband Spectral Energy Distributions}
+\title{Iris: an Extensible Application for Building and Analyzing Spectral Energy Distributions}
 
 \author[sao]{Omar Laurino~\corref{cor}}
 \cortext[cor]{Corresponding author}
@@ -205,42 +205,54 @@ Iris is an extensible application that provides astronomers with a user-friendly
 
 \label{sec:introduction}
 \section{Introduction}
-The International Virtual Observatory Alliance~\citep{2004SPIE.5493..137Q} provides a set of standards and protocols that enable interoperability among astronomy-centered services and applications.
-%Building VO-enabled, interoperable applications poses several challenges to software developers.
-In order to design effective applications, one wants to leverage Virtual Observatory (VO) standards and protocols without exposing the complexity and technicality of their specifications to the users. Also, while application developers implement many desired functionalities, they must keep the door open for plugging in user's analysis code, and allow third party developers to extend the application's functionality without being aware of the standards themselves.
+The International Virtual Observatory Alliance~\citep[IVOA;][]{2004SPIE.5493..137Q} provides a set of standards and protocols that enable interoperability among astronomy-centered services and applications. In order to design effective applications, one wants to leverage IVOA standards and protocols without exposing the complexity and technicality of their specifications to the users. Also, while application developers implement many desired functionalities, they must keep the door open for plugging in user's analysis code, and allow third party developers to extend the application's functionality without being aware of the standards themselves. Designing such general purpose applications thus becomes an exercise in designing a framework that implements some basic, effective functionality for a wide set of use cases, while being highly extensible.
 
-Designing such general purpose applications thus becomes an exercise in designing a framework that implements some basic, effective functionality for a wide set of use cases, while being highly extensible.
+%Iris, the Virtual Astronomical Observatory~\citep[VAO;][]{2012SPIE.8449E..0HB} spectral energy distribution (SED) analysis tool, is such an IVOA-enabled application. Iris was developed to provide the astronomical community a desktop application for building, viewing and modeling broadband spectro-photometric SEDs, while implementing IVOA standards and protocols and taking advantage of existing astronomy software~\citep{2012ASPC..461..893D,2013AAS...22124038L}. 
 
-Iris, the Virtual Astronomical Observatory\footnote{www.usvao.org}~\citep{2012SPIE.8449E..0HB} spectral energy distribution (SED) analysis tool, is such a VO-enabled application. Iris was developed to provide the astronomical community with a desktop application for building, viewing and analyzing broadband spectro-photometric SEDs, while implementing VO standards and protocols and taking advantage of existing astronomy software \citep{2012ASPC..461..893D,2013AAS...22124038L}.
+Iris, the Virtual Astronomical Observatory~\citep[VAO;][]{2012SPIE.8449E..0HB} spectral energy distribution (SED) analysis tool, is such an IVOA-enabled desktop application application for building, viewing and modeling broadband spectro-photometric SEDs. While implementing IVOA standards and protocols, the Iris development team took advantage of existing astronomy software~\citep{2012ASPC..461..893D,2013AAS...22124038L}, namely Specview\footnote{ascl.net/1210.016} for the visualization and fitting user interfaces, the NASA/IPAC Extragalactic Database (NED) SED Service for data acquisition, and Sherpa\footnote{ascl.net/1107.005} for the modeling and fitting engine. The VAO also developed SED Builder for Iris, which handles SED data I/O and management with IVOA standards. 
 
-Users may populate SEDs with data from files, built-in portals to data archives, and other VO applications. Iris is lenient on the data format, so while it natively supports VO-compliant files (properly annotated VOTABLE and FITS files), Iris can ingest ASCII, CSV, and other table-like formats with some user input. Iris also provides interactive data visualization and editing tools, and a SED fitting tool for fine-tuned modeling. Users may choose from a suite of provided astrophysical models, or load their own Python functions and template libraries. All front-end features of Iris completely hide the underlying technical VO standards and protocols from the user.
+%The team took advantage of several existing astronomy software packages, namely Specview for the visualization and fitting user interfaces, the NASA/IPAC Extragalactic Database (NED) SED Service for data acquisition, and Sherpa for the modeling and fitting engine. The VAO also developed SED Builder for Iris, which handles SED data I/O and management with IVOA standards. 
 
-Iris was devoted to provide functionality in a specific scientific domain, namely the analysis of broad-band SEDs. This requirement clearly defines the semantic scope of the  Iris extensible framework, and provides a clear abstraction layer to both users and developers, inside and outside of the development team.
+Together with other interoperable components, users may populate SEDs with data from files, built-in portals to data archives, and other Virtual Observatory (VO) applications, interactively visualize and edit SEDs, and fit SEDs with fine-tuned modeling features. Users may choose from a suite of provided astrophysical models, or load their own Python functions and template libraries. All front-end features of Iris completely hide the underlying technical VO standards and protocols from the user.
 
-In this paper we present the Iris application, software design, and the built-in infrastructure to support application extensibility with plug-ins. In section \ref{sec:overview} we briefly explore the landscape of SED applications and analysis tools which Iris joined. An overview of Iris' general architecture (the Iris \emph{stack}) is illustrated in section \ref{sec:stack}. We introduce the Iris features in section \ref{sec:builtin}, and explore how astronomers can include their own models or templates as Python functions in section \ref{sec:usermodels}. We provide details of the Iris extensible framework design (section \ref{sec:architecture}), followed by a detailed description of the more advanced Iris functionalities (section \ref{sec:components}). Finally, we include a ``How-to'' description about extending Iris using plug-ins (section \ref{sec:plugins}).
+%Iris is composed of several existing astronomy packages loosely coupled together to provide the main capabilities, namely Specview for the visualization and fitting user interfaces, the NASA/IPAC Extragalactic Database (NED) SED Service for data acquisition, and Sherpa for the modeling and fitting engine. The VAO also developed SED Builder, which handles SED data I/O and management in Iris. Together with other interoperable features, 
 
-\section{SED Analysis: an overview}
+%With Iris, users may populate SEDs with data from files, built-in portals to data archives, and other Virtual Observatory (VO) applications. 
+%%Iris is lenient on the data format, so while it natively supports VO-compliant files (properly annotated VOTABLE and FITS files), Iris can ingest ASCII, CSV, and other table-like formats with some user input. 
+%The application also provides interactive data visualization and editing tools, and a SED fitting tool for fine-tuned modeling. Users may choose from a suite of provided astrophysical models, or load their own Python functions and template libraries. All front-end features of Iris completely hide the underlying technical VO standards and protocols from the user.
+
+%%Iris was devoted to provide functionality in a specific scientific domain, namely the analysis of broad-band SEDs. This requirement clearly defines the semantic scope of the  Iris extensible framework, and provides a clear abstraction layer to both users and developers, inside and outside of the development team.
+
+In this paper we present the Iris application, software design, and the built-in infrastructure to support application extensibility with plug-ins. In section \ref{sec:overview} we briefly explore the landscape of SED applications and analysis tools which Iris joined, and provide an example use-case of Iris. An overview of Iris' general architecture (the Iris \emph{stack}) is illustrated in section \ref{sec:stack}. We explore how astronomers can include their own models or templates as Python functions in section \ref{sec:usermodels}. We provide details of the Iris extensible framework design (section \ref{sec:architecture}), followed by a detailed description of the more advanced Iris functionalities (section \ref{sec:components}). Finally, we include a ``How-to'' description about extending Iris using plug-ins (section \ref{sec:plugins}).
+
+
+
+\section{SED Analysis with Iris}
 \label{sec:overview}
 
 Fitting spectral energy distributions allows astronomers to estimate fundamental physical properties like stellar mass, star formation rates, dust content and overall environments of astronomical objects (e.g. \citep{1998AJ....115.1329S}, \citep{2001ApJS..137..139S}, \citep{2007ApJS..169..328R}, and many others). With deeper wide-field surveys and increasing numbers of datasets over the years, astronomers have been able to utilize multi-wavelength SEDs more frequently for their research. As such, many robust SED analysis codes have been created to help astronomers model, fit, and derive physical quantities from SEDs \citep{2011Ap&SS.331....1W,2013ARA&A..51..393C}. These widely-used codes implement a diverse set of methods, for instance: inversion (\texttt{PAHFIT} \citep{2007ApJ...656..770S}, \texttt{STARLIGHT} \cite{2004MNRAS.355..273C}), principal component analysis \citep{2009MNRAS.394.1496B}, $\mathrm{\chi}^{2}$-minimization codes (\texttt{Le Phare} \citep{1999MNRAS.310..540A}, \texttt{hyperz} \citep{2000A&A...363..476B}), and Bayesian inference (\texttt{GalMC} \citep{2011ApJ...737...47A}; \texttt{VOSA} \citep{2008A&A...492..277B}; \texttt{BPZ} \citep{2000ApJ...536..571B}).
 
-Most distributed fitting packages are tailored for specific data sets or spectral ranges (e.g. PAHFIT, STARLIGHT), providing robust fitting methods and results. They require the data to be in a specific format with specific units in order for the tool to work properly. When fitting a broadband SED that spans over decades in the spectrum, the astronomer will typically gather data from different public archives and colleagues to add to their own dataset. More often than not, the datasets are presented in different file formats and units. The user must provide their own methods to extract the necessary data from each file, convert the units, and output a file in the single format supported by the tool.
+Most distributed fitting packages are tailored for specific data sets or spectral ranges (e.g. PAHFIT, STARLIGHT), providing robust fitting methods and results. They require the data to be in a specific format with specific units in order for the tool to work properly. When fitting a broadband SED that spans over decades in the spectrum, the astronomer will typically gather data from different public archives and colleagues to add to their own dataset. More often than not, the datasets are presented in different file formats and units. 
+%and converting the data to an ingestible format becomes a tedious task.
+The user must provide their own methods to extract the necessary data from each file, homogenize the units, and output a file in the format supported by the tool; converting the data to a supported format may easily become a tedious task with each additional dataset.
 
-%The astronomer may also want to inspect the SED, for example plotting it against different units, normalizing some of points or spectral segments, shifting the SED to another redshift, and performing other simple visualization tasks.
+While SED analysis tools often have different input formats from each other, they nevertheless require effectively the same information to run. With tools and data formats that adhere to the same standards, we can streamline a conceptually simple procedure, such as building a SED for analysis. It thus becomes a matter of providing an interoperable framework to make building, viewing, and analyzing SEDs a straightforward process.
 
-While SED analysis tools have input formats that may be different from each other, they nevertheless require effectively the same information to run. It thus becomes a matter of providing an interoperable framework that makes building, viewing, and analyzing SEDs a straightforward process.
+Following VO efforts to seamlessly combine data services and applications, Iris offers a standard means of building large broadband SEDs from different sources in various data formats, while providing robust fitting methods and interactive visualization capabilities using existing astronomical software. Iris is lenient on the data format, so while it natively supports VO-compliant files (properly annotated VOTABLE~\citep{2011arXiv1110.0524O} and FITS files), Iris can ingest ASCII, CSV, and other table-like formats with some extra user input. Users may also beam data from other VO-enabled applications or data archive services through SAMP, the VAO-developed Simple Application Messaging Protocol~\citep{2011arXiv1110.0528T}. 
+
+%Iris is meant to be an open box SED analysis tool. If Iris is missing certain functionality, the user may develop a plugin for that functionality and add it to Iris. Thus, a user can employ Iris' SED building capabilites while running custom analysis, which in theory could be one of the fitting packages discussed above. %We explore this possibility in detail in Section \ref{sec:plugins}
+
+To showcase its main functionalities, we through an example use-case of Iris. We analyze the SED of the flat radio spectrum quasar (FRSQ) blazar PKS 1127-14, and save the results to file.
 
 % However, most SED analysis tools require similar data and pre-processing steps, like gathering and converting the data to compliant formats for the tools. Thus it becomes only a matter of providing an interoperable framework that makes building, viewing, and analyzing SEDs a straightforward process.
 
-Following VO efforts to seamlessly combine data services and applications, Iris offers a standard means of building large broadband SEDs from different sources in various data formats, while providing robust fitting methods and interactive visualization capabilities. Users can input SED data from a local file or a URL, with high leniency on the data format. Users may also beam data from other VO-enabled applications or data archive services through SAMP (Simple Application Messaging Protocol; \citep{2011arXiv1110.0528T}). If the data format follows the IVOA Spectrum Data Model v1.03 \citep{2012arXiv1204.3055M}, or in other words a VO-compliant VOTable or FITS file, the data is read-in without any input by the user; otherwise, the user supplies the units and mapping to the spectral-flux coordinates in the file. How this method works is described in Section \ref{sec:components}.
+%Users can input SED data from a local file or a URL, with high leniency on the data format. Users may also beam data from other VO-enabled applications or data archive services through SAMP, the VAO-developed Simple Application Messaging Protocol~\citep{2011arXiv1110.0528T}. If the data format follows the IVOA Spectrum Data Model v1.03 \citep{2012arXiv1204.3055M}, or in other words a VO-compliant VOTable or FITS file, the data is read-in without any input by the user; otherwise, the user supplies the units and mapping to the spectral-flux coordinates in the file.
 
 %While each code is tailored for specific datasets or object types, most SED analysis tools share similar necessities and require the same pre-processing steps. Thus it is worth developing an interoperable SED tool that Following VO efforts to seamlessly combine data services and applications, Iris offers a standard means of building large broadband SEDs from different sources in various data formats, while providing robust fitting methods and interactive visualization capabilities.
 
 %[FIX ME: make me a happy, positive statement] While these exacting steps are worthwhile for the quality fitting results, gathering, pre-processing, and converting data to plug it in to a fitting engine should be standard/interpoerable and straightfoward.
 
 %This inconvenience -- building SEDs from multiple sources -- drove a part of Iris' SED analysis design. Following VO efforts to seamlessly combine data services and applications, Iris offers a standard means of building large broadband SEDs from different sources in various data formats, while providing robust fitting methods and interactive visualization capabilities. Users can input SED data from a local file or a URL, with high leniency on the data format. Users may also beam data from other VO-enabled applications or data archive services through SAMP (Simple Application Messaging Protocol; \citep{2011arXiv1110.0528T}). If the data format follows the IVOA Spectrum Data Model v1.03 \citep{2012arXiv1204.3055M}, or in other words a VO-compliant VOTable or FITS file, the data is read-in without any input by the user; otherwise, the user supplies the units and  mapping to the spectral-flux coordinates in the file. How this method works is described in Section \ref{sec:components}.
-
-Iris is meant to be an open box SED analysis tool. If Iris is missing certain functionality, the user may develop a plugin for that functionality and add it to Iris. Thus, a user can employ Iris' SED building capabilites while running custom analysis, which in theory could be one of the fitting packages discussed above. We explore this possibility in detail in Section \ref{sec:plugins}
 
 %Users can input SED data from a local file, a URL, another VO-enabled application, or directly from VO-enabled data archive services, with high leniency on the data format.
 
@@ -252,41 +264,9 @@ Iris is meant to be an open box SED analysis tool. If Iris is missing certain fu
 %Iris offers a standard means of building large broadband SEDs from different sources in various data formats, while providing robust fitting methods and interactive visualization capabilities.
 %\end{comment}
 
-\section{The Iris Stack}
-\label{sec:stack}
 
-The Iris stack (Figure \ref{fig:stack}) shows how one can put the cold and technical IVOA specifications to work for scientists through higher and higher layers of abstraction: the technical details of the Virtual Observatory standards and protocols lie in the bottommost layers, the internals of the Iris building blocks lie in the middle layers, while the topmost layers express high-level user-oriented functionalities.
-
-A reader without any knowledge of programming, let alone of the VO specifications, should understand the labels used in the topmost layers of the diagram and their components (e.g. the Fitting Tool, Redshift), as long as they have some knowledge of astronomical SEDs.
-
-On the other hand, a developer would find words like framework, service, and manager quite familiar, while it takes a VO-savvy person to decode the acronyms at the bottom of the diagram.
-
-\begin{figure}
-\label{fig:stack}
-\begin{center}
-\includegraphics[width=\columnwidth]{figures/IrisStack.png}
-\caption{\textbf{The Iris Stack} With its architecture Iris allows developers to create components using higher and highet abstractions on top of web services, desktop applications, and Virtual Observatory standards and protocols. The technical specifications lie on the bottom, a middle layer provides abstractions useful to developers, and the user is only exposed to the science features. Users can also plug their code in as Python functions. The result is aimed to be both user- and developer- friendly.}
-\end{center}
-\end{figure}
-
-This fact reflects the different entry points for the different audiences of the application: core developers work at all levels of the stack, but need to lay out the foundations on top of the standard specifications; third party developers use the middle-level abstractions offered by the Iris framework, while end users can limit their interaction to familiar astronomical concepts through the application's user interface. End users can also plug in their modeling code and upload templates libraries to Iris.
-
-The color code in Figure \ref{fig:stack} adds a different dimension to this diagram and taps into a different characteristic of the Iris architecture: extensibility. In particular, blue boxes with purple letters denote extensible components of the architecture, i.e. component that offer hooks into the Iris architecture to users and developers. The orange labels, on the other hand, express components that were not even part of the Iris design, but that can be loaded in Iris as plug-ins, possibly providing an interface to access non-standard services. Some of these plug-ins, along with a description of the design of the Iris Software Development Kit, will be introduced in section \ref{sec:plugins}.
-
-The Iris development team also faced some extra challenges: our team was distributed in nature, with developers and managers working from different institutions with different tools and practices \citep{2012SPIE.8449E..0IE}. Moreover, willing to reuse existing software instead of reinventing the proverbial wheel, we had to integrate different existing software components in a seamless way.
-
-In summary, the Iris framework, which we will describe more in detail in the following sections, was designed to address several different requirements:
-\begin{itemize}
-\item functional requirements gathered by the Iris team's lead scientists;
-\item functional requirements unknown at development-time;
-\item the distributed nature of the Iris development team;
-\item the willingness to bring existing tools and services together in a single application.
-\end{itemize}
-
-The Iris stack offers a non-technical view of the Iris architecture and design. While it shows effectively how we tried to abstract end users and developers from the VO specifications and from the specifics of the Iris internals, it does not express the technical solutions that we employed to achieve such extensible architecture and to meet the aforementioned requirements: more details about the Iris built-in features and how they can be extended will be provided in the following sections.
-
-\section{Built-in functionality}
-\label{sec:builtin}
+\subsection{Iris Use Case: Fitting a SED}
+\label{subsec:builtin}
 
 \begin{figure*}
 \begin{center}
@@ -295,26 +275,13 @@ The Iris stack offers a non-technical view of the Iris architecture and design. 
 \end{center}
 \end{figure*}
 
-In this section, we go through a specific use-case of Iris to showcase its main functionalities. We build, inspect, and fit a SED of the flat radio spectrum quasar (FRSQ) blazar PKS 1127-14, and save our results to file. In Section \ref{sec:components}, we describe how these functions work in terms of the Iris stack.
+An Iris session begins with populating a SED. A user loads a local ASCII file of PLANCK data, a SAMP message of WISE data from TOPCAT~\citep{2005ASPC..347...29T}, and all data associated with PKS 1127-14 in NED with the NED SED Service portal. Viewing the data in the SED Viewer -- the interactive SED plot -- she uses the built-in Italian Space Agency Science Data Center\footnote{http://www.asdc.asi.it/} (ASDC) query tool to find optical/UV data for PKS 1127-14, and adds it to the SED (see Figure~\ref{fig:load_data}).
 
-\subsection{Building the SED}
+Imported data is displayed in the SED Viewer. The user can switch the spectral and flux axes between a variety of commonly-used SED units, e.g. one can switch from $\mathrm{Jy}$ vs. ${\mu}\mathrm{m}$ to $\mathrm{Jy}\mathrm{Hz}$ vs. $\mathrm{Hz}$; Iris takes care of all unit conversions after the data read-in. The Metadata Browser -- an interactive table of the SED data -- allows the user to interactively inspect, mask and filter out data points by hand or dynamically with Boolean expressions.
 
-As stated in Section \ref{sec:overview}, Iris can read data from a variety of sources in different formats. Figure \ref{fig:load_data} shows an example session of loading data into Iris. The user loads PLANCK data in the form of an ASCII spectrum file (where there is a column for the spectral, flux, and flux errors) and a photometry catalog-style SAMP message of WISE data from TOPCAT \citep{2005ASPC..347...29T}. When Iris receives data in non-VO compliant formats, Iris opens file reader GUIs in which the user provides the mapping for the spectral, flux and flux uncertainties. The file importers provide helpful hints for the user when filling in the forms.
+The user can also employ the Science tools, which allows one ot redshift, interpolate, and calculate integrated fluxes through photometric filters or user-defined passbands. For example, the user shifts PKS 1127-14 from its observed redshift at $z=1.18$ to restframe using the Redhisft tool before fitting the SED.
 
-Wanting to analyze the entire SED of the blazer, the user queries the NED database for photometric data through the NED SED Service\footnote{http://vo.ned.ipac.caltech.edu/SED\_Service/} portal in Iris (see Section~\ref{subsec:ned} for details). The data is automatically added to the SED Builder and the display. The user then opens the ASDC\footnote{http://www.asdc.asi.it/} query tool, which provides more control over the data being added to the plot; she types the target name, chooses observation date ranges, selects optical/UV data from SWIFT and GALEX (see Figure~\ref{fig:load_data}), and imports the data to the SED.
-
-
-\subsection{Inspecting the SED}
-\label{subsec:inspect-sed}
-
-With all of the data uploaded, the user may switch the spectral and flux units; Iris takes care of all unit conversions once the data is read in. Before starting a fitting session, the she wants to remove from the SED data without flux uncertainty measurements. The user opens the Metadata Browser from the plotting display (SED Viewer), switches to the Data tab, and types a Python-expression into the Boolean filter to highlight the points whose error measuments are above 0 (i.e. points that have uncertainty measurements). With the desired data points hilgihted in the window, the user clicks ``Create new SED;'' this adds another SED to the SED Builder, which is managed separately from our original dataset.
-
-At this point, the user chooses to shift the SED to restframe. PKS 1127-14 is at redshift $z=1.18$. The user opens up the Science tool by clicking the ``Shift, Interpolate, Integrate'' icon on the Iris desktop; under ``Redshift,'' she types $1.18$ into the Initial field, and leaves 0 in the Final box, finally creating a new SED in the restframe.
-
-The user decides to save the SED they built to a file. SEDs are saved in VO-compliant FITS or VOTable formats which can be re-read into Iris or other programs (e.g. TOPCAT; IDL or Python interpreters). Users can save all of the metadata associated with the SEDs, or choose to save just the spectral, flux and flux uncertainties in a simplier format.
-
-\subsection{Fitting the SED}
-
+When the user is done editing and building the SED, she can begin the fitting session. In the fitting tool, the user builds a model expression as an arbitrary combination of functions. The user can choose from a list of astrophysical and mathematical models, or she can add custom models in the form of Python functions or ASCII-file templates. Several fitting statistics and optimization methods are available, as well as a calculation of the confidence intervals for the model parameters. The user has fine control over the parameters, including setting initial values, the range of the values, freezing and thawing parameters, and linking model parameters to other parameters in the model expression. 
 
 \begin{figure*}
 \begin{center}
@@ -323,21 +290,61 @@ The user decides to save the SED they built to a file. SEDs are saved in VO-comp
 \end{center}
 \end{figure*}
 
-%Blazar SEDs are dominated by two peaks. The lower energy features can be explained by radio synchrotron radiation from the relativistic electrons in a jet pointing at our line-of-sight and inverse Compton scattering off the synchrotron photons or photons from the originating environment. Massaro et al. (2006) and Tramacere et al. (2007) have shown that both emission processes can be modeled by log-parabolic distributions. In FRSQ blazars, the radio emission is weaker, and so other features, like the accretion disk surrounding the
-Blazar SEDs are dominated by two peaks. It has been shown that the low-energy peak, due to radio synchrotron radiation, and the higher-energy bump, due to inverse Compton radiation, can be modeled by log-parabolic distributions \citep{2006A&A...448..861M,2009A&A...501..879T}. Also present in blazars are an accretion disk and a hot dusty torus surrounding the super-massive black hole, both of which can be modeled by blackbody distributions \citep{2002ApJ...575..667D}. The user will linearly combine these four models to fit the multi-wavelength SED of PKS 1127-14.
+Figure~\ref{fig:fitting1} shows PKS 1127-14 fit with a linear combination of four models: two logarithmic parabolas to model the radio synchrotron andinverse Compton radiation, and two blackbodies to approximate the models for the hot dust component and accretion disk of the blazar. The fit was done with Neldermead optimization and least square statistics, and with fine-tuned control over the parameter values and data ranges being fit.
 
-The user starts a fitting session by opening the Fitting Tool component on the Iris desktop. The SED Viewer updates with an overplotted, unfit powerlaw model, and a plot of the residuals shown below the data. The user removes the powerlaw component, and adds four models from the Preset Components provided by Sherpa: two logarithmic parabolas (\texttt{logparabola}s) for the radio synchrotron and inverse Compton radiation and two blackbodies (\texttt{blackbody}s) for the hot dust and accretion disk. The models are added to the Components field, where the model parameter values are displayed. Double-clicking a component allows you to edit the parameters, e.g. freeze and thaw parameters, reset their initial values, and set their minimum and maximum values.
+When the user is satisfied with her fitting results, she can save an XML-style file of the model that can be re-read into Iris and fit to other SED data. She may also save the fit results to a text file, which show the fit statistics, models used, and the best-fit parameter values. 
 
-In the Model Expression field, the components are combined in arbitrary ways. Each component is given an ID which is used to reference the component in the Model Expression field. The user can also set the data ranges to be fit. In this example, we linearly combine the models, adding and fitting them one-by-one, defining the data ranges for each component, then freezing the component afterwards. For each fit, we use Neldermead optimization and least squares as the statistic. We thaw all components and refit the entire SED; the result is shown in Figure \ref{fig:fitting1}.
 
-The user saves the fit results to a text file, showing the fit statistics, model used, and the best-fit parameter values. She can also save an XML-style file of the model that can be re-read into Iris and fit to other SED data.
+%\section{Iris Use Case: Fitting a SED}
+%\label{subsec:builtin}
+
+%To showcase its main functionalities, we through an example use-case of Iris. We analyze the SED of the flat radio spectrum quasar (FRSQ) blazar PKS 1127-14, and save the results to file.
+
+
+%\subsection{Building the SED}
+
+%As stated in Section \ref{sec:overview}, Iris can read data from a variety of sources in different formats. Figure \ref{fig:load_data} shows an example session of loading data into Iris. The user loads a local ASCII file of PLANCK data with a built-in file reader. In a TOPCAT~\citep{2005ASPC..347...29T} session, the user completes a cone search of WISE photometry for PKS 1127-14, then broadcasts the data to Iris through SAMP. 
+
+%The user queries NED for photometric data through the NED SED Service portal to see published data for PKS 1127-14. The user sees that she has no optical/UV data in the SED by inspecting her data in the SED Viewer, the interactive data display. She uses the built-in Italian Space Agency Science Data Center\footnote{http://www.asdc.asi.it/} (ASDC) query tool to find optical/UV data for PKS 1127-14, and adds it to the SED (see Figure~\ref{fig:load_data}). 
+
+
+
+%%The VO-compliant data is automatically added to the SED Builder and the SED Viewer, the interactive plotting display.
+
+%%The user loads PLANCK data from a local ASCII file, and broadcasts WISE data from a TOPCAT~\citep{2005ASPC..347...29T} cone search via SAMP. As both datasets are non VO-compliant, Iris opens file reader GUIs in which the user provides the mapping for the spectral, flux and flux uncertainties. %The file importers provide helpful hints for the user when filling in the forms.
+
+%%Wanting to see other published data on PKS 1127-14, the user queries the NED database for photometric data through the NED SED Service portal. The VO-compliant data is automatically added to the SED Builder and Viewer, the interactive plotting display. The user then opens the ASDC\footnote{http://www.asdc.asi.it/} query tool to grab data taken with SWIFT and GALEX (see Figure~\ref{fig:load_data}), and imports the data directly to the SED.
+
+%\subsection{Inspecting the SED}
+%\label{subsec:inspect-sed}
+
+%She switches the spectral and flux units from $\mathrm{Jy}$ vs. ${\mu}\mathrm{m}$ to $\mathrm{Jy}\mathrm{Hz}$ vs. $\mathrm{Hz}$ (Iris takes care of all unit conversions once the data is read in). The user then shifts the SED from its observed redshift of $z=1.18$ to restframe. Before starting a fitting session, she wants to remove from the SED data without flux-uncertainty measurements. For this, the user opens the Metadata Browser -- an interactive table of the SED data -- and uses a Boolean filter to dynamically select points that have uncertainty measurements. From these selected points, the user creates a new SED object that is managed separately from the original SED. The user saves the filtered, restframe SED to a VO-compliant FITS file, which can be re-read with Iris and other FITS-compliant tools.
+% SEDs are saved in VO-compliant FITS or VOTable formats which can be re-read into Iris or other programs (e.g. TOPCAT; IDL or Python interpreters).
+
+%\subsection{Fitting the SED}
+
+%%Blazar SEDs are dominated by two peaks. It has been shown that the low-energy peak, due to radio synchrotron radiation, and the higher-energy bump, due to inverse Compton radiation, can be modeled by log-parabolic distributions \citep{2006A&A...448..861M,2009A&A...501..879T}. Also present in blazars are an accretion disk and a hot dusty torus surrounding the super-massive black hole, both of which can be modeled by blackbody distributions \citep{2002ApJ...575..667D}. The user wants to model the SED pf PKS 1127-14 with a linear combination of these four models.
+
+%The user wants to model the PKS 1127-14 SED with a linear combination of four models: two logarithmic parabolas to model the radio synchrotron andinverse Compton radiation, and two black bodies to approximate the models for the hot dust component and accretion disk of the blazar; both models are built-in with Iris. 
+
+%The user starts a fitting session by opening the Fitting Tool component on the Iris desktop. The SED Viewer appends a graph for the model residuals below the original SED plot. The user adds the four models to the Components field, where she can edit the parameters by setting their inital values, freezing and thawing values, declaring the value ranges, and linking the values to other parameters in the model. 
+
+%Users can combine model functions with other functions and arithmetic terms in the Model Expression field. In this case, the user adds the models one-by-one, defining the data ranges to fit for each component, fitting them, then freezing the component afterwards. For each fit, she uses Neldermead optimization and least squares as the statistic. She then tweaks the paramters some more, fine-tuning her model, and refits the SED until she is pleased with her results (Figure \ref{fig:fitting1}).
+
+%%The user starts a fitting session by opening the Fitting Tool component on the Iris desktop. The SED Viewer appends a plot for the model residuals below the original SED plot. The user adds four built-in models: two logarithmic parabolas (\texttt{logparabola}s) for the radio synchrotron and inverse Compton radiation and two blackbodies (\texttt{blackbody}s) for the hot dust and accretion disk. The models are added to the Components field, where the model parameter values are displayed. The user double-clicks each component to edit their initial parameter values, freeze and thaw them, and set their ranges.
+%The user removes the powerlaw component, and adds four models from the Preset Components list: two logarithmic parabolas (\texttt{logparabola}s) for the radio synchrotron and inverse Compton radiation and two blackbodies (\texttt{blackbody}s) for the hot dust and accretion disk. The models are added to the Components field, where the model parameter values are displayed. Double-clicking a component allows you to edit the parameters, e.g. freeze and thaw parameters, reset their initial values, and set their minimum and maximum values.
+
+%%In the Model Expression field, the user linearly combines the models, adding and fitting them one-by-one, defining the data ranges for each component, then freezing the component afterwards. For each fit, she uses Neldermead optimization and least squares as the statistic. She then thaws all desired parameters and refits the entire SED with the same statistic and optimization (Figure \ref{fig:fitting1}).
+%In the Model Expression field, the components are combined in arbitrary ways. Each component is given an ID which is used to reference the component in the Model Expression field. The user can also set the data ranges to be fit. In this example, we linearly combine the models, adding and fitting them one-by-one, defining the data ranges for each component, then freezing the component afterwards. For each fit, we use Neldermead optimization and least squares as the statistic. We thaw all components and refit the entire SED; the result is shown in Figure \ref{fig:fitting1}.
+
+%When she is done, the user saves an XML-style file of the model that can be re-read into Iris and fit to other SED data. She also saves the fit results to a text file, which show the fit statistics, models used, and the best-fit parameter values. 
 
 \section{User Models and Templates}
 \label{sec:usermodels}
 
 Keeping with our requirements of developing an extensible SED analysis tool, we provide a user-end interface for adding custom models, templates, and template libraries for the fitting engine to use in a Custom Fit Models Manager.
 
-Sherpa, Iris' fitting engine, provides \textbf{command line functions} for users to add their own models and templates to a Sherpa session. We wrap a GUI around such functions for streamlined integration and user-friendliness.
+Sherpa, Iris' fitting engine, provides command line functions for users to add their own models and templates to a Sherpa session. We wrap a GUI around such functions for streamlined integration and user-friendliness.
 %We wrap a GUI around Sherpa's \texttt{sherpa.astro.ui.utils} functions \texttt{load\_user\_model}, \texttt{load\_table\_model}, \texttt{load\_template\_model}, and \texttt{add\_user\_pars} for streamlined integration and user-friendliness.
 The user provides the full path to the directory where the models and templates exist, as well as information about the parameters. Installing a model saves a copy of the model files in the user's home directory (in \~{}/.vao/iris/components), allowing the user to apply the models in future sessions.
 
@@ -346,8 +353,7 @@ The user provides the full path to the directory where the models and templates 
 \subsection{Custom Python Functions}
 Iris accepts custom models written as Python functions saved in *.py files. Any number of functions can be written in the file. The function must take two parameters: the first is an iterable of the model parameters, the second is a placeholder for the spectral axis, $x$, in units of Angstroms. For example, a model file for a modified black body
 \(B_{\nu}(T) \left(\nu/\nu_{0}\right)^{\beta}\)
-could be defined as in \textbf{Listing} \ref{lst:user_model_example}. User models can be arbitrarily combined with other custom or preset model functions.
-
+could be defined as in Listing\ref{lst:user_model_example}. User models can be arbitrarily combined with other custom or preset model functions.
 
 \begin{lstlisting}[style=python,
 	caption={Example of a user-defined model that can be dynamically loaded into Iris. The code implements a modified blackbody and can be combined in Iris with other built-in and custom components.},
@@ -405,6 +411,33 @@ The template model is essentially a list of table models with parameters other t
 -0.35   5000  1   /data/sed_temp_index-0.35.dat
 -0.50   5000  1   /data/sed_temp_index-0.50.dat
 \end{lstlisting}
+
+
+\section{The Iris Stack}
+\label{sec:stack}
+
+The Iris stack (Figure \ref{fig:stack}) shows how one can put the cold and technical IVOA specifications to work for scientists through higher and higher layers of abstraction: the technical details of the Virtual Observatory standards and protocols lie in the bottommost layers, the internals of the Iris building blocks lie in the middle layers, while the topmost layers express high-level user-oriented functionalities.
+
+A reader without any knowledge of programming, let alone of the VO specifications, should understand the labels used in the topmost layers of the diagram and their components (e.g. the Fitting Tool, Redshift), as long as they have some knowledge of astronomical SEDs. On the other hand, a developer would find words like framework, service, and manager quite familiar, while it takes a VO-savvy person to decode the acronyms at the bottom of the diagram.
+
+\begin{figure}
+\label{fig:stack}
+\begin{center}
+\includegraphics[width=\columnwidth]{figures/IrisStack.png}
+\caption{\textbf{The Iris Stack} With its architecture Iris allows developers to create components using higher and highet abstractions on top of web services, desktop applications, and Virtual Observatory standards and protocols. The technical specifications lie on the bottom, a middle layer provides abstractions useful to developers, and the user is only exposed to the science features. Users can also plug their code in as Python functions. The result is aimed to be both user- and developer- friendly.}
+\end{center}
+\end{figure}
+
+This fact reflects the different entry points for the different audiences of the application: core developers work at all levels of the stack, but need to lay out the foundations on top of the standard specifications; third party developers use the middle-level abstractions offered by the Iris framework, while end users can limit their interaction to familiar astronomical concepts through the application's user interface. End users can also plug in their modeling code and upload templates libraries to Iris.
+
+The color code in Figure \ref{fig:stack} adds a different dimension to this diagram and taps into a different characteristic of the Iris architecture: extensibility. In particular, blue boxes with purple letters denote extensible components of the architecture, i.e. component that offer hooks into the Iris architecture to users and developers. The orange labels, on the other hand, express components that were not even part of the Iris design, but that can be loaded in Iris as plug-ins, possibly providing an interface to access non-standard services. Some of these plug-ins, along with a description of the design of the Iris Software Development Kit, will be introduced in section \ref{sec:plugins}.
+
+The Iris development team also faced some extra challenges: our team was distributed in nature, with developers and managers working from different institutions with different tools and practices \citep{2012SPIE.8449E..0IE}. Moreover, willing to reuse existing software instead of reinventing the proverbial wheel, we had to integrate different existing software components in a seamless way.
+
+In summary, the Iris framework, which we will describe more in detail in the following sections, was designed to address several different requirements: (i) functional requirements gathered by the Iris team's lead scientists; (ii) functional requirements unknown at development-time; (iii) the distributed nature of the Iris development team; and (iv) the willingness to bring existing tools and services together in a single application.
+
+The Iris stack offers a non-technical view of the Iris architecture and design. While it shows effectively how we tried to abstract end users and developers from the VO specifications and from the specifics of the Iris internals, it does not express the technical solutions that we employed to achieve such extensible architecture and to meet the aforementioned requirements. These details are discussed in the remaining sections.
+
 
 
 \section{A loosely coupled, event-driven, extensible architecture}
