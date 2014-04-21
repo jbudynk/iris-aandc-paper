@@ -616,11 +616,11 @@ Iris is packaged with a portal to the NED SED Service\footnote{http://ned.ipac.c
 In the context of the VAO development of Iris, the NASA/IPAC Extragalactic Database (NED) adapted its long standing photometry and spectral energy distribution (SED) service to conform as closely as practicable to the relevant IVOA recommendations in order to seamlessly deliver photometric data from the collection into Iris. The objective for NED was to provide a working reference service for the development of Iris as well as to serve as a working prototype for new data protocols for spectro-photometric data being developed by the IVOA.
 
 The NED SED Service returns data and information from the NED photometry collection \citep{2007ASPC..376..153M}. The NED SED Service provides three types of query:
-\begin{itemize}
- \item \textbf{Information Discovery:} List objects with available photometry (SED) given a sky position (RA and Dec) and angular size.  Also called a \emph{data discovery} query.
- \item \textbf{Information Availability:} For a given named object (`Target'), how many SED photometric data points are available, if any.
- \item \textbf{Data Retrieval:} For a given named object, return the photometric return the available data in an IVOA Spectrum Data Model compatible VOTable.
-\end{itemize}
+\begin{description}
+ \item[Information Discovery] List objects with available photometry (SED) given a sky position (RA and Dec) and angular size.  Also called a \emph{data discovery} query.
+ \item[Information Availability] For a given named object (`Target'), how many SED photometric data points are available, if any.
+ \item[Data Retrieval] For a given named object, return the photometric return the available data in an IVOA Spectrum Data Model compatible VOTable.
+\end{description}
 
 HTTP requests and responses conform to the IVOA Simple Spectral Access Protocol Version 1.04 (SSAP;~\citep{2012arXiv1203.5725T}), with VOTable responses. Iris employs the Data Retrieval query in its NED SED Service client, and stores the response as a Segment. Photometric points with spectral line-based values and upper- and lower- limit values are excluded from the response.
 
