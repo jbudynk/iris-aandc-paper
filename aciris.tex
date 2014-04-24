@@ -306,7 +306,7 @@ When the user is done building and editing the SED, she begins the fitting sessi
 
 Figure~\ref{fig:fitting1} shows the final model for PKS 1127-14 overlaid on the input data and, in the lower panel, the fit residuals.
 
-When the user is satisfied with her fitting results, she saves an XML-style file of the model that can be re-read into Iris and fit to other SED data. She also saves the fit results to a text file, which shows the parameters of the fit and the details about each model component, with the best-fit parameter values.
+When the user is satisfied with her fitting results, she saves an XML-style file of the model that can be re-read into Iris and fit to other SED data. She also saves the fit results to a text file, that shows the parameters of the fit and the details about each model component, with the best-fit parameter values.
 
 
 %\section{Iris Use Case: Fitting a SED}
@@ -414,7 +414,7 @@ def modified_blackbody(p, x):
 A table model is a single template, having just the $x$ and $y$ coordiantes. Iris accepts two-columned ASCII files as table models, following the convention where the first column is the spectral values (in Angstroms) and the second contains the fluxes (in $\mathrm{photons}/\mathrm{s}/\mathrm{cm}^{2}/{\AA}$). The fit returns the normalization constant (or amplitude) of the model.
 
 \subsection{Template Libraries}
-The template model is essentially a list of table models with parameters other than the amplitude. Like the \texttt{load\_template\_model} function in Sherpa, the user must create an index file which lists the parameter values of the templates and the full path to the template those parameter values describe (see Listing \ref{lst:templateconfig} for an example). Sherpa uses a grid-search method to find the best-fit template.
+The template model is essentially a list of table models with parameters other than the amplitude. Like the \texttt{load\_template\_model} function in Sherpa, the user must create an index file that lists the parameter values of the templates and the full path to the template those parameter values describe (see Listing \ref{lst:templateconfig} for an example). Sherpa uses a grid-search method to find the best-fit template.
 
 
 \begin{lstlisting}[style=code,
@@ -484,7 +484,7 @@ But it was not just a matter of risk management: this design pattern also suppor
 The architecture supporting the implementation of such requirements has different components that can be mapped to the Model-View-Controller (MVC) design pattern:
 \begin{description}
 \item[SEDLib] a basic I/O library provides classes the Model components of MVC. Unsurprisingly, SEDLib does so by implementing a Data Model specification defined by the IVOA. Such specification defines both the logical breakdown of spectral datasets, and the serialization in some standard file formats. So, on one end, SEDlib can perform the basic read/write operations on spectrophotometric files, while on the other it provides the data structures that client components can use and exchange.
-\item[SEDManager] The MVC Controller role is played in Iris by the SEDManager, which is itself defined as an Interface. The manager works as a data storage for SEDLib instances that the different Iris components can share.
+\item[SEDManager] The MVC Controller role is played in Iris by the SEDManager, that is itself defined as an Interface. The manager works as a data storage for SEDLib instances that the different Iris components can share.
 \item[Components] The actual Iris functionality is implemented by the Iris Components. They can be seen as the Views in the MVC pattern (or, more generally, they can provide any number of Views), since they present the data stored in the Controller to the user, query the Controller itself, and act upon the Models, i.e. the SED objects provided by SEDLib.
 \item[Events] Views can be notified of changes in the Models by Events, if they implement the relative Listener interface and have been registered to the Events Queue. Events usually have a payload with more information about their content, and a pointer to the Model instances involved.
 \end{description}
@@ -497,9 +497,9 @@ Components are thus agents that cohoperate by attaching themselves to a common \
 
 We achieve loose coupling by an extensive use of Java Interfaces: components, events, and event listeners, for example, are all defined by interfaces whose implementation can, to some extent, be freely interchangeable.
 
-Moreover, Inversion of Control (Figure~\ref{fig:ioc}) is employed to decouple the implementation of components from the run time context: methods in the Interface are callbacks, and some of these callbacks get Interface-typed arguments which provide them context instances during the application execution. For this reason, this pattern is also sometimes referred to as \emph{Dependency Injection}\footnote{There is, to be precise, a subtle but significant difference between Dependency Injection and Inversion of Control, the first effectively being a special case of the second.}.
+Moreover, Inversion of Control (Figure~\ref{fig:ioc}) is employed to decouple the implementation of components from the run time context: methods in the Interface are callbacks, and some of these callbacks get Interface-typed arguments that provide them context instances during the application execution. For this reason, this pattern is also sometimes referred to as \emph{Dependency Injection}\footnote{There is, to be precise, a subtle but significant difference between Dependency Injection and Inversion of Control, the first effectively being a special case of the second.}.
 
-Consider, for example, Iris Components: they are the main providers of Iris functionality, and they can correspond to buttons and menu items on the Iris desktop, loggers, data handlers, etc. They must implement the IrisComponent interface, which is listed in Listing \ref{lst:component}.
+Consider, for example, Iris Components: they are the main providers of Iris functionality, and they can correspond to buttons and menu items on the Iris desktop, loggers, data handlers, etc. They must implement the IrisComponent interface, listed in Listing \ref{lst:component}.
 
 
 \begin{lstlisting}[style=java,
@@ -563,7 +563,7 @@ public interface IrisComponent {
 }
 \end{lstlisting}
 
-At startup the Iris application reads the list of Components to be initiated, and calls their \verb|init| call-back, which is in turn passed useful information like a reference to the SEDManager, or hooks to the application environment.
+At startup the Iris application reads the list of Components to be initiated, and calls their \verb|init| call-back, that is in turn passed useful information like a reference to the SEDManager, or hooks to the application environment.
 
 The advantages of this architecture are both functional and non functional: it helped our heterogeneous developing team to work in a loosely coupled way, reducing the overall project risk, but it also provides the extensible framework we were seeking in the first place. As a matter of fact, plug-ins that can be loaded at run time implement the same interfaces that the built-in components do, and they are instantiated exactly the same way. The only difference is in the timing: built-in Components get instantiated when the application itself is intialized, while plug-ins can be instantiated and discarded at any time during the application execution.
 
@@ -614,7 +614,7 @@ This allows users to save a standardized version of the file that can be easily 
 \subsection{NED SED Service}
 \label{subsec:ned}
 
-Iris is packaged with a portal to the NED SED Service\footnote{http://ned.ipac.caltech.edu} which, given a target name, retrieves all photometric data in NED associated to the source with that target name, storing it as a SED Segment.
+Iris is packaged with a portal to the NED SED Service\footnote{http://ned.ipac.caltech.edu} that, given a target name, retrieves all photometric data in NED associated to the source with that target name, storing it as a SED Segment.
 
 In the context of the VAO development of Iris, the NASA/IPAC Extragalactic Database (NED) adapted its long standing photometry and spectral energy distribution (SED) service to conform as closely as practicable to the relevant IVOA recommendations in order to seamlessly deliver photometric data from the collection into Iris. The objective for NED was to provide a working reference service for the development of Iris as well as to serve as a working prototype for new data protocols for spectro-photometric data being developed by the IVOA.
 
@@ -680,7 +680,7 @@ Redshifting an SED in Iris refers to cosmological redshift. Because the apparent
 f_{z_{f}}(\lambda) = f_{z_{i}}(\lambda) \frac{\sum_{k=1}^N (f_{z_{i}}(\lambda_{k+1})+f_{z_{i}}(\lambda_{k}))}{\sum_{k=1}^N (f_{z_{f}}(\lambda_{k+1})+f_{z_{f}}(\lambda_{k}))},
 \end{equation}
 
-where $f_{z_i}$ is the observed flux at the initial (observed) redshift $z_i$, and $f_{z_f}$ is the flux at the final (target) redshift $z_f$. In \verb|sherpa-samp|, we extend the astLib\footnote{http://astlib.sourceforge.net/} \textit{astSED} class which implements Equation~\ref{eq:redshift}.
+where $f_{z_i}$ is the observed flux at the initial (observed) redshift $z_i$, and $f_{z_f}$ is the flux at the final (target) redshift $z_f$. In \verb|sherpa-samp|, we extend the astLib\footnote{http://astlib.sourceforge.net/} \textit{astSED} class that implements Equation~\ref{eq:redshift}.
 
 From the user's perspective, she supplies the initial and final redshift of the SED and clicks ``Create New SED''.
 
@@ -688,7 +688,7 @@ From the user's perspective, she supplies the initial and final redshift of the 
 Iris provides 1D interpolation along the spectral axis. There are three interpolation options: linear, linear spline, and nearest neighbor. Interpolation may be carried out on a linear or logarithmic scale. Users may choose the number of bins, the spectral range over which to interpolate, and may choose to smooth the resultant SED via a boxcar method.
 
 \subsubsection{Integration}
-The Integration tool was developed to make estimating integrated fluxes of a SED quick and painless. Iris provides two methods of integration: (i) through a user-defined passband, and (ii) through a photometric filter. The first option lets the user specify the spectral range in wavelength, frequency, or energy units (Angstroms, Hz, and keV, respectively) to integrate under. The second estimates the integrated flux measured through any of the photometric filters provided by the Spanish Virtual Observatory's (SVO's) Filter Profile Service\footnote{http://svo2.cab.inta-csic.es/theory/fps/index.php} \citep{2013arXiv1312.3249S}. We chose the SVO's Filter Profile Service because of its extensive collection (over 1000 filters at IR, optical and UV instruments) and of its VO-compliancy. The user chooses from a list of filters which can be searched by double-clicking on an instrument name, or by searching for a string in the browser. The user sees the min, max and effective wavelengths of the filters before applying the filter to the SED.
+The Integration tool was developed to make estimating integrated fluxes of a SED quick and painless. Iris provides two methods of integration: (i) through a user-defined passband, and (ii) through a photometric filter. The first option lets the user specify the spectral range in wavelength, frequency, or energy units (Angstroms, Hz, and keV, respectively) to integrate under. The second estimates the integrated flux measured through any of the photometric filters provided by the Spanish Virtual Observatory's (SVO's) Filter Profile Service\footnote{http://svo2.cab.inta-csic.es/theory/fps/index.php} \citep{2013arXiv1312.3249S}. We chose the SVO's Filter Profile Service because of its extensive collection (over 1000 filters at IR, optical and UV instruments) and of its VO-compliancy. The user chooses from a list of filters that can be searched by double-clicking on an instrument name, or by searching for a string in the browser. The user sees the min, max and effective wavelengths of the filters before applying the filter to the SED.
 %How does it work in the background??
 Both methods return the effective wavelength of the passband in Angstroms and the calculated flux in Janskys. The user can export the data to a new SED or save the results to a simple ASCII formatted file.
 
@@ -774,7 +774,7 @@ A plug-in for providing Iris with a rich graphical user interface to query their
 
 While the ASDC data query tool is now part of the Iris distribution, it still provides a very good example of how a plug-in can be integrated seamlessly in the Iris framework to add specific value to it. Integration can be so seamless, actually, that including the plug-in into the main Iris distribution is almost exclusively a matter of configuration rather than of coding.
 
-The ASDC data query tool extends the capabilities of the SED Builder by providing a rich graphical user interface that allows users to check what archives to query, and since the ASDC query is a positional cone search, the client provides different adjustable search radii for each catalog which default to reasonable values consistent with the resolutive power of the individual instruments.
+The ASDC data query tool extends the capabilities of the SED Builder by providing a rich graphical user interface that allows users to check what archives to query, and since the ASDC query is a positional cone search, the client provides different adjustable search radii for each catalog that default to reasonable values consistent with the resolutive power of the individual instruments.
 
 Moreover, the tool allows to query for specific observation time ranges, thus allowing basic time domain analysis of the SEDs.
 
