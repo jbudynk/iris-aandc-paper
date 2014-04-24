@@ -24,7 +24,7 @@
 %% $Id: elsarticle-template-num.tex 4 2009-10-24 08:22:58Z rishi $
 %%
 %%
-\documentclass[5p]{elsarticle}
+\documentclass[final,5p]{elsarticle}
 
 %% Use the option review to obtain double line spacing
 %% \documentclass[preprint,review,12pt]{elsarticle}
@@ -85,6 +85,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{fancyref}
 \usepackage{hyperref}
+\usepackage{caption}
 \hypersetup{colorlinks=false,pdfborder={0 0 0},}
 
 \newcommand{\truncateit}[1]{\truncate{0.8\textwidth}{#1}}
@@ -280,11 +281,17 @@ To showcase its main functionalities, we present a brief, illustrative use-case 
 \label{subsec:usecase}
 
 \begin{figure*}
-\label{fig:load_data}
-\begin{center}
+\centering
 \includegraphics[height=0.3\textheight]{figures/built-in-visuals-loading1.png}
 \caption{\textbf{Building the SED of blazar PKS 1127-14 in Iris} \textit{Top-left:} Data from the NED SED Service, a local file, and from TOPCAT are managed in the SED Builder. \textit{Bottom-left:} The various data Segments plotted in $\mathrm{\nu F \left( \nu \right)}$ units inside the SED Viewer. Squares show data with flux uncertainties, whereas the pink diamonds denote points without associated uncertainties. Each Segment in the SED Builder is plotted in a different color. Black squares are the data taken from NED; the pink sqaures in the radio are the data from PLANCK; and the red, yellow, blue, and green squares in the near-IR are the for WISE bands. \textit{Right:} An ASDC Data Query form for PKS 1127-14. The user searches for data between specified dates and available instruments (Swift and GALEX in this case). The data has been added to the open SED \texttt{PKS1127-14}.}
-\end{center}
+\label{fig:load_data}
+\end{figure*}
+
+\begin{figure*}
+\centering
+\includegraphics[height=0.3\textheight]{figures/fitting-1.png}
+\caption{\textbf{Fitting Visualization} Visualization of a linear combination of log-parabolas and blackbody distributions for FRSQ blazar PKS 1127-145, fit with Neldermead optimization and least-square statistics. \textit{Left:} The best fit linear combination overlaid on the SED data as a red curve. The blue line shows the spectral range over which the data was fit. Below the main plot are residuals of the fitted curve, in dex units. \textit{Top-right:} The fitting options and results. Here, the user chooses between Neldermead, Levenberg-Markwardt, and Monte-Carlo optimization and various least square and $\mathrm{\chi}^{2}$ statisitcs. The fit statistics are reported here after the fit has been performed. \textit{Bottom-right:} The Fitting Tool window. The model components used in the fit and their fitted parameter values are listed in the Components field. Below that is the Model Expression, in which the components are linearly combined. Note that components are referenced by the \textit{c\#} suffix of the component name.}
+\label{fig:fitting1}
 \end{figure*}
 
 An Iris session begins with populating a SED. A user loads a local ASCII file of PLANCK data, a WISE dataset from TOPCAT~\citep{2005ASPC..347...29T} through a SAMP message, and all data associated with PKS 1127-14 in NED with the NED SED Service portal. She also uses the built-in Italian Space Agency Science Data Center\footnote{http://www.asdc.asi.it/} (ASDC) query tool to find optical/UV data for PKS 1127-14, and adds it to the SED (see Figure~\ref{fig:load_data}).
@@ -296,14 +303,6 @@ The user also employs the Science Tools, an Iris built-in component that provide
 She also filters out all the points devoid of errors using the metadata browser filtering features.
 
 When the user is done building and editing the SED, she begins the fitting session. In the fitting tool, the user can build a model expression as an arbitrary combination of model components. Choosing from a list of astrophysical and mathematical models built-in in Iris, she fits PKS 1127-14 with a linear combination of four models: two logarithmic parabolas to model the radio synchrotron and inverse Compton radiation, and two blackbodies to approximate the models for the hot dust component and accretion disk of the blazar. The fit is performed using Neldermead optimization and least square statistics. The user has fine control over the parameters, including setting initial values, the range of the values, freezing and thawing parameters, and linking model parameters to other parameters in the model expression. The spectral range to which each model component must be applied is also used to make control the fit: finally, confidence interval are computed for the overall model parameters.
-
-\begin{figure*}
-\label{fig:fitting1}
-\begin{center}
-\includegraphics[height=0.3\textheight]{figures/fitting-1.png}
-\caption{\textbf{Fitting Visualization} Visualization of a linear combination of log-parabolas and blackbody distributions for FRSQ blazar PKS 1127-145, fit with Neldermead optimization and least-square statistics. \textit{Left:} The best fit linear combination overlaid on the SED data as a red curve. The blue line shows the spectral range over which the data was fit. Below the main plot are residuals of the fitted curve, in dex units. \textit{Top-right:} The fitting options and results. Here, the user chooses between Neldermead, Levenberg-Markwardt, and Monte-Carlo optimization and various least square and $\mathrm{\chi}^{2}$ statisitcs. The fit statistics are reported here after the fit has been performed. \textit{Bottom-right:} The Fitting Tool window. The model components used in the fit and their fitted parameter values are listed in the Components field. Below that is the Model Expression, in which the components are linearly combined. Note that components are referenced by the \textit{c\#} suffix of the component name.}
-\end{center}
-\end{figure*}
 
 Figure~\ref{fig:fitting1} shows the final model for PKS 1127-14 overlaid on the input data and, in the lower panel, the fit residuals.
 
@@ -462,9 +461,17 @@ The Iris stack offers a non-technical view of the Iris architecture and design. 
 
 \begin{figure*}
 \begin{center}
-\includegraphics[width=0.7\textwidth]{figures/IrisDiagrams.1.png}
+\includegraphics[width=0.6\textwidth]{figures/IrisDiagrams.1.png}
 \caption{\textbf{The Iris loosely coupled, extensible architecture} Information freely flows among built-in and third-party components provided as plug-ins. A SED Manager gives components access to the state of the SEDs in the user's workspace, while dynamic changes in such state are announced through events that are notified to the subscribed listeners. A plug-in manager allows users to install and uninstall plug-ins on the fly.}
 \label{fig:architecture}
+\end{center}
+\end{figure*}
+
+\begin{figure*}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{figures/IrisDiagrams.002.png}
+\caption{\textbf{Inversion of Control} IoC is a design pattern that promotes decoupling of software components so that they can easily be replaced by different implementations, with the actual binding often happening at runtime according to some configuration. This pattern, however, also allows new components to be added at any time during the application lifecycle: a common framework (Iris Common) can be shared as a middle layer among implementations, and a container (the Iris application) can bind components together on the fly. Components can subscribe to events and react to them.}
+\label{fig:ioc}
 \end{center}
 \end{figure*}
 
@@ -487,14 +494,6 @@ In summary, Components (Views) can be completely disentangled from each other an
 Components are thus agents that cohoperate by attaching themselves to a common \emph{bus} where the SEDManager provides the memory, and Events guarantee the flow of information. (see Figure~\ref{fig:architecture})
 
 \subsection{Inversion of Control}
-
-\begin{figure*}
-\begin{center}
-\includegraphics[width=0.5\textwidth]{figures/IrisDiagrams.002.png}
-\caption{\textbf{Inversion of Control} IoC is a design pattern that promotes decoupling of software components so that they can easily be replaced by different implementations, with the actual binding often happening at runtime according to some configuration. This pattern, however, also allows new components to be added at any time during the application lifecycle: a common framework (Iris Common) can be shared as a middle layer among implementations, and a container (the Iris application) can bind components together on the fly. Components can subscribe to events and react to them.}
-\label{fig:ioc}
-\end{center}
-\end{figure*}
 
 We achieve loose coupling by an extensive use of Java Interfaces: components, events, and event listeners, for example, are all defined by interfaces whose implementation can, to some extent, be freely interchangeable.
 
@@ -845,9 +844,9 @@ The Iris website contains further documentation on how to write plug-ins, and yo
 \section{Future Plans}
 We are working on improving Iris in several ways. With the VAO shutting down in 2014, the development of Iris has been taken over by the Chandra CXC group at SAO.
 
-We are also exploring solutions to overcome one of the limitations in the current code, namely the handling of high resolution spectra, that is mostly due to a visualization issue.
-
 While the current Software Development Kit is very advanced for letting plug-ins contribute SEDs and SED segments to the user's workspace, we want to improve the ways in which plug-ins can interact with the visualization and fitting code, decoupling Specview and Sherpa.
+
+We are also exploring solutions to overcome one of the limitations in the current code, namely the handling of high resolution spectra, that is mostly due to a visualization issue.
 
 Several improvements will derive from the inclusion in Iris of the latest Sherpa version, and in particular of the new code for interpolating templates in template fitting. This will allow users to combine templates with other templates and functions and compute photometric redshifts through template fitting, for instance.
 
