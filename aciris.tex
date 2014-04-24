@@ -222,7 +222,7 @@ With Iris users may populate SEDs with data from files, built-in portals to data
 
 %%Iris was devoted to provide functionality in a specific scientific domain, namely the analysis of broad-band SEDs. This requirement clearly defines the semantic scope of the  Iris extensible framework, and provides a clear abstraction layer to both users and developers, inside and outside of the development team.
 
-Iris was developed inside the framework of the VAO science applications
+Iris was developed inside the framework of the VAO science applications: the different components were contributed by developers from the Smithsonian Astrophysical Observatory, the Space Telescope Science Institute, and the NASA Infrared Processing and Analysis Center. Quality Assurance and testing were lead by team members at the National Optical Astronomy Observatory and Space Telescope Science Institute.
 
 In this paper we present the Iris application, its design, and how its architecture makes Iris extensible through the use of plug-ins. In section \ref{sec:overview} we briefly explore the landscape of SED applications and analysis tools which Iris joined, and provide an example use-case of Iris. We explore how astronomers can include their own models or templates as Python functions in section \ref{sec:usermodels}. An introduction to the Iris' general architecture (the Iris \emph{stack}) is illustrated in section \ref{sec:stack}. A more detailed overview of the Iris extensible framework design (section \ref{sec:architecture}) is followed by a detailed description of the more advanced Iris functionalities (section \ref{sec:components}). Finally, we describe the Iris software development kit, including a ``How-to'' on extending Iris with plug-ins (section \ref{sec:plugins}).
 
@@ -766,7 +766,7 @@ Components can attach arbitrary objects to the SEDs managed by the SEDManager. T
 
 
 \subsection{Plug-in examples}
-\subsubsection{ASDC - stable}
+\subsubsection{ASDC --- stable}
 The Italian Space Agency Science Data Center (ASDC) hosts a database with tens of catalogs in a very wide range of wavelengths, also providing time domain information.
 
 A plug-in for providing Iris with a rich graphical user interface to query their database was developed by the ASDC in a collaboration between the ASDC and the Iris teams. The plug-in became part of the main Iris distribution in v2.0 and provided a valuable test bench to review, validate, and improve the Iris Software Development Kit.
@@ -785,7 +785,7 @@ This component proves several points about the Iris framework and SDK:
 provides, one can leverage the existing components with just a few lines of code and then start adding value to the entire application.
 \end{description}
 
-\subsubsection{Vizier - experimental}
+\subsubsection{Vizier --- experimental}
 \label{sec:asdc}
 Experimental plug-ins are shipped with Iris but they can only be activated by turning on switches on the Iris command line. For instance, if one starts Iris with the command \verb|./Iris --vizier| an experimental plugin for the CDS Vizier photometric service gets loaded in the usual Iris desktop.
 
@@ -793,7 +793,7 @@ While this component is, at the time of this writing, still experimental, it sho
 
 As for the ASDC plug-in, this component shows that one can use Iris and its framework to rapidly build an adapter from a dedicated service interface, leveraging the particular specs of the service, so to make datasets interoperable with the other Iris tools, third party plug-ins, and possibly other VO tools.
 
-\subsubsection{R - experimental}
+\subsubsection{R --- experimental}
 A highly experimental proof-of-concept plug-in was developed to explore the possibility of interfacing Iris with rich analysis environments like R. The plug-in shows how one can \emph{beam} data from Iris to R and trigger some analysis on the dataset in R.
 
 
@@ -841,20 +841,35 @@ One can start from this dummy project, inspect the source code, make changes to 
 
 The Iris website contains further documentation on how to write plug-ins, and you can contact the authors of this paper for further information.
 
-\section{Conclusion}
-\label{sec:conclusion}
+\section{Future Plans}
+We are working on improving Iris in several ways. With the VAO shutting down in 2014, the development of Iris has been taken over by the Chandra CXC group at SAO.
 
-To summarize, Iris provides:
-\begin{itemize}
-\item built-in capabilities for building, viewing, and analyzing broad-band spectro-photometric SEDs;
-\item seamless integration between existing and new code in Python and Java;
-\item a python framework for fitting user provided models and templates;
-\item interoperability with virtual observatory tools through the Simple Messaging Application Protocol (SAMP);
-\item a Java Software Development Kit (SDK) that allows developers to extend the Iris functionalities.
-\end{itemize}
+We are also exploring solutions to overcome one of the limitations in the current code, namely the handling of high resolution spectra, that is mostly due to a visualization issue.
+
+While the current Software Development Kit is very advanced for letting plug-ins contribute SEDs and SED segments to the user's workspace, we want to improve the ways in which plug-ins can interact with the visualization and fitting code, decoupling Specview and Sherpa.
+
+Several improvements will derive from the inclusion in Iris of the latest Sherpa version, and in particular of the new code for interpolating templates in template fitting. This will allow users to combine templates with other templates and functions and compute photometric redshifts through template fitting, for instance.
+
+Also, we want to provide finer grained control over the visualization and manipulation of individual components in the model expressions.
+
+From the user interface point of view, we are planning to provide Python bindings to enhance the integration of Iris in customized, complex scientific workflows.
+
+\section{Conclusions}
+\label{sec:conclusions}
+
+Iris is a Virtual Observatory application designed with the goal of streamlining the construction of broadband spectral energy distributions while providing flexible and robust tools for their analysis, with a stress on interoperability and extensibility.
+
+To summarize, Iris provides: built-in capabilities for building, viewing, and analyzing broad-band spectro-photometric SEDs; a Python framework for fitting user-provided models and templates; interoperability with Virtual Observatory tools through the Simple Messaging Application Protocol (SAMP).
+
+The Iris layered architecture takes advantage of the Virtual Observatory standards and protocols without exposing their complexity to the final users, who still benefit from the added interoperability. At the same time, developers can use a middle layer of abstraction that exposes the domain objects, i.e. spectro-photometric SEDs, and the user's workspace, in a clean and consistent way through a Java software development kit.
+
+This way Iris combines several existing software components with new dedicated software, and provides hooks for astronomer and software developers that want to leverage the general interoperable framework while pluggin in their own code.
+
+Iris is available as an Open Source project, and can be downloaded as a binary or source distribution for Linux and Mac OS X.
+
 
 \section*{Acknowledgements}
-This work has made use of the NASA/IPAC Extragalactic Database (NED) which is operated by the Jet Propulsion Laboratory, California Institute of Technology, under contract with the National Aeronautics and Space Administration.
+Support for the development of Iris was providedby the Virtual Astronomical Observatory contract AST0834235. Support for Sherpa isprovided by the National Aeronautics and Space Administration through the ChandraX-ray Center, which is operated by the Smithsonian Astrophysical Observatory forand on behalf of the National Aeronautics and Space Administration contract NAS8-03060. Support for Specview is provided by the Space Telescope Science Institute,operated by the Association of Universities for Research in Astronomy, Inc., underNational Aeronautics and Space Administration contract NAS5-26555. This researchhas made use of the NASA/IPAC Extragalactic Database (NED) which is operated bythe Jet Propulsion Laboratory, California Institute of Technology, under contract withthe National Aeronautics and Space Administration.
 
 \bibliography{aciris.bib}
 
