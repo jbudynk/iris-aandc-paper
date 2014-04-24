@@ -123,7 +123,8 @@
 %% \address{Address\fnref{label3}}
 %% \fntext[label3]{}
 
-\title{Iris: an Extensible Application for Building and Analyzing Spectral Energy Distributions}
+\title{Iris: an Extensible Application for Building and Analyzing\\
+Spectral Energy Distributions}
 
 \author[sao]{Omar Laurino~\corref{cor}}
 \cortext[cor]{Corresponding author}
@@ -198,7 +199,7 @@ Iris is an extensible application that provides astronomers with a user-friendly
 
 \end{frontmatter}
 
-\bibliographystyle{elsarticle-num}
+\bibliographystyle{model2-names}
 
 
 \label{sec:introduction}
@@ -221,6 +222,8 @@ With Iris users may populate SEDs with data from files, built-in portals to data
 
 %%Iris was devoted to provide functionality in a specific scientific domain, namely the analysis of broad-band SEDs. This requirement clearly defines the semantic scope of the  Iris extensible framework, and provides a clear abstraction layer to both users and developers, inside and outside of the development team.
 
+Iris was developed inside the framework of the VAO science applications
+
 In this paper we present the Iris application, its design, and how its architecture makes Iris extensible through the use of plug-ins. In section \ref{sec:overview} we briefly explore the landscape of SED applications and analysis tools which Iris joined, and provide an example use-case of Iris. We explore how astronomers can include their own models or templates as Python functions in section \ref{sec:usermodels}. An introduction to the Iris' general architecture (the Iris \emph{stack}) is illustrated in section \ref{sec:stack}. A more detailed overview of the Iris extensible framework design (section \ref{sec:architecture}) is followed by a detailed description of the more advanced Iris functionalities (section \ref{sec:components}). Finally, we describe the Iris software development kit, including a ``How-to'' on extending Iris with plug-ins (section \ref{sec:plugins}).
 
 Sections \ref{sec:architecture} and \ref{sec:plugins} are targeted to software developers.
@@ -232,7 +235,7 @@ The paper refers to version 2.0.1 of Iris. Iris can be downloaded as a binary ar
 
 Fitting spectral energy distributions allows astronomers to estimate fundamental physical properties like stellar mass, star formation rates, dust content and overall environments of astronomical objects (e.g. \citep{1998AJ....115.1329S}, \citep{2001ApJS..137..139S}, \citep{2007ApJS..169..328R}, and many others). With deeper wide-field surveys and increasing numbers of datasets over the years, astronomers have been able to use multi-wavelength SEDs more frequently for their research. As such, many robust SED analysis codes have been created to help astronomers model, fit, and derive physical quantities from SEDs \citep{2011Ap&SS.331....1W,2013ARA&A..51..393C}. These widely-used codes implement a diverse set of methods, for instance: inversion (\texttt{PAHFIT} \citep{2007ApJ...656..770S}, \texttt{STAR\-LIGHT} \cite{2004MNRAS.355..273C}), principal component analysis \citep{2009MNRAS.394.1496B}, $\mathrm{\chi}^{2}$-minimization codes (\texttt{Le Phare} \citep{1999MNRAS.310..540A}, \texttt{hyperz} \citep{2000A&A...363..476B}), and Bayesian inference (\texttt{GalMC} \citep{2011ApJ...737...47A}; \texttt{VOSA} \citep{2008A&A...492..277B}; \texttt{BPZ} \citep{2000ApJ...536..571B}).
 
-Most distributed fitting packages are tailored for specific data sets or spectral ranges (e.g. PAHFIT, STAR\-LIGHT), providing robust fitting methods and results. They require the data to be in a specific format with specific units in order for the tool to work properly. When fitting a broadband SED that spans over decades in the spectrum, the astronomer will typically gather datasets from different public archives and colleagues in order to add such data to their own. More often than not, the datasets are stored in different file formats and units. 
+Most distributed fitting packages are tailored for specific data sets or spectral ranges (e.g. \texttt{PAHFIT}, \texttt{STAR\-LIGHT}), providing robust fitting methods and results. They require the data to be in a specific format with specific units in order for the tool to work properly. When fitting a broadband SED that spans over decades in the spectrum, the astronomer will typically gather datasets from different public archives and colleagues in order to add such data to their own. More often than not, the datasets are stored in different file formats and units. 
 %and converting the data to an ingestible format becomes a tedious task.
 The user must provide their own methods to extract the necessary data from each file, homogenize the units, and output a file in the format supported by the tool; converting the data to a supported format may easily become a tedious task with each additional dataset.
 
