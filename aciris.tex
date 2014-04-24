@@ -570,8 +570,7 @@ The advantages of this architecture are both functional and non functional: it h
 
 \section{Iris Built-in Components}
 \label{sec:components}
-
-\subsection{SED Builder}
+In the previous section, we discussed the architecture of Iris and how the different Components in Iris communicate. Each Component performs one or more SED-related tasks in Iris, like building SEDs from multiple sources and fine-tuned SED modeling.  Here, we discuss what the Components do in terms of the science domain and how they do it, including descriptions of the autonomous software used to build Iris: Specview, Sherpa and the NED SED Service.
 
 \begin{figure}
 \begin{center}
@@ -579,6 +578,8 @@ The advantages of this architecture are both functional and non functional: it h
 \caption{\textit{\textbf{\label{fig:sed_builder} SED Builder}} An example view of the SED Builder. On the left side of the window is a list of SEDs open for analysis; in this case, \textit{FilterSed} is selected. The Segments or components that constitute \textit{FilterSed} are shown in the Segments section. Segments may be managed separately. Highlighed SEDs or Segments may be edited, removed, saved or broadcast to an external SAMP-enabled application. New Segments and SEDs are added to the Iris session through the SED Builder. }
 \end{center}
 \end{figure}
+
+\subsection{SED Builder}
 
 Users manage SEDs through the SED Builder (Figure~\ref{fig:sed_builder}). From the Builder, users can add, edit, remove, and save SEDs. Users can also transfer data seamlessly to other VO-enabled applications through SAMP messages from the Builder. Any number of SEDs can be analyzed in an Iris session. Each SED has a unique identifier that is set by default when a new SED is created, but can be changed by the user. The user switches between SEDs by clicking on a SED name in the Open SEDs field; the visualizer will automatically update to the selected SED.
 
