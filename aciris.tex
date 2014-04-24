@@ -461,7 +461,7 @@ The Iris stack offers a non-technical view of the Iris architecture and design. 
 
 \begin{figure*}
 \begin{center}
-\includegraphics[width=0.6\textwidth]{figures/IrisDiagrams.1.png}
+\includegraphics[width=0.6\textwidth]{figures/IrisDiagrams.001.png}
 \caption{\textbf{The Iris loosely coupled, extensible architecture} Information freely flows among built-in and third-party components provided as plug-ins. A SED Manager gives components access to the state of the SEDs in the user's workspace, while dynamic changes in such state are announced through events that are notified to the subscribed listeners. A plug-in manager allows users to install and uninstall plug-ins on the fly.}
 \label{fig:architecture}
 \end{center}
@@ -469,7 +469,7 @@ The Iris stack offers a non-technical view of the Iris architecture and design. 
 
 \begin{figure*}
 \begin{center}
-\includegraphics[width=0.6\textwidth]{figures/IrisDiagrams.002.png}
+\includegraphics[width=0.6\textwidth]{figures/IrisDiagrams.003.png}
 \caption{\textbf{Inversion of Control} IoC is a design pattern that promotes decoupling of software components so that they can easily be replaced by different implementations, with the actual binding often happening at runtime according to some configuration. This pattern, however, also allows new components to be added at any time during the application lifecycle: a common framework (Iris Common) can be shared as a middle layer among implementations, and a container (the Iris application) can bind components together on the fly. Components can subscribe to events and react to them.}
 \label{fig:ioc}
 \end{center}
@@ -572,12 +572,13 @@ The advantages of this architecture are both functional and non functional: it h
 
 In the previous section, we discussed the architecture of Iris and how the different Components in Iris communicate. Each Component performs one or more SED-related tasks in Iris, like building SEDs from multiple sources and fine-tuned SED modeling.  Here, we discuss what the Components do in terms of the science domain and how they do it, including descriptions of the autonomous software used to build Iris: Specview, Sherpa and the NED SED Service.
 
-\begin{figure}
+\begin{figure*}
 \begin{center}
-\includegraphics[width=\columnwidth]{figures/sed_builder.png}
-\caption{\textit{\textbf{\label{fig:sed_builder} SED Builder}} An example view of the SED Builder. On the left side of the window is a list of SEDs open for analysis; in this case, \textit{FilterSed} is selected. The Segments or components that constitute \textit{FilterSed} are shown in the Segments section. Segments may be managed separately. Highlighed SEDs or Segments may be edited, removed, saved or broadcast to an external SAMP-enabled application. New Segments and SEDs are added to the Iris session through the SED Builder. }
+\includegraphics[width=\textwidth]{figures/sed_builder.png}
+\caption{\textit{\textbf{SED Builder}} An example view of the SED Builder. On the left side of the window is a list of SEDs open for analysis; in this case, \textit{FilterSed} is selected. The Segments or components that constitute \textit{FilterSed} are shown in the Segments section. Segments may be managed separately. Highlighed SEDs or Segments may be edited, removed, saved or broadcast to an external SAMP-enabled application. New Segments and SEDs are added to the Iris session through the SED Builder. }
+\label{fig:sed_builder}
 \end{center}
-\end{figure}
+\end{figure*}
 
 \subsection{SED Builder}
 
@@ -591,14 +592,14 @@ Clicking on a SED in the Open SEDs field will show all the Segments that populat
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=\columnwidth]{figures/iris_data_sources2.png}
-\caption{\textit{\textbf{\label{fig:data_sources} Available Data Sources}}\textit{}\textbf{}\textit{} Users may import data from the built-in data archive services: NED SED Service and the Italian Space Agency Science Data Center (ASDC). Data may also be uploaded from a local file, a URL, a SAMP message from a VO-enabled program (like TOPCAT, CDS Photometry Viewer, or the Data Discovery Tool), or through a custom file filter plugin at run time.}
+\includegraphics[width=\columnwidth]{figures/IrisDiagrams.002.png}
+\caption{\textit{\textbf{\label{fig:data_sources} Available Data Sources}}\textit{}\textbf{}\textit{} Users may import data from the built-in clients to the NED SED Service and the Italian Space Agency Science Data Center (ASDC). Data may also be uploaded from a local file, a URL, a SAMP message from a VO-enabled program (like TOPCAT, CDS Photometry Viewer, or the Data Discovery Tool), or through a custom file filter plugin at run time.}
 \end{center}
 \end{figure}
 
 As described in Section~\ref{sec:overview}, Iris accepts data from a variety of sources, and is lenient on the data format. Figure~\ref{fig:data_sources} illustrates that Iris imports data from built-in data archive portals as well as from outside resources like local files, URLs, other VO-enabled applications, and from plug-ins.
 
-Iris natively supports IVOA-compliant FITS and VOTable formats (described in \citet{2012arXiv1204.3055M}). Files in these formats will automatically be added to the user's workspace. The Builder can convert ASCII Tables, CSV, Tab-Seprated-Tables, IPAC tables\footnote{\url{http://irsa.ipac.caltech.edu/applications/DDGEN/Doc/ipac\_tbl.html}}, and non-IVOA-compliant VOTable and FITS files into the native format with user input. We provide two importing forms: (i) the SED importer, which handles spectrum-style files (i.e. those with columns for the spectral coordinate, flux/energy, and flux/energy uncertainties), and (ii) the Photometry Catalog Importer, which handles photometry catalogs (i.e. files where each column represents a passband and the cell values represent the corresponding fluxes, with an arbitrary number of rows). Users can save their setup options from the Import Setup Frame to a configuration file and automatically read-in files of the same format to Iris via the command line.
+Iris natively supports IVOA-compliant FITS and VOTable formats (described in \citet{2012arXiv1204.3055M}). Files in these formats will automatically be added to the user's workspace. The Builder can convert ASCII Tables, CSV, Tab-Seprated-Tables, IPAC tables, and non-IVOA-compliant VOTable and FITS files into the native format with user input. We provide two importing forms: (i) the SED importer, which handles spectrum-style files (i.e. those with columns for the spectral coordinate, flux/energy, and flux/energy uncertainties), and (ii) the Photometry Catalog Importer, which handles photometry catalogs (i.e. files where each column represents a passband and the cell values represent the corresponding fluxes, with an arbitrary number of rows). Users can save their setup options from the Import Setup Frame to a configuration file and automatically read-in files of the same format to Iris via the command line.
 
 The SED Builder also has a hook for adding custom file filters. One can develop a custom file reader that would convert a non-standard file to an IVOA-compliant format. This kind of add-on would allow users to automatically read non-standard files into Iris without using the importer tools.
 
@@ -652,15 +653,15 @@ However, since the Iris front end was going to be a Java application\footnote{In
 
 SAMP is used as the interface protocol: this decision makes the design of the interface very simple, so that the interoperability layer on top of Sherpa is rather thin and consists only of the code required to inspect the incoming SAMP messages and build a call to Sherpa.
 
-\begin{figure}
+\begin{figure*}
 \begin{center}
-\includegraphics[width=\columnwidth]{figures/sherpasamp.png}
+\includegraphics[width=\textwidth]{figures/sherpasamp.png}
 \caption{\textbf{Design of the Specview/Sherpa interoperability layer} The interface between Sherpa (fitting engine), and Specview (graphical user interface) was designed by defining a common data model for representing the requests and responses of fitting operations: the serialization of the request is a SAMP message, whose \texttt{mtype} identifies the remote operation that the client is requesting.}
 \label{fig:sherpasamp}
 \end{center}
-\end{figure}
+\end{figure*}
 
-The design of this interface is represented schematically in figure \ref{fig:sherpasamp}.
+The design of this interface is represented schematically in Figure \ref{fig:sherpasamp}.
 
 When Iris is launched the \verb|sherpa-samp| process is also started in the background: this process implements a SAMP client that waits for a SAMP hub to be available and attaches to it, registering to a number of custom \verb|mtypes|. The \verb|mtypes| work as remote procedures identifiers, and SAMP messages provide the remote methods with data that needs to be processed. Sherpa is used to crunch the data and the response from Sherpa is again packaged into a SAMP message response, so that it can be shown to the user.
 
