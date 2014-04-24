@@ -24,7 +24,7 @@
 %% $Id: elsarticle-template-num.tex 4 2009-10-24 08:22:58Z rishi $
 %%
 %%
-\documentclass[5p]{elsarticle}
+\documentclass[final,5p]{elsarticle}
 
 %% Use the option review to obtain double line spacing
 %% \documentclass[preprint,review,12pt]{elsarticle}
@@ -85,6 +85,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{fancyref}
 \usepackage{hyperref}
+\usepackage{caption}
 \hypersetup{colorlinks=false,pdfborder={0 0 0},}
 
 \newcommand{\truncateit}[1]{\truncate{0.8\textwidth}{#1}}
@@ -222,7 +223,7 @@ With Iris users may populate SEDs with data from files, built-in portals to data
 
 %%Iris was devoted to provide functionality in a specific scientific domain, namely the analysis of broad-band SEDs. This requirement clearly defines the semantic scope of the  Iris extensible framework, and provides a clear abstraction layer to both users and developers, inside and outside of the development team.
 
-Iris was developed inside the framework of the VAO science applications
+Iris was developed inside the framework of the VAO science applications: the different components were contributed by developers from the Smithsonian Astrophysical Observatory, the Space Telescope Science Institute, and the NASA Infrared Processing and Analysis Center. Quality Assurance and testing were lead by team members at the National Optical Astronomy Observatory and Space Telescope Science Institute.
 
 In this paper we present the Iris application, its design, and how its architecture makes Iris extensible through the use of plug-ins. In section \ref{sec:overview} we briefly explore the landscape of SED applications and analysis tools which Iris joined, and provide an example use-case of Iris. We explore how astronomers can include their own models or templates as Python functions in section \ref{sec:usermodels}. An introduction to the Iris' general architecture (the Iris \emph{stack}) is illustrated in section \ref{sec:stack}. A more detailed overview of the Iris extensible framework design (section \ref{sec:architecture}) is followed by a detailed description of the more advanced Iris functionalities (section \ref{sec:components}). Finally, we describe the Iris software development kit, including a ``How-to'' on extending Iris with plug-ins (section \ref{sec:plugins}).
 
@@ -280,11 +281,17 @@ To showcase its main functionalities, we present a brief, illustrative use-case 
 \label{subsec:usecase}
 
 \begin{figure*}
-\label{fig:load_data}
-\begin{center}
+\centering
 \includegraphics[height=0.3\textheight]{figures/built-in-visuals-loading1.png}
 \caption{\textbf{Building the SED of blazar PKS 1127-14 in Iris} \textit{Top-left:} Data from the NED SED Service, a local file, and from TOPCAT are managed in the SED Builder. \textit{Bottom-left:} The various data Segments plotted in $\mathrm{\nu F \left( \nu \right)}$ units inside the SED Viewer. Squares show data with flux uncertainties, whereas the pink diamonds denote points without associated uncertainties. Each Segment in the SED Builder is plotted in a different color. Black squares are the data taken from NED; the pink sqaures in the radio are the data from PLANCK; and the red, yellow, blue, and green squares in the near-IR are the for WISE bands. \textit{Right:} An ASDC Data Query form for PKS 1127-14. The user searches for data between specified dates and available instruments (Swift and GALEX in this case). The data has been added to the open SED \texttt{PKS1127-14}.}
-\end{center}
+\label{fig:load_data}
+\end{figure*}
+
+\begin{figure*}
+\centering
+\includegraphics[height=0.3\textheight]{figures/fitting-1.png}
+\caption{\textbf{Fitting Visualization} Visualization of a linear combination of log-parabolas and blackbody distributions for FRSQ blazar PKS 1127-145, fit with Neldermead optimization and least-square statistics. \textit{Left:} The best fit linear combination overlaid on the SED data as a red curve. The blue line shows the spectral range over which the data was fit. Below the main plot are residuals of the fitted curve, in dex units. \textit{Top-right:} The fitting options and results. Here, the user chooses between Neldermead, Levenberg-Markwardt, and Monte-Carlo optimization and various least square and $\mathrm{\chi}^{2}$ statisitcs. The fit statistics are reported here after the fit has been performed. \textit{Bottom-right:} The Fitting Tool window. The model components used in the fit and their fitted parameter values are listed in the Components field. Below that is the Model Expression, in which the components are linearly combined. Note that components are referenced by the \textit{c\#} suffix of the component name.}
+\label{fig:fitting1}
 \end{figure*}
 
 An Iris session begins with populating a SED. A user loads a local ASCII file of PLANCK data, a WISE dataset from TOPCAT~\citep{2005ASPC..347...29T} through a SAMP message, and all data associated with PKS 1127-14 in NED with the NED SED Service portal. She also uses the built-in Italian Space Agency Science Data Center\footnote{http://www.asdc.asi.it/} (ASDC) query tool to find optical/UV data for PKS 1127-14, and adds it to the SED (see Figure~\ref{fig:load_data}).
@@ -296,14 +303,6 @@ The user also employs the Science Tools, an Iris built-in component that provide
 She also filters out all the points devoid of errors using the metadata browser filtering features.
 
 When the user is done building and editing the SED, she begins the fitting session. In the fitting tool, the user can build a model expression as an arbitrary combination of model components. Choosing from a list of astrophysical and mathematical models built-in in Iris, she fits PKS 1127-14 with a linear combination of four models: two logarithmic parabolas to model the radio synchrotron and inverse Compton radiation, and two blackbodies to approximate the models for the hot dust component and accretion disk of the blazar. The fit is performed using Neldermead optimization and least square statistics. The user has fine control over the parameters, including setting initial values, the range of the values, freezing and thawing parameters, and linking model parameters to other parameters in the model expression. The spectral range to which each model component must be applied is also used to make control the fit: finally, confidence interval are computed for the overall model parameters.
-
-\begin{figure*}
-\label{fig:fitting1}
-\begin{center}
-\includegraphics[height=0.3\textheight]{figures/fitting-1.png}
-\caption{\textbf{Fitting Visualization} Visualization of a linear combination of log-parabolas and blackbody distributions for FRSQ blazar PKS 1127-145, fit with Neldermead optimization and least-square statistics. \textit{Left:} The best fit linear combination overlaid on the SED data as a red curve. The blue line shows the spectral range over which the data was fit. Below the main plot are residuals of the fitted curve, in dex units. \textit{Top-right:} The fitting options and results. Here, the user chooses between Neldermead, Levenberg-Markwardt, and Monte-Carlo optimization and various least square and $\mathrm{\chi}^{2}$ statisitcs. The fit statistics are reported here after the fit has been performed. \textit{Bottom-right:} The Fitting Tool window. The model components used in the fit and their fitted parameter values are listed in the Components field. Below that is the Model Expression, in which the components are linearly combined. Note that components are referenced by the \textit{c\#} suffix of the component name.}
-\end{center}
-\end{figure*}
 
 Figure~\ref{fig:fitting1} shows the final model for PKS 1127-14 overlaid on the input data and, in the lower panel, the fit residuals.
 
@@ -462,9 +461,17 @@ The Iris stack offers a non-technical view of the Iris architecture and design. 
 
 \begin{figure*}
 \begin{center}
-\includegraphics[width=0.7\textwidth]{figures/IrisDiagrams.1.png}
+\includegraphics[width=0.6\textwidth]{figures/IrisDiagrams.1.png}
 \caption{\textbf{The Iris loosely coupled, extensible architecture} Information freely flows among built-in and third-party components provided as plug-ins. A SED Manager gives components access to the state of the SEDs in the user's workspace, while dynamic changes in such state are announced through events that are notified to the subscribed listeners. A plug-in manager allows users to install and uninstall plug-ins on the fly.}
 \label{fig:architecture}
+\end{center}
+\end{figure*}
+
+\begin{figure*}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{figures/IrisDiagrams.002.png}
+\caption{\textbf{Inversion of Control} IoC is a design pattern that promotes decoupling of software components so that they can easily be replaced by different implementations, with the actual binding often happening at runtime according to some configuration. This pattern, however, also allows new components to be added at any time during the application lifecycle: a common framework (Iris Common) can be shared as a middle layer among implementations, and a container (the Iris application) can bind components together on the fly. Components can subscribe to events and react to them.}
+\label{fig:ioc}
 \end{center}
 \end{figure*}
 
@@ -487,14 +494,6 @@ In summary, Components (Views) can be completely disentangled from each other an
 Components are thus agents that cohoperate by attaching themselves to a common \emph{bus} where the SEDManager provides the memory, and Events guarantee the flow of information. (see Figure~\ref{fig:architecture})
 
 \subsection{Inversion of Control}
-
-\begin{figure*}
-\begin{center}
-\includegraphics[width=0.5\textwidth]{figures/IrisDiagrams.002.png}
-\caption{\textbf{Inversion of Control} IoC is a design pattern that promotes decoupling of software components so that they can easily be replaced by different implementations, with the actual binding often happening at runtime according to some configuration. This pattern, however, also allows new components to be added at any time during the application lifecycle: a common framework (Iris Common) can be shared as a middle layer among implementations, and a container (the Iris application) can bind components together on the fly. Components can subscribe to events and react to them.}
-\label{fig:ioc}
-\end{center}
-\end{figure*}
 
 We achieve loose coupling by an extensive use of Java Interfaces: components, events, and event listeners, for example, are all defined by interfaces whose implementation can, to some extent, be freely interchangeable.
 
@@ -570,8 +569,7 @@ The advantages of this architecture are both functional and non functional: it h
 
 \section{Iris Built-in Components}
 \label{sec:components}
-
-\subsection{SED Builder}
+In the previous section, we discussed the architecture of Iris and how the different Components in Iris communicate. Each Component performs one or more SED-related tasks in Iris, like building SEDs from multiple sources and fine-tuned SED modeling.  Here, we discuss what the Components do in terms of the science domain and how they do it, including descriptions of the autonomous software used to build Iris: Specview, Sherpa and the NED SED Service.
 
 \begin{figure}
 \begin{center}
@@ -579,6 +577,8 @@ The advantages of this architecture are both functional and non functional: it h
 \caption{\textit{\textbf{\label{fig:sed_builder} SED Builder}} An example view of the SED Builder. On the left side of the window is a list of SEDs open for analysis; in this case, \textit{FilterSed} is selected. The Segments or components that constitute \textit{FilterSed} are shown in the Segments section. Segments may be managed separately. Highlighed SEDs or Segments may be edited, removed, saved or broadcast to an external SAMP-enabled application. New Segments and SEDs are added to the Iris session through the SED Builder. }
 \end{center}
 \end{figure}
+
+\subsection{SED Builder}
 
 Users manage SEDs through the SED Builder (Figure~\ref{fig:sed_builder}). From the Builder, users can add, edit, remove, and save SEDs. Users can also transfer data seamlessly to other VO-enabled applications through SAMP messages from the Builder. Any number of SEDs can be analyzed in an Iris session. Each SED has a unique identifier that is set by default when a new SED is created, but can be changed by the user. The user switches between SEDs by clicking on a SED name in the Open SEDs field; the visualizer will automatically update to the selected SED.
 
@@ -766,7 +766,7 @@ Components can attach arbitrary objects to the SEDs managed by the SEDManager. T
 
 
 \subsection{Plug-in examples}
-\subsubsection{ASDC - stable}
+\subsubsection{ASDC --- stable}
 The Italian Space Agency Science Data Center (ASDC) hosts a database with tens of catalogs in a very wide range of wavelengths, also providing time domain information.
 
 A plug-in for providing Iris with a rich graphical user interface to query their database was developed by the ASDC in a collaboration between the ASDC and the Iris teams. The plug-in became part of the main Iris distribution in v2.0 and provided a valuable test bench to review, validate, and improve the Iris Software Development Kit.
@@ -785,7 +785,7 @@ This component proves several points about the Iris framework and SDK:
 provides, one can leverage the existing components with just a few lines of code and then start adding value to the entire application.
 \end{description}
 
-\subsubsection{Vizier - experimental}
+\subsubsection{Vizier --- experimental}
 \label{sec:asdc}
 Experimental plug-ins are shipped with Iris but they can only be activated by turning on switches on the Iris command line. For instance, if one starts Iris with the command \verb|./Iris --vizier| an experimental plugin for the CDS Vizier photometric service gets loaded in the usual Iris desktop.
 
@@ -793,7 +793,7 @@ While this component is, at the time of this writing, still experimental, it sho
 
 As for the ASDC plug-in, this component shows that one can use Iris and its framework to rapidly build an adapter from a dedicated service interface, leveraging the particular specs of the service, so to make datasets interoperable with the other Iris tools, third party plug-ins, and possibly other VO tools.
 
-\subsubsection{R - experimental}
+\subsubsection{R --- experimental}
 A highly experimental proof-of-concept plug-in was developed to explore the possibility of interfacing Iris with rich analysis environments like R. The plug-in shows how one can \emph{beam} data from Iris to R and trigger some analysis on the dataset in R.
 
 
@@ -841,20 +841,35 @@ One can start from this dummy project, inspect the source code, make changes to 
 
 The Iris website contains further documentation on how to write plug-ins, and you can contact the authors of this paper for further information.
 
-\section{Conclusion}
-\label{sec:conclusion}
+\section{Future Plans}
+We are working on improving Iris in several ways. With the VAO shutting down in 2014, the development of Iris has been taken over by the Chandra CXC group at SAO.
 
-To summarize, Iris provides:
-\begin{itemize}
-\item built-in capabilities for building, viewing, and analyzing broad-band spectro-photometric SEDs;
-\item seamless integration between existing and new code in Python and Java;
-\item a python framework for fitting user provided models and templates;
-\item interoperability with virtual observatory tools through the Simple Messaging Application Protocol (SAMP);
-\item a Java Software Development Kit (SDK) that allows developers to extend the Iris functionalities.
-\end{itemize}
+While the current Software Development Kit is very advanced for letting plug-ins contribute SEDs and SED segments to the user's workspace, we want to improve the ways in which plug-ins can interact with the visualization and fitting code, decoupling Specview and Sherpa.
+
+We are also exploring solutions to overcome one of the limitations in the current code, namely the handling of high resolution spectra, that is mostly due to a visualization issue.
+
+Several improvements will derive from the inclusion in Iris of the latest Sherpa version, and in particular of the new code for interpolating templates in template fitting. This will allow users to combine templates with other templates and functions and compute photometric redshifts through template fitting, for instance.
+
+Also, we want to provide finer grained control over the visualization and manipulation of individual components in the model expressions.
+
+From the user interface point of view, we are planning to provide Python bindings to enhance the integration of Iris in customized, complex scientific workflows.
+
+\section{Conclusions}
+\label{sec:conclusions}
+
+Iris is a Virtual Observatory application designed with the goal of streamlining the construction of broadband spectral energy distributions while providing flexible and robust tools for their analysis, with a stress on interoperability and extensibility.
+
+To summarize, Iris provides: built-in capabilities for building, viewing, and analyzing broad-band spectro-photometric SEDs; a Python framework for fitting user-provided models and templates; interoperability with Virtual Observatory tools through the Simple Messaging Application Protocol (SAMP).
+
+The Iris layered architecture takes advantage of the Virtual Observatory standards and protocols without exposing their complexity to the final users, who still benefit from the added interoperability. At the same time, developers can use a middle layer of abstraction that exposes the domain objects, i.e. spectro-photometric SEDs, and the user's workspace, in a clean and consistent way through a Java software development kit.
+
+This way Iris combines several existing software components with new dedicated software, and provides hooks for astronomer and software developers that want to leverage the general interoperable framework while pluggin in their own code.
+
+Iris is available as an Open Source project, and can be downloaded as a binary or source distribution for Linux and Mac OS X.
+
 
 \section*{Acknowledgements}
-This work has made use of the NASA/IPAC Extragalactic Database (NED) which is operated by the Jet Propulsion Laboratory, California Institute of Technology, under contract with the National Aeronautics and Space Administration.
+Support for the development of Iris was providedby the Virtual Astronomical Observatory contract AST0834235. Support for Sherpa isprovided by the National Aeronautics and Space Administration through the ChandraX-ray Center, which is operated by the Smithsonian Astrophysical Observatory forand on behalf of the National Aeronautics and Space Administration contract NAS8-03060. Support for Specview is provided by the Space Telescope Science Institute,operated by the Association of Universities for Research in Astronomy, Inc., underNational Aeronautics and Space Administration contract NAS5-26555. This researchhas made use of the NASA/IPAC Extragalactic Database (NED) which is operated bythe Jet Propulsion Laboratory, California Institute of Technology, under contract withthe National Aeronautics and Space Administration.
 
 \bibliography{aciris.bib}
 
