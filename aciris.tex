@@ -653,10 +653,10 @@ However, since the Iris front end was going to be a Java application\footnote{In
 SAMP is used as the interface protocol: this decision makes the design of the interface very simple, so that the interoperability layer on top of Sherpa is rather thin and consists only of the code required to inspect the incoming SAMP messages and build a call to Sherpa.
 
 \begin{figure*}
-\label{fig:sherpasamp}
 \begin{center}
 \includegraphics[width=\textwidth]{figures/sherpasamp.png}
 \caption{\textbf{Design of the Specview/Sherpa interoperability layer} The interface between Sherpa (fitting engine), and Specview (graphical user interface) was designed by defining a common data model for representing the requests and responses of fitting operations: the serialization of the request is a SAMP message, whose \texttt{mtype} identifies the remote operation that the client is requesting.}
+\label{fig:sherpasamp}
 \end{center}
 \end{figure*}
 
